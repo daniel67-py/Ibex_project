@@ -96,15 +96,48 @@ def per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_ending_
             mark_code = 1
         elif "</code></pre>" in z:
             mark_code = 0
-            
-        if symbol_to_modify in z and mark_emphasis == 0 and mark_code == 0:
+
+        if z.startswith(symbol_to_modify) == True and mark_emphasis == 0 and mark_code == 0:
+            if z.endswith(symbol_to_modify) == True:
+                z = z.split(symbol_to_modify)
+                z[0] = replace_open_parse
+                z[-1] = replace_ending_parse
+                new_output += "".join(z) + " "
+            elif z.endswith(symbol_to_modify + ".") == True:
+                z = z.split(symbol_to_modify)
+                z[0] = replace_open_parse
+                z[-1] = replace_ending_parse
+                new_output += "".join(z) + ". "
+            elif z.endswith(symbol_to_modify + "?") == True:
+                z = z.split(symbol_to_modify)
+                z[0] = replace_open_parse
+                z[-1] = replace_ending_parse
+                new_output += "".join(z) + "? "
+            elif z.endswith(symbol_to_modify + "!") == True:
+                z = z.split(symbol_to_modify)
+                z[0] = replace_open_parse
+                z[-1] = replace_ending_parse
+                new_output += "".join(z) + "! "
+            else:    
+                z = z.replace(symbol_to_modify, replace_open_parse)
+                mark_emphasis = 1
+                new_output += z + " "
+                
+        elif symbol_to_modify in z and mark_emphasis == 0 and mark_code == 0:
             z = z.replace(symbol_to_modify, replace_open_parse)
             new_output += z + " "
             mark_emphasis = 1
+            
         elif symbol_to_modify in z and mark_emphasis == 1 and mark_code == 0:
             z = z.replace(symbol_to_modify, replace_ending_parse)
             new_output += z + " "
             mark_emphasis = 0
+            
+        elif z.endswith(symbol_to_modify) == True and mark_emphasis == 1 and mark_code == 0:
+            z = z.replace(symbol_to_modify, replace_ending_parse)
+            new_output += z + " "
+            mark_emphasis = 0
+            
         else:
             new_output += z + " "
 
@@ -124,7 +157,7 @@ def ibex_mkd(file, feedback = 0):
     contain = per_lines(contain, "##", " <h2>", " </h2>\n")
     contain = per_lines(contain, "#", " <h1>", " </h1>\n")
     print("searching for separators")
-    contain = per_lines(contain, "------", " <hr />", "\n ")
+    contain = per_lines(contain, "------", "<hr />", "\n ")
     print("searching for code examples")
     contain = per_coding_example(contain, "    ", " <pre><code>\n    ", " </code></pre>\n")
     print("searching for lists")
