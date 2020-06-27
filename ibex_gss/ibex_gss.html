@@ -6,8 +6,12 @@
 
  <h6> Développé pour Python3 par Meyer Daniel, Juin 2020  </h6>
 
+<figure><center><img src='ibexlogo'></center></figure>
 
-<hr />
+<h6>Voir le dépôt du projet : <a href = 'http://github.com/daniel67-py/Ibex_project'>lien</a></h6>
+
+
+<hr/>
  
  <h4> Sommaire. </h4>
 
@@ -176,7 +180,7 @@ Permet de trouver la valeur minimale dans la colonne spécifiée. Ceci correspon
 
  <h5> Ibex.data_maximal(table, column) </h5>
 
-Permet de trouver la valeur maximale dans la colonne spécifiée. Ceci correspond au nombre le plus fort contenu ou à la dernière entrée par ordre alphabétique. L'argument <i></i> table <i></i> permet de spécifier la table, l'argument <i></i> column <i></i> permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
+Permet de trouver la valeur maximale dans la colonne spécifiée. Ceci correspond au nombre le plus fort contenu ou à la dernière entrée par ordre alphabétique. L'argument <i>table</i> permet de spécifier la table, l'argument <i>column</i> permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
 
  <h5> Ibex.data_average(table, column) </h5>
 
@@ -196,7 +200,7 @@ Permet d'écrire la structure d'une base de données dans un fichier texte. Par 
 
  <h5> Ibex.edit_contains_csv(table, nom_fichier_sortie = "analyse_ibex.csv") </h5>
 
-Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_ibex.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument <i></i> nom_fichier_sortie <i></i> .
+Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_ibex.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument <i>nom_fichier_sortie</i> .
 
 <hr />
  
@@ -433,19 +437,20 @@ La quatrième fonction <b>per_emphasis(sequence, symbol_to_modify, replace_open_
 
  <h5> Note : </h5>
 
-Concernant <b>per_lines</b> et <b>per_emphasis</b> : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. Pour intégrer un lien vers une page internet quelconque, il vous faudra utiliser la balise suivante comme ceci : 
+Concernant <b>per_lines</b> et <b>per_emphasis</b> : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
 
  <pre><code>
-    [url]adresse_url_du_lien[url]
+    [+url]adresse_url_du_lien[url+]
+    [+img]image_à_insérer[img+]
  </code></pre>
 
-Ce module ne gère pas l'insertion d'images ni la création de tableaux pour le moment. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
+Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce module ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
 
 <hr />
  
  <h4> Mot de fin. </h4>
 
-Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyez moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
  <pre><code>
     email : meyer.daniel67@protonmail.com
@@ -454,6 +459,6 @@ Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibe
 
 
 
-   
+      
 </body>
 </html>

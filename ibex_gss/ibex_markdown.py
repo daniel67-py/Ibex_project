@@ -118,6 +118,11 @@ def per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_ending_
                 z[0] = replace_open_parse
                 z[-1] = replace_ending_parse
                 new_output += "".join(z) + "! "
+            elif z.endswith(symbol_to_modify + "\n") == True:
+                z = z.split(symbol_to_modify)
+                z[0] = replace_open_parse
+                z[-1] = replace_ending_parse
+                new_output += "".join(z) + "\n"
             else:    
                 z = z.replace(symbol_to_modify, replace_open_parse)
                 mark_emphasis = 1
@@ -138,6 +143,29 @@ def per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_ending_
             new_output += z + " "
             mark_emphasis = 0
             
+        else:
+            new_output += z + " "
+
+    return new_output
+
+### this function analyse lines per lines the whole markdown file ###
+### and parse url or images symbols ###
+def per_links(sequence, symbol_to_modify, replace_parse):
+    mark_links = 0
+    mark_code = 0
+
+    analyse = sequence.split(" ")
+    new_output = ""
+            
+    for z in analyse:
+        if "<pre><code>" in z:
+            mark_code = 1
+        elif "</code></pre>" in z:
+            mark_code = 0
+
+        if symbol_to_modify in z and mark_code == 0:
+            z = z.replace(symbol_to_modify, replace_parse)
+            new_output += z
         else:
             new_output += z + " "
 
@@ -168,7 +196,11 @@ def ibex_mkd(file, feedback = 0):
     print("searching for single splat italic quote")
     contain = per_emphasis(contain, "*", "<i>", "</i>")
     print("searching for urls")
-    contain = per_emphasis(contain, "[url]", "<a href = '", "'>lien</a>")
+    contain = per_links(contain, "[+url]", "<a href = '")
+    contain = per_links(contain, "[url+]", "'>lien</a>")
+    print("searching for images")
+    contain = per_links(contain, "[+img]", "<figure><center><img src='")
+    contain = per_links(contain, "[img+]", "'></center></figure>")
     print("saving the output result into ibex_gss.html")
 
     if feedback == 0:

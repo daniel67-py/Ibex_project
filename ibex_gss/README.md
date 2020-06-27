@@ -1,5 +1,8 @@
 ## Ibex 0.1.a  -  *Ibex & Ibex_markdown*
 ###### Développé pour Python3 par Meyer Daniel, Juin 2020 
+[+img]ibexlogo[img+]
+
+###### Voir le dépôt du projet : [+url]http://github.com/daniel67-py/Ibex_project[url+]
 
 ------
 #### Sommaire.
@@ -340,7 +343,7 @@ Notez que les images insérées seront automatiquement centrées sur la page du 
 
 ------
 #### Mot de fin.
-Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyez moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85
