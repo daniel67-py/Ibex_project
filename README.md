@@ -1,4 +1,4 @@
-## Ibex 0.1.a  -  *Ibex & Ibex_markdown*
+## Ibex 0.1.a  -  *Ibex & Ibex_gss*
 ###### Développé pour Python3 par Meyer Daniel, Juin 2020 
 
 ------
