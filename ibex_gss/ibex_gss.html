@@ -18,11 +18,11 @@
 <ol><li>Présentation du module Ibex et utilité.</li>
 <li>Fonctions du module Ibex.</li>
 <li>Exemple d'utilisation d'Ibex.</li>
-<li>Présentation du module Ibex_markdown et utilité.</li>
-<li>Fonctions du module Ibex_markdown</li>
+<li>Présentation du module Ibex_gss et utilité.</li>
+<li>Fonctions du module Ibex_gss</li>
 <li>Mot de fin</li>
 </ol>
-Une petite note pour préciser qu'il existe 2 versions de cette présentation du module Ibex : celle que vous voyez ici, gérer en markdown directement sur GitHub, et l'autre se trouvant dans le fichier ibex_gss.html, généré grâce au module Ibex_markdown afin de vous donner une idée de ce qu'il est possible de créer.
+Une petite note pour préciser qu'il existe 2 versions de cette présentation du module Ibex : celle que vous voyez ici, gérer en markdown directement sur GitHub, et l'autre se trouvant dans le fichier ibex_gss.html, généré grâce au module Ibex_gss afin de vous donner une idée de ce qu'il est possible de créer.
 
 <hr />
  
@@ -83,6 +83,10 @@ Permet de créer une nouvelle table avec une incrémentation automatique dans la
  </code></pre>
 
 Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : id, nom, prenom, adresse, code postal, ville, telephone.
+
+ <h5> Ibex.copy_table(source_table, destination_table) </h5>
+
+Permet de copier une table existante vers une nouvelle table de destination. L'argument <i>source_table</i> permet de passer le nom de la table à copier, l'argument <i>destination_table</i> permet de donner le nom de la table à créer et à remplir avec la table 'source'.
 
  <h5> Ibex.add_values(table, elements) </h5>
 
@@ -403,21 +407,22 @@ Si je souhaite supprimer une entrée de la liste 'amis_b' :
 
 <hr />
  
- <h4> Présentation du module Ibex_markdown et utilité. </h4>
+ <h4> Présentation du module Ibex_gss et utilité. </h4>
 
-Voilà ici un script basique de mon convertisseur markdown en Python. Il est assez simple d'utilisation et permet de générer une page standard html sans trop de fioritures.
+Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement.
 
  <h5> Fonction principale, le point d'entrée pour l'utilisateur. </h5>
 
-La fonction principale <b>ibex_mkd('nom_du_fichier', feedback = 0)</b> lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
+La fonction principale <b>ibex_gss('nom_du_fichier', feedback = 0, out_file = 'ibex_gss.html')</b> lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
 Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
 Il faut savoir aussi que l'argument feedback est optionnel : si il n'est pas spécifié, il vaudra 0, et donc le retour se fera dans le fichier 'ibex_gss.html'. Si par contre il est différent de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
+Il faut également savoir que l'argument out_file est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
 
-La fonction principale utilise quatres autres fonctions afin de créer le balisage dans le texte.
+La fonction principale utilise cinqs autres fonctions afin de créer le balisage dans le texte.
 
 <hr />
  
- <h4> Fonctions du module Ibex_markdown. </h4>
+ <h4> Fonctions du module Ibex_gss. </h4>
 
  <h5> Fonction détectant les titres et les séparateurs. </h5>
 
@@ -431,13 +436,17 @@ La seconde fonction <b>per_coding_example(sequence, number_of_spaces, opening_pa
 
 La troisième fonction <b>per_list(sequence, begins, opening_parse, closing_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>begins</i> précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments <i>opening_parse</i> et <i>closing_parse</i> sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste.
 
- <h5> Fonction détectant la typographie ou un url. </h5>
+ <h5> Fonction détectant la typographie. </h5>
 
-La quatrième fonction <b>per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. Les arguments <i>replace_open_parse</i> et <i>replace_closing_parse</i> sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat. Je recommande fortement de laisser un espace avant et après les double-splats ou single-splat pour éviter toute erreur d'analyse.
+La quatrième fonction <b>per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. Les arguments <i>replace_open_parse</i> et <i>replace_closing_parse</i> sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.
 
  <h5> Note : </h5>
 
-Concernant <b>per_lines</b> et <b>per_emphasis</b> : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
+Concernant <b>per_lines</b> et <b>per_emphasis</b> : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
+
+ <h5> Fonction détectant les urls et images. </h5>
+
+La cinquième fonction <b>per_links(sequence, symbol_to_modify, replace_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. L'argument <i>replace_parse</i> permet de définir la balise à intégrer à la place. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
 
  <pre><code>
     [+url]adresse_url_du_lien[url+]

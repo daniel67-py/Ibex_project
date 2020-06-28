@@ -9,11 +9,11 @@
 + Présentation du module Ibex et utilité.
 + Fonctions du module Ibex.
 + Exemple d'utilisation d'Ibex.
-+ Présentation du module Ibex_markdown et utilité.
-+ Fonctions du module Ibex_markdown
++ Présentation du module Ibex_gss et utilité.
++ Fonctions du module Ibex_gss
 + Mot de fin
 
-Une petite note pour préciser qu'il existe 2 versions de cette présentation du module Ibex : celle que vous voyez ici, gérer en markdown directement sur GitHub, et l'autre se trouvant dans le fichier ibex_gss.html, généré grâce au module Ibex_markdown afin de vous donner une idée de ce qu'il est possible de créer.
+Une petite note pour préciser qu'il existe 2 versions de cette présentation du module Ibex : celle que vous voyez ici, gérer en markdown directement sur GitHub, et l'autre se trouvant dans le fichier ibex_gss.html, généré grâce au module Ibex_gss afin de vous donner une idée de ce qu'il est possible de créer.
 
 ------
 #### Présentation du module Ibex et utilité.
@@ -56,6 +56,9 @@ Permet de créer une nouvelle table avec une incrémentation automatique dans la
     ibex.new_increased_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
 
 Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : id, nom, prenom, adresse, code postal, ville, telephone.
+
+##### Ibex.copy_table(source_table, destination_table)
+Permet de copier une table existante vers une nouvelle table de destination. L'argument *source_table* permet de passer le nom de la table à copier, l'argument *destination_table* permet de donner le nom de la table à créer et à remplir avec la table 'source'.
 
 ##### Ibex.add_values(table, elements)
 Permet d'ajouter une entrée dans une table non incrémentale. L'argument *table* permet de passer le nom de la table dans laquelle les éléments doivent être ajoutés. L'argument *elements* est un argument multiple permettant de passer les données à inscrire dans la table. Syntaxe d'exemple:
@@ -309,18 +312,19 @@ Si je souhaite supprimer une entrée de la liste 'amis_b' :
     True
 
 ------
-#### Présentation du module Ibex_markdown et utilité.
-Voilà ici un script basique de mon convertisseur markdown en Python. Il est assez simple d'utilisation et permet de générer une page standard html sans trop de fioritures.
+#### Présentation du module Ibex_gss et utilité.
+Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement.
 
 ##### Fonction principale, le point d'entrée pour l'utilisateur.
-La fonction principale **ibex_mkd('nom_du_fichier', feedback = 0)** lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
+La fonction principale **ibex_gss('nom_du_fichier', feedback = 0, out_file = 'ibex_gss.html')** lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
 Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
 Il faut savoir aussi que l'argument feedback est optionnel : si il n'est pas spécifié, il vaudra 0, et donc le retour se fera dans le fichier 'ibex_gss.html'. Si par contre il est différent de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
+Il faut également savoir que l'argument out_file est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
 
-La fonction principale utilise quatres autres fonctions afin de créer le balisage dans le texte.
+La fonction principale utilise cinqs autres fonctions afin de créer le balisage dans le texte.
 
 ------
-#### Fonctions du module Ibex_markdown.
+#### Fonctions du module Ibex_gss.
 ##### Fonction détectant les titres et les séparateurs.
 La première fonction **per_lines(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut inserer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer avant le retour à la ligne. Elle est utilisée pour baliser les titres dans un document si elle trouve un sharp ou une suite de sharps au début d'une ligne et ne réagit qu'à cette condition.
 
@@ -330,11 +334,14 @@ La seconde fonction **per_coding_example(sequence, number_of_spaces, opening_par
 ##### Fonction détectant les listes.
 La troisième fonction **per_list(sequence, begins, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *begins* précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste.
 
-##### Fonction détectant la typographie ou un url.
-La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat. Je recommande fortement de laisser un espace avant et après les double-splats ou single-splat pour éviter toute erreur d'analyse.
+##### Fonction détectant la typographie.
+La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.
 
 ##### Note :
-Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
+Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
+
+##### Fonction détectant les urls et images.
+La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
 
     [+url]adresse_url_du_lien[url+]
     [+img]image_à_insérer[img+]

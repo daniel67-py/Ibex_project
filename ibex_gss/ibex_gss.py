@@ -173,7 +173,7 @@ def per_links(sequence, symbol_to_modify, replace_parse):
 
 ### this function start the convertion of the markdown file ###
 ### all beggins from here... ###
-def ibex_mkd(file, feedback = 0):
+def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
     with open(file, 'r') as source:
         contain = source.read()
 
@@ -204,7 +204,7 @@ def ibex_mkd(file, feedback = 0):
     print("saving the output result into ibex_gss.html")
 
     if feedback == 0:
-        with open('ibex_gss.html', 'w') as output_file:
+        with open(out_file, 'w') as output_file:
             output_file.write(page_header_style)
             output_file.write(contain)
             output_file.write(page_footer_style)

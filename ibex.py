@@ -198,6 +198,38 @@ class Ibex():
             return mark
 
     ################################################################################################
+    ### copy a table to a new one
+    ################################################################################################
+    def copy_table(self, source_table, destination_table):
+        """permit to copy to a new table"""
+        mark = None
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to database ###
+            connexion = sqlite3.connect(self.database)
+            c = connexion.cursor()
+            ### concatenation of the SQL instruction ###
+            instruction = (f"CREATE TABLE {destination_table} AS SELECT * FROM {source_table}")
+            self.debug_sqlite(instruction)
+            ### execution of the instruction ###
+            try:
+                c.execute(instruction)
+                mark = True
+                print("Table has been copied")
+            except:
+                print("Impossible to copy this table")
+                mark = False
+            ### commiting and closing ###
+            connexion.commit()
+            connexion.close()
+            ### return result of the function ###
+            return mark
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return mark
+
+    ################################################################################################
     ### add a new column in specific table
     ################################################################################################
     def add_column(self, table, column):
