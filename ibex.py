@@ -201,7 +201,7 @@ class Ibex():
     ### copy a table to a new one
     ################################################################################################
     def copy_table(self, source_table, destination_table):
-        """permit to copy to a new table"""
+        """permit to copy a table to a new table"""
         mark = None
         ### if database is a valid file ###
         if self.database != None:
@@ -216,6 +216,96 @@ class Ibex():
                 c.execute(instruction)
                 mark = True
                 print("Table has been copied")
+            except:
+                print("Impossible to copy this table")
+                mark = False
+            ### commiting and closing ###
+            connexion.commit()
+            connexion.close()
+            ### return result of the function ###
+            return mark
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return mark
+
+    ################################################################################################
+    ### copy specific columns from a table to a new one
+    ################################################################################################
+    def copy_control_table(self, source_table, destination_table, *columns):
+        """permit to copy a table to a new table only with specified columns"""
+        mark = None
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to database ###
+            connexion = sqlite3.connect(self.database)
+            c = connexion.cursor()
+            ### concatenation of the SQL instruction ###
+            instruction = f"CREATE TABLE {destination_table} AS SELECT "
+            for x in range(0, len(columns)):
+                instruction += columns[x]
+                if x != len(columns) - 1:
+                    instruction += ", "
+                else:
+                    instruction += " "
+            instruction += f"FROM {source_table}"
+            self.debug_sqlite(instruction)
+            ### execution of the instruction ###
+            try:
+                c.execute(instruction)
+                mark = True
+                print("Table has been copied")
+            except:
+                print("Impossible to copy this table")
+                mark = False
+            ### commiting and closing ###
+            connexion.commit()
+            connexion.close()
+            ### return result of the function ###
+            return mark
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return mark
+
+    ################################################################################################
+    ### redo a specific table with only specific columns
+    ################################################################################################
+    def redo_table(self, source_table, *columns):
+        """permit to redo a table only with specified column"""
+        mark = None
+        destination_table = source_table
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to database ###
+            connexion = sqlite3.connect(self.database)
+            c = connexion.cursor()
+            ### concatenation of the SQL instruction ###
+            instruction = f"CREATE TABLE ibex_temporary_table AS SELECT "
+            for x in range(0, len(columns)):
+                instruction += columns[x]
+                if x != len(columns) - 1:
+                    instruction += ", "
+                else:
+                    instruction += " "
+            instruction += f"FROM {source_table}"
+            self.debug_sqlite(instruction)
+            ### execution of the instruction ###
+            try:
+                c.execute(instruction)
+                print("Table has been copied to ibex_temporary_table.")
+                ### then delete the source table
+                try :
+                    print("Deleting old version of the table")
+                    self.delete_table(source_table)
+                    print("Restitution of the new version of the table")
+                    self.copy_table('ibex_temporary_table', destination_table)
+                    print("Deleting temporary exchange table")
+                    self.delete_table('ibex_temporary_table')
+                    mark = True
+                except:
+                    print("Something gone wrong while trying to redo the specified table")
+                    mark = False
             except:
                 print("Impossible to copy this table")
                 mark = False

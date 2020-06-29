@@ -8,7 +8,7 @@
 
 <figure><center><img src='ibexlogo'></center></figure>
 
-<h6>Voir le dépôt du projet : <a href = 'http://github.com/daniel67-py/Ibex_project'>lien</a></h6>
+<h6>Voir le dépôt du projet à cette <a href = 'http://github.com/daniel67-py/Ibex_project'>page</a>!</h6>
 
 
 <hr/>
@@ -87,6 +87,24 @@ Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ord
  <h5> Ibex.copy_table(source_table, destination_table) </h5>
 
 Permet de copier une table existante vers une nouvelle table de destination. L'argument <i>source_table</i> permet de passer le nom de la table à copier, l'argument <i>destination_table</i> permet de donner le nom de la table à créer et à remplir avec la table 'source'.
+
+ <h5> Ibex.copy_control_table(source_table, destination_table, columns) </h5>
+
+Permet de copier une table existante vers une nouvelle table de destination en ne tenant compte que de certaines colonnes. L'argument <i>source_table</i> permet de passer le nom de la table à copier, l'argument <i>destination_table</i> permet de donner le nom de la table à créer et à remplir avec les colonnes passées via l'argument multiple <i>columns</i>. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons copier dans une table 't2' mais en ne tenant compte que des colonnes 'A' et 'C', ceci donnerait :
+
+ <pre><code>
+    ibex.copy_control_table('t1', 't2', 'A', 'C')
+ </code></pre>
+
+ <h5> Ibex.redo_table(source_table, columns) </h5>
+
+Permet de retoucher une table en supprimant une ou plusieurs colonne(s). Comme je l'expliquais en introduction, SQLite ne permet pas de faire certaines choses comme supprimer une ou plusieurs colonne(s). Cette fonction contourne ce manque en copiant la table à modifier dans une table temporaire nommé 'ibex_temporary_table' avec les colonnes que l'on souhaite garder. Elle supprime ensuite la table d'origine, puis en créé une nouvelle portant le même nom qu'elle va remplir avec la table temporaire, avant de supprimer cette dernière. L'argument <i>source_table</i> permet de passer le nom de la table à retoucher, l'argument multiple <i>columns</i> permet de définir les colonnes que l'on souhaite conserver. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons retoucher pour ne garder que les colonnes 'A' et 'B', ceci donnerait :
+
+ <pre><code>
+    ibex.redo_table('t1', 'A', 'B')
+ </code></pre>
+
+Notez que cette fonction se sert des fonctions <i>delete_table</i> et <i>copy_table</i> du module pour arriver à ses fins.
 
  <h5> Ibex.add_values(table, elements) </h5>
 
@@ -418,7 +436,7 @@ Concernant les listes, et sachant que j'utilise toujours un modèle de document 
 Il faut savoir aussi que l'argument feedback est optionnel : si il n'est pas spécifié, il vaudra 0, et donc le retour se fera dans le fichier 'ibex_gss.html'. Si par contre il est différent de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
 Il faut également savoir que l'argument out_file est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
 
-La fonction principale utilise cinqs autres fonctions afin de créer le balisage dans le texte.
+La fonction principale utilise quatres autres fonctions afin de créer le balisage dans le texte.
 
 <hr />
  
@@ -449,25 +467,30 @@ Concernant <b>per_lines</b> et <b>per_emphasis</b> : j'ai opté pour un fonction
 La cinquième fonction <b>per_links(sequence, symbol_to_modify, replace_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. L'argument <i>replace_parse</i> permet de définir la balise à intégrer à la place. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
 
  <pre><code>
-    [+url]adresse_url_du_lien[url+]
+    [+url]adresse_url_du_lien[+url+]texte_lien[url+]
     [+img]image_à_insérer[img+]
  </code></pre>
 
 Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce module ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
 
+
 <hr />
  
  <h4> Mot de fin. </h4>
 
-Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyez moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
  <pre><code>
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85
  </code></pre>
 
+Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
+
+Daniel.
 
 
-      
+
+       
 </body>
 </html>
