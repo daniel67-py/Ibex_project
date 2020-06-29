@@ -214,4 +214,3 @@ def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
         return output_file
 
     print("job done !")
-        
