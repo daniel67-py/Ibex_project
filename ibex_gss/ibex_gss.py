@@ -6,11 +6,37 @@
 page_header_style = """
 <!DOCTYPE html>
 <html>
-<body>
+
+	<head>
+	    <!--[if lt IE 9]>
+	    <script
+	    src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+	    </script>
+	    <![endif]-->
+
+            <meta charset="UTF-8">
+            <title>Ibex_gss</title>
+            <style type="text/css">
+                h1 {font-size: 35px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
+                h2 {font-size: 30px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
+                h3 {font-size: 25px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
+                h4 {font-size: 20px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
+                h5 {font-size: 15px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
+                h6 {font-size: 12px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
+                p  {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify}
+                li {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify}
+                pre {margin-right: 200px; margin-left: 200px; overflow-x: auto; background: #f5f5f5}
+                
+            </style>
+	</head>
+
+	<body>
+            <article>
 """
 
 page_footer_style = """
-</body>
+            </article>
+        </body>
 </html>
 """
 
@@ -184,8 +210,16 @@ def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
     contain = per_lines(contain, "###", " <h3>", " </h3>\n")
     contain = per_lines(contain, "##", " <h2>", " </h2>\n")
     contain = per_lines(contain, "#", " <h1>", " </h1>\n")
+    contain = per_lines(contain, ">######", " <h6><center>", " </center></h6>\n")
+    contain = per_lines(contain, ">#####", " <h5><center>", " </center></h5>\n")
+    contain = per_lines(contain, ">####", " <h4><center>", " </center></h4>\n")
+    contain = per_lines(contain, ">###", " <h3><center>", " </center></h3>\n")
+    contain = per_lines(contain, ">##", " <h2><center>", " </center></h2>\n")
+    contain = per_lines(contain, ">#", " <h1><center>", " </center></h1>\n")
     print("searching for separators")
-    contain = per_lines(contain, "------", "<hr />", "\n ")
+    contain = per_lines(contain, "------", "</p><hr />", "\n<p> ")
+    print("searching for paragraphs")
+    contain = per_lines(contain, ">>>", "<p>\n", "\n</p>")
     print("searching for code examples")
     contain = per_coding_example(contain, "    ", " <pre><code>\n    ", " </code></pre>\n")
     print("searching for lists")

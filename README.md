@@ -6,11 +6,6 @@
 + Présentation du module Ibex et utilité.
 + Fonctions du module Ibex.
 + Exemple d'utilisation d'Ibex.
-+ Présentation du module Ibex_gss et utilité.
-+ Fonctions du module Ibex_gss
-+ Mot de fin
-
-Une petite note pour préciser qu'il existe 2 versions de cette présentation du module Ibex : celle que vous voyez ici, gérer en markdown directement sur GitHub, et l'autre se trouvant dans le fichier ibex_gss.html, généré grâce au module Ibex_gss afin de vous donner une idée de ce qu'il est possible de créer.
 
 ------
 #### Présentation du module Ibex et utilité.
@@ -63,7 +58,7 @@ Permet de copier une table existante vers une nouvelle table de destination en n
     ibex.copy_control_table('t1', 't2', 'A', 'C')
 
 ##### Ibex.redo_table(source_table, columns)
-Permet de retoucher une table en supprimant une ou plusieurs colonne(s). Comme je l'expliquais en introduction, SQLite ne permet pas de faire certaines choses comme supprimer une ou plusieurs colonne(s). Cette fonction contourne ce manque en copiant la table à modifier dans une table temporaire nommé 'ibex_temporary_table' avec les colonnes que l'on souhaite garder. Elle supprime ensuite la table d'origine, puis en créé une nouvelle portant le même nom qu'elle va remplir avec la table temporaire, avant de supprimer cette dernière. L'argument *source_table* permet de passer le nom de la table à retoucher, l'argument multiple *columns* permet de définir les colonnes que l'on souhaite conserver. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons retoucher pour ne garder que les colonnes 'A' et 'B', ceci donnerait :
+Permet de retoucher une table en supprimant une ou plusieurs colonnes. Comme je l'expliquais en introduction, SQLite ne permet pas de faire certaines choses comme supprimer une ou plusieurs colonnes. Cette fonction contourne ce manque en copiant la table à modifier dans une table temporaire nommé 'ibex_temporary_table' avec les colonnes que l'on souhaite garder. Elle supprime ensuite la table d'origine, puis en créée une nouvelle portant le même nom qu'elle va remplir avec la table temporaire, avant de supprimer cette dernière. L'argument *source_table* permet de passer le nom de la table à retoucher, l'argument multiple *columns* permet de définir les colonnes que l'on souhaite conserver. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons retoucher pour ne garder que les colonnes 'A' et 'B', ceci donnerait :
 
     ibex.redo_table('t1', 'A', 'B')
 
@@ -320,47 +315,10 @@ Si je souhaite supprimer une entrée de la liste 'amis_b' :
     The value tartenpion from the column nom has been deleted !
     True
 
-------
-#### Présentation du module Ibex_gss et utilité.
-Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement.
-
-##### Fonction principale, le point d'entrée pour l'utilisateur.
-La fonction principale **ibex_gss('nom_du_fichier', feedback = 0, out_file = 'ibex_gss.html')** lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
-Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
-Il faut savoir aussi que l'argument feedback est optionnel : si il n'est pas spécifié, il vaudra 0, et donc le retour se fera dans le fichier 'ibex_gss.html'. Si par contre il est différent de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
-Il faut également savoir que l'argument out_file est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
-
-La fonction principale utilise quatres autres fonctions afin de créer le balisage dans le texte.
-
-------
-#### Fonctions du module Ibex_gss.
-##### Fonction détectant les titres et les séparateurs.
-La première fonction **per_lines(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut inserer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer avant le retour à la ligne. Elle est utilisée pour baliser les titres dans un document si elle trouve un sharp ou une suite de sharps au début d'une ligne et ne réagit qu'à cette condition.
-
-##### Fonction détectant les exemple de codes / programmes.
-La seconde fonction **per_coding_example(sequence, number_of_spaces, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *number_of_spaces* précise le nombre d'espaces vides que la fonction doit trouver avant de réagir et déduire qu'il y a un exemple de code. Dans le script, j'ai posé quatres intervalles vident. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve une ligne qui débute par l'intervalle d'espaces libres spécifiés, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite d'un exemple de code.
-
-##### Fonction détectant les listes.
-La troisième fonction **per_list(sequence, begins, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *begins* précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste.
-
-##### Fonction détectant la typographie.
-La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.
-
-##### Note :
-Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
-
-##### Fonction détectant les urls et images.
-La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
-
-    [+url]adresse_url_du_lien[+url+]texte_lien[url+]
-    [+img]image_à_insérer[img+]
-
-Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce module ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
-
 
 ------
 #### Mot de fin.
-Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+Voilà dans les grandes lignes, la base de l'utilisation du module Ibex. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85
