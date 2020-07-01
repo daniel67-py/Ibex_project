@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -10,35 +9,123 @@
 	    <![endif]-->
 
             <meta charset="UTF-8">
-            <title>Ibex_gss</title>
-            <style type="text/css">
-                h1 {font-size: 35px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h2 {font-size: 30px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h3 {font-size: 25px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h4 {font-size: 20px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h5 {font-size: 15px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h6 {font-size: 12px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                p  {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify}
-                li {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify}
-                pre {margin-right: 200px; margin-left: 200px; overflow-x: auto; background: #f5f5f5}
-                
-            </style>
-	</head>
+            <title></title>
 
-	<body>
-            <article>
- <h2><center> Ibex 0.1.a  -  <i>Ibex & Ibex_gss</i> </center></h2>
+<style type="text/css">
+
+    header {
+        background: #98FB98;
+        }
+
+    body {
+        background: #FFFAFA; 
+        }
+
+    footer {
+        background: #FFFAFA;
+        }
+
+    foot {
+        background: #98FB98;
+        font-family: DejaVu Sans Light;
+        font-size: 8px;
+        }
+
+    h1 {
+        font-size: 35px;
+        font-family: DejaVu Sans; 
+        margin-right: 200px; 
+        margin-left: 200px;
+        text-align: justify; 
+        background: #98FB98
+        }
+    
+    h2 {
+        font-size: 30px; 
+        font-family: DejaVu Sans; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify; 
+        background: #98FB98
+        }
+
+    h3 {
+        font-size: 25px; 
+        font-family: DejaVu Sans; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify; 
+        background: #98FB98
+        }
+
+    h4 {
+        font-size: 20px; 
+        font-family: DejaVu Sans; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify; 
+        background: #98FB98
+        }
+
+    h5 {
+        font-size: 15px; 
+        font-family: DejaVu Sans; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify; 
+        background: #98FB98
+        }
+
+    h6 {
+        font-size: 12px; 
+        font-family: DejaVu Sans; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify; 
+        background: #98FB98
+        }
+
+    p  {
+        font-size: 12px; 
+        font-family: DejaVu Sans Light; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify
+        }
+
+    li {
+        font-size: 12px; 
+        font-family: DejaVu Sans Light; 
+        margin-right: 200px; 
+        margin-left: 200px; 
+        text-align: justify
+        }
+
+    pre {
+        margin-right: 200px; 
+        margin-left: 200px; 
+        overflow-x: auto; 
+        background: #f5f5f5
+        }
+                
+</style>
+</head><header>
+<h2><center> Ibex 0.1.a  -  <i>Ibex & Ibex_gss</i> </center></h2>
 
  <h6><center> Développé pour Python3 par Meyer Daniel, Juin 2020  </center></h6>
 
  <h6><center> Voir le dépôt du projet à cette <a href = 'http://github.com/daniel67-py/Ibex_project'>page</a>!</center></h6>
 
-<figure><center><img src='ibexlogo'></center></figure>
+</header>
+
+<body>
 </p><hr/>
 <p>
-<h4> Sommaire. </h4>
+<figure><center><img src='ibexlogo'></center></figure>
+<h4>Sommaire.</h4>
 
 <ol><li>Présentation du module Ibex_gss et utilité.</li>
+<li>Fonction principale et syntaxes d'utilisation.</li>
 <li>Fonctions du module Ibex_gss</li>
 <li>Mot de fin</li>
 </ol>
@@ -48,6 +135,9 @@
 
 <p>
  Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
+</p>
+<p>
+ Ce module se sert également de deux fichiers .html et un fichier .css contenu dans le dossier <i>ibex_ressources</i>. Le fichier <i>ibex_gss_head.html</i> contient une en-tête type html, le fichier <i>ibex_gss_foot.html</i> contient un pied de page type en html, et le fichier <i>ibex_gss.css</i> contient le script css utilisé pour la mise en forme du document. Ils sont accessibles et modifiables pour l'utilisateur.
 </p>
 
  <h5> Fonction principale, le point d'entrée pour l'utilisateur. </h5>
@@ -82,7 +172,8 @@
     >## titre en taille h2 centré sur la page
     ># titre en taille h1 centré sur la page
     ------      6 tirets seuls sur une ligne permettent d'intégrer un séparateur
-    **passage en gras, doit être compris entre deux double-splat**
+    ***passage en gras et italique, doit être compris entre deux triple-splats***
+    **passage en gras, doit être compris entre deux double-splats**
     *passage en italique, doit être compris entre deux single-splat*
     + en début de ligne génère une liste numérotée
     - en début de ligne génère une liste à puces
@@ -90,6 +181,9 @@
     [+img]image_a_integrer.jpeg[img+]
     et si vous laissez 4 espaces vides en début de ligne, ibex_gss génère un exemple de code 
     comme ces quelques lignes de syntaxes.
+    [HDR+] ... [+HDR] pour définir le contenu de l'en-tête de votre document.
+    [BDY+] ... [+BDY] pour définir le contenu du corps de votre document.
+    [FTR+] ... [+FTR] pour définir le contenu du pied de page de votre document.
  </code></pre>
 
 <p>
@@ -150,7 +244,7 @@
  <h4> Mot de fin. </h4>
 
 <p>
- Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+ Voilà dans les grandes lignes, la base de l'utilisation du module Ibex_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 </p>
 
  <pre><code>
@@ -158,19 +252,29 @@
     telegram : @Daniel_85
  </code></pre>
 
-<p>
- Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
-</p>
-
-</p><hr />
+</body>
+</p><hr/>
 <p> 
+
+<footer>
 <p>
- Daniel. Juin 2020.
+Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
 </p>
+<p>
+ Daniel. Juillet 2020.
+</p>
+</footer>
 
 
 
-       
-            </article>
-        </body>
+
+
+               <foot>
+    <p><center> 
+basic static page in html<br>
+generated with Ibex_gss for Python 3.x  -  June 2020  - Daniel Meyer <br>
+to know more about this project, please follow this link :<br>
+<a href = "http://www.github.com/daniel67-py/Ibex_project">Daniel's Ibex Open Source Project</a><br>
+    </center></p>
+</foot>
 </html>

@@ -1,16 +1,22 @@
+[HDR+]
 >## Ibex 0.1.a  -  *Ibex & Ibex_gss*
 >###### Développé pour Python3 par Meyer Daniel, Juin 2020 
 >###### Voir le dépôt du projet à cette [+url]http://github.com/daniel67-py/Ibex_project[+url+]page[url+] !
-[+img]ibexlogo[img+]
+[+HDR]
+
+[BDY+]
 ------
+[+img]ibexlogo[img+]
 #### Sommaire.
 + Présentation du module Ibex_gss et utilité.
++ Fonction principale et syntaxes d'utilisation.
 + Fonctions du module Ibex_gss
 + Mot de fin
 
 ------
 #### Présentation du module Ibex_gss et utilité.
 >>> Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
+>>> Ce module se sert également de deux fichiers .html et un fichier .css contenu dans le dossier *ibex_ressources*. Le fichier *ibex_gss_head.html* contient une en-tête type html, le fichier *ibex_gss_foot.html* contient un pied de page type en html, et le fichier *ibex_gss.css* contient le script css utilisé pour la mise en forme du document. Ils sont accessibles et modifiables pour l'utilisateur.
 
 ##### Fonction principale, le point d'entrée pour l'utilisateur.
 >>> La fonction principale **ibex_gss('nom_du_fichier', feedback = 0, out_file = 'ibex_gss.html')** lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
@@ -32,7 +38,8 @@
     >## titre en taille h2 centré sur la page
     ># titre en taille h1 centré sur la page
     ------      6 tirets seuls sur une ligne permettent d'intégrer un séparateur
-    **passage en gras, doit être compris entre deux double-splat**
+    ***passage en gras et italique, doit être compris entre deux triple-splats***
+    **passage en gras, doit être compris entre deux double-splats**
     *passage en italique, doit être compris entre deux single-splat*
     + en début de ligne génère une liste numérotée
     - en début de ligne génère une liste à puces
@@ -40,6 +47,9 @@
     [+img]image_a_integrer.jpeg[img+]
     et si vous laissez 4 espaces vides en début de ligne, ibex_gss génère un exemple de code 
     comme ces quelques lignes de syntaxes.
+    [HDR+] ... [+HDR] pour définir le contenu de l'en-tête de votre document.
+    [BDY+] ... [+BDY] pour définir le contenu du corps de votre document.
+    [FTR+] ... [+FTR] pour définir le contenu du pied de page de votre document.
 
 >>> La fonction principale utilise cinq autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
 
@@ -70,15 +80,20 @@
 
 ------
 #### Mot de fin.
->>> Voilà dans les grandes lignes, la base de l'utilisation des modules Ibex et Ibex_markdown. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+>>> Voilà dans les grandes lignes, la base de l'utilisation du module Ibex_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85
 
->>> Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
-
+[+BDY]
 ------
->>> Daniel. Juin 2020.
+
+[FTR+]
+>>> Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
+>>> Daniel. Juillet 2020.
+[+FTR]
+
+
 
 
 

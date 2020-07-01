@@ -3,42 +3,19 @@
 
 ### no imports, uses only the python's build-in functions ###
 
-page_header_style = """
-<!DOCTYPE html>
-<html>
+### reading the css model file ###
+with open('ibex_ressources/ibex_gss.css', 'r') as style:
+    source_css = style.read()
+### reading the head model file ###
+with open('ibex_ressources/ibex_gss_head.html', 'r') as fichier:
+    page_head_style = fichier.read()
+    page_head_style += source_css + "</head>"
+### reading the foot model file ###
+with open('ibex_ressources/ibex_gss_foot.html', 'r') as fichier:
+    page_foot_style = fichier.read()
 
-	<head>
-	    <!--[if lt IE 9]>
-	    <script
-	    src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
-	    </script>
-	    <![endif]-->
-
-            <meta charset="UTF-8">
-            <title>Ibex_gss</title>
-            <style type="text/css">
-                h1 {font-size: 35px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h2 {font-size: 30px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h3 {font-size: 25px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h4 {font-size: 20px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h5 {font-size: 15px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                h6 {font-size: 12px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98}
-                p  {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify}
-                li {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify}
-                pre {margin-right: 200px; margin-left: 200px; overflow-x: auto; background: #f5f5f5}
-                
-            </style>
-	</head>
-
-	<body>
-            <article>
-"""
-
-page_footer_style = """
-            </article>
-        </body>
-</html>
-"""
+### here begins the real analyse and parsing job ###
+### first defining some functions ###
 
 ### this function analyse lines per lines the whole markdown file ###
 ### and puts quote for titles or separators ###
@@ -198,7 +175,7 @@ def per_links(sequence, symbol_to_modify, replace_parse):
     return new_output
 
 ### this function start the convertion of the markdown file ###
-### all beggins from here... ###
+### all begins from here when using this program... ###
 def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
     with open(file, 'r') as source:
         contain = source.read()
@@ -225,10 +202,21 @@ def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
     print("searching for lists")
     contain = per_list(contain, "+ ", "<ol>", "</ol>")
     contain = per_list(contain, "- ", "<ul>", "</ul>")
+    print("searching for triple splat bold and italic quote")
+    contain = per_emphasis(contain, "***", "<b><i>", "</i></b>")
     print("searching for double splat bold quote")
     contain = per_emphasis(contain, "**", "<b>", "</b>")
     print("searching for single splat italic quote")
     contain = per_emphasis(contain, "*", "<i>", "</i>")
+    print("searching for headers, body, div and footers delimitation")
+    contain = per_links(contain, "[HDR+]", "<header>")
+    contain = per_links(contain, "[+HDR]", "</header>")
+    contain = per_links(contain, "[FTR+]", "<footer>")
+    contain = per_links(contain, "[+FTR]", "</footer>")
+    contain = per_links(contain, "[BDY+]", "<body>")
+    contain = per_links(contain, "[+BDY]", "</body>")
+    contain = per_links(contain, "[DIV+]", "<div>")
+    contain = per_links(contain, "[+DIV]", "</div>")
     print("searching for urls")
     contain = per_links(contain, "[+url]", "<a href = '")
     contain = per_links(contain, "[+url+]", "'>")
@@ -240,11 +228,15 @@ def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
 
     if feedback == 0:
         with open(out_file, 'w') as output_file:
-            output_file.write(page_header_style)
+            output_file.write(page_head_style)
             output_file.write(contain)
-            output_file.write(page_footer_style)
+            output_file.write(page_foot_style)
     elif feedback != 0:
-        output_file = page_header_style + contain + page_footer_style
+        output_file = (
+            page_head_style +
+            contain +
+            page_foot_style
+            )
         return output_file
 
     print("job done !")
