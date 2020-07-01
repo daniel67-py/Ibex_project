@@ -71,12 +71,12 @@ La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_p
 Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
 
 ##### Fonction détectant les urls et images.
->>> La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Petit rappel pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
+La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Petit rappel pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
 
     [+url]adresse_url_du_lien[+url+]texte_lien[url+]
     [+img]image_à_insérer[img+]
 
->>> Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce module ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
+Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce module ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
 
 ------
 #### Mot de fin.
