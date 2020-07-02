@@ -1,127 +1,45 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 	    <!--[if lt IE 9]>
 	    <script
 	    src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
 	    </script>
 	    <![endif]-->
-
             <meta charset="UTF-8">
-            <title></title>
-
-<style type="text/css">
-
-    header {
-        background: #98FB98;
-        }
-
-    body {
-        background: #FFFAFA; 
-        }
-
-    footer {
-        background: #FFFAFA;
-        }
-
-    foot {
-        background: #98FB98;
-        font-family: DejaVu Sans Light;
-        font-size: 8px;
-        }
-
-    h1 {
-        font-size: 35px;
-        font-family: DejaVu Sans; 
-        margin-right: 200px; 
-        margin-left: 200px;
-        text-align: justify; 
-        background: #98FB98
-        }
+            <title> Utilisation d'Ibex_GSS </title>
+    <style type="text/css">
+        header {background: #98FB98; }
+        body   {background: #FFFAFA; }
+        footer {background: #FFFAFA; }
+        foot   {background: #98FB98; font-family: DejaVu Sans Light; font-size: 8px; }
     
-    h2 {
-        font-size: 30px; 
-        font-family: DejaVu Sans; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify; 
-        background: #98FB98
-        }
+        h1  {font-size: 35px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98; }
+        h2  {font-size: 30px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98; }
+        h3  {font-size: 25px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98; }
+        h4  {font-size: 20px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98; }
+        h5  {font-size: 15px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98; }
+        h6  {font-size: 12px; font-family: DejaVu Sans; margin-right: 200px; margin-left: 200px; text-align: justify; background: #98FB98; }
+        p   {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify; }
+        li  {font-size: 12px; font-family: DejaVu Sans Light; margin-right: 200px; margin-left: 200px; text-align: justify; }
+        pre {margin-right: 200px; margin-left: 200px; overflow-x: auto; background: #f5f5f5; }
+    </style>
 
-    h3 {
-        font-size: 25px; 
-        font-family: DejaVu Sans; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify; 
-        background: #98FB98
-        }
-
-    h4 {
-        font-size: 20px; 
-        font-family: DejaVu Sans; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify; 
-        background: #98FB98
-        }
-
-    h5 {
-        font-size: 15px; 
-        font-family: DejaVu Sans; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify; 
-        background: #98FB98
-        }
-
-    h6 {
-        font-size: 12px; 
-        font-family: DejaVu Sans; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify; 
-        background: #98FB98
-        }
-
-    p  {
-        font-size: 12px; 
-        font-family: DejaVu Sans Light; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify
-        }
-
-    li {
-        font-size: 12px; 
-        font-family: DejaVu Sans Light; 
-        margin-right: 200px; 
-        margin-left: 200px; 
-        text-align: justify
-        }
-
-    pre {
-        margin-right: 200px; 
-        margin-left: 200px; 
-        overflow-x: auto; 
-        background: #f5f5f5
-        }
-                
-</style>
-</head><header>
+<header>
 <h2><center> Ibex 0.1.a  -  <i>Ibex & Ibex_gss</i> </center></h2>
 
- <h6><center> Développé pour Python3 par Meyer Daniel, Juin 2020  </center></h6>
+ <h6><center> Développé pour Python3 par Meyer Daniel, Juin 2020. </center></h6>
 
- <h6><center> Voir le dépôt du projet à cette <a href = 'http://github.com/daniel67-py/Ibex_project'>page</a>!</center></h6>
-
+<p>
+ <b><i>Voir le dépôt du projet à cette <a href = 'http://github.com/daniel67-py/Ibex_project'>page</a>!</i></b>
+</p>
 </header>
 
 <body>
 </p><hr/>
 <p>
 <figure><center><img src='ibexlogo'></center></figure>
+
 <h4>Sommaire.</h4>
 
 <ol><li>Présentation du module Ibex_gss et utilité.</li>
@@ -137,13 +55,32 @@
  Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
 </p>
 <p>
- Ce module se sert également de deux fichiers .html et un fichier .css contenu dans le dossier <i>ibex_ressources</i>. Le fichier <i>ibex_gss_head.html</i> contient une en-tête type html, le fichier <i>ibex_gss_foot.html</i> contient un pied de page type en html, et le fichier <i>ibex_gss.css</i> contient le script css utilisé pour la mise en forme du document. Ils sont accessibles et modifiables pour l'utilisateur.
+ Ce module se sert également d'un fichier template en html nommé basic_ibex_template. Il contient deux entrées remplissable par Jinja. La première est le titre de la page (page_title), la seconde sont contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+</p>
+
+ <pre><code>
+    sous Linux:
+        pip install jinja2
+    sous Windows:
+        python -m install jinja2
+ </code></pre>
+
+<p>
+ Pour voir le résultat avant/après : le fichier mode_emploi.txt contient le texte brute avec les différentes balises 'markdown' à ma sauce perso, le fichier mode_emploi.html est le résultat une fois traité par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
+</p>
+
+ <pre><code>
+    >>> ibex_gss(file = "mode_emploi.txt", feedback = 0, out_file = "mode_emploi.html", project_title = "Utilisation d'Ibex_GSS")
+ </code></pre>
+
+<p>
+ Aussi 'simple' que ça...
 </p>
 
  <h5> Fonction principale, le point d'entrée pour l'utilisateur. </h5>
 
 <p>
- La fonction principale <b>ibex_gss('nom_du_fichier', feedback = 0, out_file = 'ibex_gss.html')</b> lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_gss.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
+ La fonction principale <b>ibex_gss('nom_du_fichier', feedback = 0, out_file = 'ibex_basic_static.html', project_title = 'ibex_in_the_jinja')</b> lance la convertion du fichier passé en argument, et un fichier nommé 'ibex_basic_static.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
 </p>
 <p>
  Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
@@ -152,7 +89,10 @@
  Il faut savoir aussi que l'argument feedback est optionnel : si il n'est pas spécifié, il vaudra 0, et donc le retour se fera dans le fichier 'ibex_gss.html'. Si par contre il est différent de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
 </p>
 <p>
- Il faut également savoir que l'argument out_file est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
+ L'argument <i>project_title</i> permet de personnaliser le titre de la page que votre navigateur va afficher dans l'onglet. Par défaut, ce sera 'ibex_in_the_jinja', mais il suffit de spécifier une autre valeur lors de l'appel de la fonction pour le changer.
+</p>
+<p>
+ Il faut également savoir que l'argument <i>out_file</i> est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
 </p>
 <p>
  De façon simple, voilà comment poser les symboles dans votre fichier markdown ou texte:
@@ -269,12 +209,14 @@ Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci égale
 
 
 
-               <foot>
-    <p><center> 
+               
+
+    <foot>
+        <p><center> 
 basic static page in html<br>
 generated with Ibex_gss for Python 3.x  -  June 2020  - Daniel Meyer <br>
 to know more about this project, please follow this link :<br>
 <a href = "http://www.github.com/daniel67-py/Ibex_project">Daniel's Ibex Open Source Project</a><br>
-    </center></p>
-</foot>
+        </center></p>
+    </foot>
 </html>

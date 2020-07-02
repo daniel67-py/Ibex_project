@@ -1,18 +1,10 @@
 #!/usr/bin/python3
 #-*- coding: Utf-8 -*-
+from jinja2 import *
 
-### no imports, uses only the python's build-in functions ###
-
-### reading the css model file ###
-with open('ibex_ressources/ibex_gss.css', 'r') as style:
-    source_css = style.read()
-### reading the head model file ###
-with open('ibex_ressources/ibex_gss_head.html', 'r') as fichier:
-    page_head_style = fichier.read()
-    page_head_style += source_css + "</head>"
-### reading the foot model file ###
-with open('ibex_ressources/ibex_gss_foot.html', 'r') as fichier:
-    page_foot_style = fichier.read()
+### reading template model file ###
+with open('basic_ibex_template.html', 'r') as model:
+    static_page = model.read()
 
 ### here begins the real analyse and parsing job ###
 ### first defining some functions ###
@@ -176,7 +168,7 @@ def per_links(sequence, symbol_to_modify, replace_parse):
 
 ### this function start the convertion of the markdown file ###
 ### all begins from here when using this program... ###
-def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
+def ibex_gss(file, feedback = 0, out_file = 'ibex_basic_static.html', project_title = 'ibex_in_the_jinja.html'):
     with open(file, 'r') as source:
         contain = source.read()
 
@@ -224,19 +216,15 @@ def ibex_gss(file, feedback = 0, out_file = 'ibex_gss.html'):
     print("searching for images")
     contain = per_links(contain, "[+img]", "<figure><center><img src='")
     contain = per_links(contain, "[img+]", "'></center></figure>")
-    print("saving the output result into ibex_gss.html")
+    print("saving the output result into .html")
 
     if feedback == 0:
         with open(out_file, 'w') as output_file:
-            output_file.write(page_head_style)
-            output_file.write(contain)
-            output_file.write(page_foot_style)
+            templ = Template(static_page)
+            output_file.write(templ.render(page_title = project_title, page_contains = contain))
     elif feedback != 0:
-        output_file = (
-            page_head_style +
-            contain +
-            page_foot_style
-            )
+        templ = Template(static_page)
+        output_file = templ.render(page_title, page_contains = contain)
         return output_file
 
     print("job done !")
