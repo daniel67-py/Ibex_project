@@ -3,16 +3,16 @@
 
 ------
 #### Sommaire.
-+ Présentation du module Ibex_gss et utilité.
++ Présentation de la classe Ibex_gss et utilité.
 + Fonction principale et syntaxes d'utilisation.
-+ Fonctions du module Ibex_gss
++ Fonctions de la classe Ibex_gss
 + Mot de fin
 
 ------
-#### Présentation du module Ibex_gss et utilité.
+#### Présentation de la classe Ibex_gss et utilité.
 Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
 
-Ce module se sert également d'un fichier template en html nommé basic_page. Il contient deux entrées remplissable par Jinja. La première est le titre de la page (page_title), la seconde sont contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+Ce script se sert également d'un fichier template en html nommé basic_page. Il contient deux entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde sont contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
 
     sous Linux:
         pip install jinja2
@@ -27,18 +27,18 @@ Pour voir le résultat avant/après : le fichier mode_emploi.txt contient le tex
 
 Aussi 'simple' que ça...
 
-##### Fonction principale, le point d'entrée pour l'utilisateur.
+##### Classe principale, le point d'entrée pour l'utilisateur.
 La classe principale **Ibex_gss()** permet de créer un objet Ibex_gss et de lui définir le fichier à convertir (.file), le type de feedback (.feedback), le nom du fichier de sortir (.out_file), le titre de la page (.project_title) et le template à utiliser (.use_template). 
 
 La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'basic_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
 
 Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
 
-Il faut savoir aussi que l'argument feedback est optionnel : si il n'est pas spécifié, il vaudra 0, et donc le retour se fera dans le fichier 'basic_gen.html'. Si par contre il est différent de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
+Il faut savoir aussi que la variable feedback est optionnel : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'basic_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
 
-L'argument *project_title* permet de personnaliser le titre de la page que votre navigateur va afficher dans l'onglet. Par défaut, ce sera 'ibex_in_the_jinja', mais il suffit de spécifier une autre valeur lors de l'appel de la fonction pour le changer.
+La variable *project_title* permet de personnaliser le titre de la page que votre navigateur va afficher dans l'onglet. Par défaut, ce sera 'ibex_in_the_jinja', mais il suffit de spécifier une autre valeur lors de la définition de l'objet pour la changer.
 
-Il faut également savoir que l'argument *out_file* est aussi optionnel : par défaut, si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument.
+Il faut également savoir que la variable *out_file* est aussi optionnelle : si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument, par défaut 'basic_gen.html'.
 
 De façon simple, voilà comment poser les symboles dans votre fichier markdown ou texte:
 
@@ -65,7 +65,7 @@ De façon simple, voilà comment poser les symboles dans votre fichier markdown 
 La fonction principale utilise cinq autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
 
 ------
-#### Fonctions du module Ibex_gss.
+#### Fonctions de la classe Ibex_gss.
 ##### Fonction détectant les titres et les séparateurs.
 La première fonction **per_lines(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut inserer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer avant le retour à la ligne. Elle est utilisée pour baliser les titres dans un document si elle trouve un sharp ou une suite de sharps au début d'une ligne et ne réagit qu'à cette condition.
 
@@ -87,11 +87,11 @@ La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** 
     [+url]adresse_url_du_lien[+url+]texte_lien[url+]
     [+img]image_à_insérer[img+]
 
-Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce module ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
+Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce script ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
 
 ------
 #### Mot de fin.
-Voilà dans les grandes lignes, la base de l'utilisation du module Ibex_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+Voilà dans les grandes lignes, la base de l'utilisation de la classe Ibex_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85
