@@ -18,7 +18,7 @@
 #### Présentation de la classe Ibex_gss et utilité.
 >>> Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
 
->>> Ce script se sert également d'un fichier template en html nommé basic_page. Il contient deux entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde sont contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+>>> Ce script se sert également d'un fichier template en html nommé basic_page. Il contient deux entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
 
     sous Linux:
         pip install jinja2
