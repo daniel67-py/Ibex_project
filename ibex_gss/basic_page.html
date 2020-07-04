@@ -13,6 +13,7 @@
         body   {background: #FFFAFA; }
         footer {background: #FFFAFA; }
         foot   {background: #98FB98; font-family: DejaVu Sans Light; font-size: 8px; }
+        nav    {background: #98FB98; font-family: DejaVu Sans Light; font-size: 10px; }
         
         h1  {font-size: 35px; font-family: DejaVu Sans; margin-right: 250px; margin-left: 250px; text-align: justify; background: #98FB98; }
         h2  {font-size: 30px; font-family: DejaVu Sans; margin-right: 250px; margin-left: 250px; text-align: justify; background: #98FB98; }
@@ -25,6 +26,12 @@
         pre {margin-right: 250px; margin-left: 250px; overflow-x: auto; background: #f5f5f5; }
     </style>
     </head>
+
+    <nav>
+    {% for x in page_summary %}
+        {{ x }} _
+    {% endfor %}
+    </nav>
 
 {{ page_contains }}
 
