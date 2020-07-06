@@ -329,17 +329,17 @@ Son appel depuis un script Python se fait simplement, en utilisant 'import':
 #### Présentation de la classe Survivaltool_gss et utilité.
   Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
 
-  Ce script se sert également d'un fichier template en html nommé basic_page. Il contient deux entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+  Ce script se sert également d'un fichier template en html nommé basic_page. Il contient quatre entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
 
     sous Linux:
         pip install jinja2
     sous Windows:
         python -m install jinja2
 
-  Pour voir le résultat avant/après : le fichier mode_emploi.txt contient le texte brute avec les différentes balises 'markdown' à ma sauce perso, le fichier basic_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
+  Pour voir le résultat avant/après : le fichier README.md contient le texte brute balisé en markdown, le fichier basic_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
 
     >>> convert = Survivaltool_gss()
-    >>> convert.file = "mode_emploi.txt"
+    >>> convert.file = "README.md"
     >>> convert.generate()
 
   Aussi 'simple' que ça...
@@ -392,8 +392,9 @@ Son appel depuis un script Python se fait simplement, en utilisant 'import':
 ##### Fonction détectant la typographie.
   La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.
 
-##### Note :
+##### Notes.
   Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
+  Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page.
 
 ##### Fonction détectant les urls et images.
   La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Petit rappel pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
