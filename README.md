@@ -1,178 +1,186 @@
-## Ibex 0.1.a  -  *Ibex & Ibex_gss*
-###### Développé pour Python3 par Meyer Daniel, Juin 2020 
+## Survivaltool 0.1.001  -  GSS & SQLite3 manager
+  Développé pour Python3 par Meyer Daniel, Juillet 2020 
 
 ------
 #### Sommaire.
-+ Présentation du module Ibex et utilité.
-+ Fonctions du module Ibex.
-+ Exemple d'utilisation d'Ibex.
++ Présentation du module Survivaltool et utilité.
++ Fonctions du module Survivaltool.
++ Exemple d'utilisation de Survivaltool.
++ Présentation de la classe Survivaltool_gss et utilité.
++ Fonction principale et syntaxes d'utilisation.
++ Fonctions de la classe Survivaltool_gss
 
 ------
-#### Présentation du module Ibex et utilité.
-Le module Ibex pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il n'y a pas d'installation particulière pour l'utiliser, comme pour certains modules ou dépendances. Il est autonome et n'utilise que des librairies intégrées nativement dans le langage. 
+#### Présentation du module survivaltool et utilité.
+  Le module survivaltool pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour la classe survivaltool_gss mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage. 
 Son appel depuis un script Python se fait simplement, en utilisant 'import':
 
-    import Ibex
+    import survivaltool
 
-Il est possible également de l'utiliser en l'exécutant directement tel un programme.
+  Il est possible également de l'utiliser en l'exécutant directement tel un programme.
 
-Il est ensuite possible de créer un objet Ibex et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL. Par exemple, mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL.
+  Au cas où vous n'avez pas encore Jinja2 intégré dans votre Python, installez le avec la commande suivante :
 
-------
-#### Fonctions du module Ibex.
+    pour Linux :
+        pip install jinja2
+    pour Windows :
+        python -m pip install jinja2
 
-##### Ibex_new(database)
-Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument *database* . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur une fois le fichier disponible.
-
-##### Ibex(database)
-Cette fonction permet d'initier un objet Ibex en faisant appel au fichier passé par l'argument *database* . Il signale à l'utilisateur si la connection à la base de données est opérationnel ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module :
-
-    ibex.debug_sqlite_instruction = True / False
-
-True si vous souhaitez qu'Ibex affiche la requête SQLite utilisée lors de vos opérations, agit comme un mode debug en cas de difficultés à opérer sur la base de données elle même.
-
-    ibex.displaying_line = True / False
-
-True si vous souhaitez qu'Ibex affiche (print) les résultats des fonctions de recherches, False si vous souhaitez qu'Ibex les retournent (return).
-
-##### Ibex.new_table(table, columns)
-Permet de créer une nouvelle table sans incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *columns* est un argument multiple permettant de définir les noms des colonnes. Syntaxe d'exemple:
-
-    ibex.new_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
-
-Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : nom, prenom, adresse, code postal, ville, telephone.
-
-##### Ibex.new_increased_table(table, columns)
-Permet de créer une nouvelle table avec une incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *columns* est un argument multiple permettant de définir les noms des colonnes. En plus sera rajouté une colonne 'id' qui s'auto-incrémentera de 1 pour chaque nouvelle entrée ajoutée. Syntaxe d'exemple:
-
-    ibex.new_increased_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
-
-Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : id, nom, prenom, adresse, code postal, ville, telephone.
-
-##### Ibex.copy_table(source_table, destination_table)
-Permet de copier une table existante vers une nouvelle table de destination. L'argument *source_table* permet de passer le nom de la table à copier, l'argument *destination_table* permet de donner le nom de la table à créer et à remplir avec la table 'source'.
-
-##### Ibex.copy_control_table(source_table, destination_table, columns)
-Permet de copier une table existante vers une nouvelle table de destination en ne tenant compte que de certaines colonnes. L'argument *source_table* permet de passer le nom de la table à copier, l'argument *destination_table* permet de donner le nom de la table à créer et à remplir avec les colonnes passées via l'argument multiple *columns*. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons copier dans une table 't2' mais en ne tenant compte que des colonnes 'A' et 'C', ceci donnerait :
-
-    ibex.copy_control_table('t1', 't2', 'A', 'C')
-
-##### Ibex.redo_table(source_table, columns)
-Permet de retoucher une table en supprimant une ou plusieurs colonnes. Comme je l'expliquais en introduction, SQLite ne permet pas de faire certaines choses comme supprimer une ou plusieurs colonnes. Cette fonction contourne ce manque en copiant la table à modifier dans une table temporaire nommé 'ibex_temporary_table' avec les colonnes que l'on souhaite garder. Elle supprime ensuite la table d'origine, puis en créée une nouvelle portant le même nom qu'elle va remplir avec la table temporaire, avant de supprimer cette dernière. L'argument *source_table* permet de passer le nom de la table à retoucher, l'argument multiple *columns* permet de définir les colonnes que l'on souhaite conserver. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons retoucher pour ne garder que les colonnes 'A' et 'B', ceci donnerait :
-
-    ibex.redo_table('t1', 'A', 'B')
-
-Notez que cette fonction se sert des fonctions *delete_table* et *copy_table* du module pour arriver à ses fins.
-
-##### Ibex.add_values(table, elements)
-Permet d'ajouter une entrée dans une table non incrémentale. L'argument *table* permet de passer le nom de la table dans laquelle les éléments doivent être ajoutés. L'argument *elements* est un argument multiple permettant de passer les données à inscrire dans la table. Syntaxe d'exemple:
-
-    ibex.add_values('amis', 'dupont', 'maurice', '2 rue des champs', '67000', 'strasbourg', '0609080706')
-
-##### Ibex.add_increased_values(table, elements)
-Permet d'ajouter une entrée dans une table auto-incrémentale. L'argument *table* permet de passer le nom de la table dans laquelle les éléments doivent être ajoutés. L'argument *elements* est un argument multiple permettant de passer les données à inscrire dans la table. La colonne 'id' sera renseignée automatiquement. Syntaxe d'exemple:
-
-    ibex.add_increased_values('amis', 'dupont', 'maurice', '2 rue des champs', '67000', 'strasbourg', '0609080706')
-
-##### Ibex.modification_values(table, column_to_modify, new_value, reference_column, reference_value)
-Permet de modifier une entrée dans une table en faisant appel à une valeur de référence. L'argument *table* permet de passer le nom de la table dans laquelle l'entrée à modifier se trouve. L'argument *column_to_modify* permet de passer la colonne de la valeur à modifier, *new_value* permet de passer la nouvelle valeur à rentrer dans la colonne. L'argument *reference_column* permet de passer la colonne qui sert de référence d'identification de l'entrée, *reference_value* permet de définir la valeur de la colonne de référence d'identification de l'entrée. Syntaxe d'exemple:
-
-    ibex.modification_values('amis', 'adresse', '4 rue des prairies', 'nom', 'dupont')
-
-Ceci va modifier dans la table 'amis', la valeur de 'adresse' par '4 rue des prairies', là où la colonne 'nom' vaut 'dupont'. Je précise que dans le cas d'une table auto-incrémentée, il est possible d'utiliser la colonne 'id' pour référence, en précisant l'index de l'entrée que l'on souhaite modifier.
-
-##### Ibex.delete_table(table)
-Permet de supprimer une table ainsi que son contenu. L'argument *table* permet de passer le nom de la table que l'on souhaite supprimer.
-
-##### Ibex.purge_table(table)
-Permet de supprimer le contenu d'une table sans supprimer la table elle-même, ni ses colonnes. Dans le cas d'une table auto-incrémentée, la numérotation recommencera à zéro. L'argument *table* permet de passer le nom de la table que l'on souhaite purger.
-
-##### Ibex.add_column(table, column)
-Permet de rajouter une nouvelle colonne dans une table déjà existante. L'argument *table* permet de passer le nom de la table où l'on souhaite rajouter la colonne, l'argument *column* permet de définir le nom de la colonne à rajouter.
-
-##### Ibex.delete_entry(table, column, value)
-Permet de supprimer une entrée dans une table. L'argument *table* permet de passer le nom de la table où se trouve l'entrée à supprimer, l'argument *column* permet de définir le nom de la colonne de référence pour indentifier l'entrée à supprimer, l'argument *value* définit la valeur contenu dans la colonne. Une fois identifié, l'entrée entière est supprimée, et pas juste la valeur de la colonne. Attention cependant, si plusieurs entrées comprennent la même valeur pour cette colonne, elles seront toutes supprimées.
-
-##### Ibex.search_seems_like_value(table, column, value)
-Permet de rechercher une ou plusieurs entrées correspondant aux critères de recherche et contenant le caractère ou la suite de caractères spécifié. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line*. Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous la forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.search_start_like_value(table, column, value)
-Permet de recherche une ou plusieurs entrées correspondant aux critères de recherche et commençant par le caractère ou la suite de caractères spécifié. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line*. Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous la forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.search_end_like_value(table, column, value)
-Permet de recherche une ou plusieurs entrées correspondant aux critères de recherche et finissant par le caractère ou la suite de caractères spécifié. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line*. Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous la forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.search_value(table, column, value)
-Permet de rechercher une ou plusieurs entrées correspondant aux critères de recherche. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.between_value(table, column, interval_1, interval_2)
-Permet de recherche une ou plusieurs entrées se trouvant entre les limites spécifiées. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, l'argument *interval_1* permet de fixer une limite 'basse', l'argument *interval_2* permet de fixer une limite 'haute'. Cette fonction permet d'extraire un groupe de correspondances. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.not_between_value(table, column, interval_1, interval_2)
-Permet de rechercher une ou plusieurs entrées se trouvant en dehors des limites spécifiées. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, l'argument *interval_1* permet de fixer une limite 'basse', l'argument *interval_2* permet de fixer une limite 'haute'. Cette fonction permet d'extraire un groupe de correspondances. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.sort_value(table, sens, column)
-Permet d'afficher les entrées d'une table dans par ordre alphabétique ou numérique, de plus petit au plus grand ou inversement. L'argument *table* permet de passer le nom de la table dans laquelle effectuer le tri. L'argument *sens* permet de choisir le sens : 0 pour un sens ascendant, 1 pour un sens descendant. Toutes autres valeurs génère une erreur. L'argument *column* permet de choisir la colonne de référence à utiliser pour effectuer le tri : c'est un argument multiple qui permet de faire un tri sur plusieurs colonnes, dans l'ordre des colonnes spécifiées. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.return_structure()
-Permet de retourner via une fonction intégrée 'return' la structure de la base de données, sous forme de variable de type 'dictionnaire'.
-
-##### Ibex.show_all()
-Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence.
-
-##### Ibex.show_structure()
-Permet d'afficher la structure de la base de données sous forme d'arborescence. Cette fonction se contente de donner le nom des tables et des colonnes.
-
-##### Ibex.column_sum(table, column)
-Permet de faire la somme des valeurs contenues dans une colonne et retourne la valeur sous forme de Int ou Float. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer.
-
-##### Ibex.column_total(table, column)
-Permet de faire la somme des valeurs contenues dans une colonne et retourne la valeur sous forme de Float. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer.
-
-##### Ibex.data_minimal(table, column)
-Permet de trouver la valeur minimale dans la colonne spécifiée. Ceci correspond au nombre le plus faible contenu ou à la première entrée par ordre alphabétique. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
-
-##### Ibex.data_maximal(table, column)
-Permet de trouver la valeur maximale dans la colonne spécifiée. Ceci correspond au nombre le plus fort contenu ou à la dernière entrée par ordre alphabétique. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
-
-##### Ibex.data_average(table, column)
-Retournera exclusivement la valeur numérique moyenne d'une colonne. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
-
-##### Ibex.data_crosscheck(table_1, table_2, column_t1, column_t2)
-Permet d'afficher uniquement les entrées identiques à deux tables distinctes. Les arguments *table_1* et *table_2* permettent de passer le nom des tables à analyser, l'argument *column_t1* permet de définir la colonne de référence de la table_1, l'argument *column_t2* permet de définir la colonne de référence de la table_2. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.data_union(table_1, table_2)
-Permet d'afficher l'intégralité de deux tables distinctes, sans répéter les doublons. Les arguments *table_1* et *table_2* permettent de définir les deux tables à comparer. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
-
-##### Ibex.edit_structure_txt(nom_fichier_sortie = "analyse_ibex.txt")
-Permet d'écrire la structure d'une base de données dans un fichier texte. Par défaut, le fichier se nommera 'analyse_ibex.txt'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
-
-##### Ibex.edit_contains_csv(table, nom_fichier_sortie = "analyse_ibex.csv")
-Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_ibex.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
+  Il est ensuite possible de créer un objet survivaltool et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL. Par exemple: mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL. Cependant, survivaltool contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine.
 
 ------
-#### Exemple d'utilisation d'Ibex.
-Après ces quelques lignes de descriptions des fonctionnalités du module Ibex, voici un exemple d'utilisation rapide pour la prise en main. Je vais créer une nouvelle base de données que je vais nommer 'exemple.db', et y intégrer deux tables contenant une listes d'amis. Je lance ici le module directement sans l'importer, tel un script, dans l'interpreteur Python.
+#### Fonctions du module survivaltool.
 
-Création d'une nouvelle base de données :
+##### Survivaltool_new(database)
+  Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument *database* . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier disponible.
 
-    >>> a = Ibex_new('exemple.db')
-    ###      Ibex - SQLite3 operative Framework     ###
-    ### dev. by Meyer Daniel, June 2020 - ver.0.1.a ###
+##### Survivaltool(database)
+  Cette fonction permet d'initier un objet survivaltool en faisant appel au fichier passé par l'argument *database* . Il signale à l'utilisateur si la connection à la base de données est opérationnel ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module :
+
+    Survivaltool.debug_sqlite_instruction = True / False
+
+  True si vous souhaitez que survivaltool affiche la requête SQLite utilisée lors de vos opérations, agit comme un mode debug en cas de difficultés à opérer sur la base de données elle même.
+
+    Survivaltool.displaying_line = True / False
+
+  True si vous souhaitez que survivaltool affiche (print) les résultats des fonctions de recherches, False si vous souhaitez qu'il les retournent (return).
+
+##### Survivaltool.new_table(table, columns)
+  Permet de créer une nouvelle table sans incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *columns* est un argument multiple permettant de définir les noms des colonnes. Syntaxe d'exemple:
+
+    Survivaltool.new_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
+
+  Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : nom, prenom, adresse, code postal, ville, telephone.
+
+##### Survivaltool.new_increased_table(table, columns)
+  Permet de créer une nouvelle table avec une incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *columns* est un argument multiple permettant de définir les noms des colonnes. En plus sera rajouté une colonne 'id' qui s'auto-incrémentera de 1 pour chaque nouvelle entrée ajoutée. Syntaxe d'exemple:
+
+    Survivaltool.new_increased_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
+
+  Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : id, nom, prenom, adresse, code postal, ville, telephone.
+
+##### Survivaltool.copy_table(source_table, destination_table)
+  Permet de copier une table existante vers une nouvelle table de destination. L'argument *source_table* permet de passer le nom de la table à copier, l'argument *destination_table* permet de donner le nom de la table à créer et à remplir avec la table 'source'.
+
+##### Survivaltool.copy_control_table(source_table, destination_table, columns)
+  Permet de copier une table existante vers une nouvelle table de destination en ne tenant compte que de certaines colonnes. L'argument *source_table* permet de passer le nom de la table à copier, l'argument *destination_table* permet de donner le nom de la table à créer et à remplir avec les colonnes passées via l'argument multiple *columns*. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons copier dans une table 't2' mais en ne tenant compte que des colonnes 'A' et 'C', ceci donnerait :
+
+    Survivaltool.copy_control_table('t1', 't2', 'A', 'C')
+
+##### Survivaltool.redo_table(source_table, columns)
+  Permet de retoucher une table en supprimant une ou plusieurs colonnes. Comme je l'expliquais en introduction, SQLite ne permet pas de faire certaines choses comme supprimer une ou plusieurs colonnes. Cette fonction contourne ce manque en copiant la table à modifier dans une table temporaire nommé 'survival_temporary_table' avec les colonnes que l'on souhaite garder. Elle supprime ensuite la table d'origine, puis en créée une nouvelle portant le même nom qu'elle va remplir avec la table temporaire, avant de supprimer cette dernière. L'argument *source_table* permet de passer le nom de la table à retoucher, l'argument multiple *columns* permet de définir les colonnes que l'on souhaite conserver. Supposons une table 't1' contenant les colonnes 'A', 'B' et 'C', que nous souhaitons retoucher pour ne garder que les colonnes 'A' et 'B', ceci donnerait :
+
+    Survivaltool.redo_table('t1', 'A', 'B')
+
+  Notez que cette fonction se sert des fonctions *delete_table* et *copy_table* du module pour arriver à ses fins.
+
+##### Survivaltool.add_values(table, elements)
+  Permet d'ajouter une entrée dans une table non incrémentale. L'argument *table* permet de passer le nom de la table dans laquelle les éléments doivent être ajoutés. L'argument *elements* est un argument multiple permettant de passer les données à inscrire dans la table. Syntaxe d'exemple:
+
+    Survivaltool.add_values('amis', 'dupont', 'maurice', '2 rue des champs', '67000', 'strasbourg', '0609080706')
+
+##### Survivaltool.add_increased_values(table, elements)
+  Permet d'ajouter une entrée dans une table auto-incrémentale. L'argument *table* permet de passer le nom de la table dans laquelle les éléments doivent être ajoutés. L'argument *elements* est un argument multiple permettant de passer les données à inscrire dans la table. La colonne 'id' sera renseignée automatiquement. Syntaxe d'exemple:
+
+    Survivaltool.add_increased_values('amis', 'dupont', 'maurice', '2 rue des champs', '67000', 'strasbourg', '0609080706')
+
+##### Survivaltool.modification_values(table, column_to_modify, new_value, reference_column, reference_value)
+  Permet de modifier une entrée dans une table en faisant appel à une valeur de référence. L'argument *table* permet de passer le nom de la table dans laquelle l'entrée à modifier se trouve. L'argument *column_to_modify* permet de passer la colonne de la valeur à modifier, *new_value* permet de passer la nouvelle valeur à rentrer dans la colonne. L'argument *reference_column* permet de passer la colonne qui sert de référence d'identification de l'entrée, *reference_value* permet de définir la valeur de la colonne de référence d'identification de l'entrée. Syntaxe d'exemple:
+
+    Survivaltool.modification_values('amis', 'adresse', '4 rue des prairies', 'nom', 'dupont')
+
+  Ceci va modifier dans la table 'amis', la valeur de 'adresse' par '4 rue des prairies', là où la colonne 'nom' vaut 'dupont'. Je précise que dans le cas d'une table auto-incrémentée, il est possible d'utiliser la colonne 'id' pour référence, en précisant l'index de l'entrée que l'on souhaite modifier.
+
+##### Survivaltool.delete_table(table)
+  Permet de supprimer une table ainsi que son contenu. L'argument *table* permet de passer le nom de la table que l'on souhaite supprimer.
+
+##### Survivaltool.purge_table(table)
+  Permet de supprimer le contenu d'une table sans supprimer la table elle-même, ni ses colonnes. Dans le cas d'une table auto-incrémentée, la numérotation recommencera à zéro. L'argument *table* permet de passer le nom de la table que l'on souhaite purger.
+
+##### Survivaltool.add_column(table, column)
+  Permet de rajouter une nouvelle colonne dans une table déjà existante. L'argument *table* permet de passer le nom de la table où l'on souhaite rajouter la colonne, l'argument *column* permet de définir le nom de la colonne à rajouter.
+
+##### Survivaltool.delete_entry(table, column, value)
+  Permet de supprimer une entrée dans une table. L'argument *table* permet de passer le nom de la table où se trouve l'entrée à supprimer, l'argument *column* permet de définir le nom de la colonne de référence pour indentifier l'entrée à supprimer, l'argument *value* définit la valeur contenu dans la colonne. Une fois identifié, l'entrée entière est supprimée, et pas juste la valeur de la colonne. Attention cependant, si plusieurs entrées comprennent la même valeur pour cette colonne, elles seront toutes supprimées.
+
+##### Survivaltool.search_seems_like_value(table, column, value)
+  Permet de rechercher une ou plusieurs entrées correspondant aux critères de recherche et contenant le caractère ou la suite de caractères spécifié. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line*. Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous la forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.search_start_like_value(table, column, value)
+  Permet de recherche une ou plusieurs entrées correspondant aux critères de recherche et commençant par le caractère ou la suite de caractères spécifié. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line*. Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous la forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.search_end_like_value(table, column, value)
+  Permet de recherche une ou plusieurs entrées correspondant aux critères de recherche et finissant par le caractère ou la suite de caractères spécifié. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line*. Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous la forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.search_value(table, column, value)
+  Permet de rechercher une ou plusieurs entrées correspondant aux critères de recherche. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, et l'argument *value* permet de définir la valeur qui nous intéresse. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction 'print' intégrée à Python, si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.between_value(table, column, interval_1, interval_2)
+  Permet de recherche une ou plusieurs entrées se trouvant entre les limites spécifiées. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, l'argument *interval_1* permet de fixer une limite 'basse', l'argument *interval_2* permet de fixer une limite 'haute'. Cette fonction permet d'extraire un groupe de correspondances. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.not_between_value(table, column, interval_1, interval_2)
+  Permet de rechercher une ou plusieurs entrées se trouvant en dehors des limites spécifiées. L'argument *table* permet de passer le nom de la table dans laquelle effectuer la recherche, l'argument *column* permet de définir la colonne de recherche, l'argument *interval_1* permet de fixer une limite 'basse', l'argument *interval_2* permet de fixer une limite 'haute'. Cette fonction permet d'extraire un groupe de correspondances. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.sort_value(table, sens, column)
+  Permet d'afficher les entrées d'une table dans par ordre alphabétique ou numérique, de plus petit au plus grand ou inversement. L'argument *table* permet de passer le nom de la table dans laquelle effectuer le tri. L'argument *sens* permet de choisir le sens : 0 pour un sens ascendant, 1 pour un sens descendant. Toutes autres valeurs génère une erreur. L'argument *column* permet de choisir la colonne de référence à utiliser pour effectuer le tri : c'est un argument multiple qui permet de faire un tri sur plusieurs colonnes, dans l'ordre des colonnes spécifiées. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.return_structure()
+  Permet de retourner via une fonction intégrée 'return' la structure de la base de données, sous forme de variable de type 'dictionnaire'.
+
+##### Survivaltool.show_all()
+  Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence.
+
+##### Survivaltool.show_structure()
+  Permet d'afficher la structure de la base de données sous forme d'arborescence. Cette fonction se contente de donner le nom des tables et des colonnes.
+
+##### Survivaltool.column_sum(table, column)
+  Permet de faire la somme des valeurs contenues dans une colonne et retourne la valeur sous forme de Int ou Float. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer.
+
+##### Survivaltool.column_total(table, column)
+  Permet de faire la somme des valeurs contenues dans une colonne et retourne la valeur sous forme de Float. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer.
+
+##### Survivaltool.data_minimal(table, column)
+  Permet de trouver la valeur minimale dans la colonne spécifiée. Ceci correspond au nombre le plus faible contenu ou à la première entrée par ordre alphabétique. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
+
+##### Survivaltool.data_maximal(table, column)
+  Permet de trouver la valeur maximale dans la colonne spécifiée. Ceci correspond au nombre le plus fort contenu ou à la dernière entrée par ordre alphabétique. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
+
+##### Survivaltool.data_average(table, column)
+  Retournera exclusivement la valeur numérique moyenne d'une colonne. L'argument *table* permet de spécifier la table, l'argument *column* permet de spécifier la colonne sur laquelle opérer. La fonction retournera la valeur via une fonction intégrée 'return'.
+
+##### Survivaltool.data_crosscheck(table_1, table_2, column_t1, column_t2)
+  Permet d'afficher uniquement les entrées identiques à deux tables distinctes. Les arguments *table_1* et *table_2* permettent de passer le nom des tables à analyser, l'argument *column_t1* permet de définir la colonne de référence de la table_1, l'argument *column_t2* permet de définir la colonne de référence de la table_2. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.data_union(table_1, table_2)
+  Permet d'afficher l'intégralité de deux tables distinctes, sans répéter les doublons. Les arguments *table_1* et *table_2* permettent de définir les deux tables à comparer. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
+
+##### Survivaltool.edit_structure_txt(nom_fichier_sortie = "analyse_survival.txt")
+  Permet d'écrire la structure d'une base de données dans un fichier texte. Par défaut, le fichier se nommera 'analyse_survival.txt'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
+
+##### Survivaltool.edit_contains_csv(table, nom_fichier_sortie = "analyse_survival.csv")
+  Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_survival.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
+
+------
+#### Exemple d'utilisation de Survivaltool.
+  Après ces quelques lignes de descriptions des fonctionnalités du module, voici un exemple d'utilisation rapide pour la prise en main. Je vais créer une nouvelle base de données que je vais nommer 'exemple.db', et y intégrer deux tables contenant une listes d'amis. Je lance ici le module directement sans l'importer, tel un script, dans l'interpreteur Python.
+
+  Création d'une nouvelle base de données :
+
+    >>> a = Survivaltool_new('exemple.db')
+    ### survivaltool - SQLite3 manager ###
     ...verification if access path to file is ok... True
     ...verification if path is a valid file... True
     ...ACCESS DATA OK - NEW DATABASE READY TO OPERATE...
 
-Accès à ma nouvelle base de données :
+  Accès à ma nouvelle base de données :
 
-    >>> a = Ibex('exemple.db')
-    ###      Ibex - SQLite3 operative Framework     ###
-    ### dev. by Meyer Daniel, June 2020 - ver.0.1.b ###
+    >>> a = Survivaltool('exemple.db')
+    ### survivaltool - SQLite3 manager ###
     ...verification if access path to file is ok... True
     ...verification if path is a valid file... True
     ...ACCESS DATAS OK !...
 
-Je créé deux tables, la première se nommera 'amis_a', la seconde 'amis_b', contenant chacune les :
+  Je créé deux tables, la première se nommera 'amis_a', la seconde 'amis_b', contenant chacune les :
 
     >>> a.new_table('amis_a', 'nom', 'prenom', 'age')
     New table create
@@ -181,7 +189,7 @@ Je créé deux tables, la première se nommera 'amis_a', la seconde 'amis_b', co
     New table create
     True
 
-Maintenant remplissons un peu les deux tables :
+  Maintenant remplissons un peu les deux tables :
 
     >>> a.add_values('amis_a', 'dupont', 'maurice', '44')
     True
@@ -200,7 +208,7 @@ Maintenant remplissons un peu les deux tables :
     >>> a.add_values('amis_b', 'tartenpion', 'didier', '33')
     True
 
-Regardons le contenu de notre base de données :
+  Regardons le contenu de notre base de données :
 
     >>> a.show_all()
     ...OK... The database contains :
@@ -221,7 +229,7 @@ Regardons le contenu de notre base de données :
       | 
       |_ END OF DATAS !
 
-Ou plus simplement, si je veux connaitre la structure :
+  Ou plus simplement, si je veux connaitre la structure :
 
     >>> a.show_structure()
     ...OK... This is database's tree :
@@ -234,7 +242,7 @@ Ou plus simplement, si je veux connaitre la structure :
       | 
       |_ END OF DATAS !
 
-Si je veux le contenu des deux tables sans les doublons :
+  Si je veux le contenu des deux tables sans les doublons :
 
     >>> a.data_union('amis_a', 'amis_b')
     ('dupont', 'maurice', '44')
@@ -244,30 +252,30 @@ Si je veux le contenu des deux tables sans les doublons :
     ('sanchez', 'manuella', '29')
     ('tartenpion', 'didier', '33')
 
-Si je veux connaitre les entrées identiques aux deux tables :
+  Si je veux connaitre les entrées identiques aux deux tables :
 
     >>> a.data_crosscheck('amis_a', 'amis_b', 'nom', 'nom')
     ('durant', 'jean-jacques', '32', 'durant', 'jean-jacques', '32')
     ('tartenpion', 'didier', '33', 'tartenpion', 'didier', '33')
 
-Si je veux connaitre les gens trentenaires de la table 'amis_a' :
+  Si je veux connaitre les gens trentenaires de la table 'amis_a' :
 
     >>> a.between_value('amis_a', 'age', 30, 39)
     ('durant', 'jean-jacques', '32')
     ('tartenpion', 'didier', '33')
 
-Si je veux connaitre les gens non trentenaires de la table 'amis_a' :
+  Si je veux connaitre les gens non trentenaires de la table 'amis_a' :
 
     >>> a.not_between_value('amis_a', 'age', 30, 39)
     ('dupont', 'maurice', '44')
     ('jeunot', 'alain', '21')
 
-Si je souhaite rechercher une personne par son nom :
+  Si je souhaite rechercher une personne par son nom :
 
     >>> a.search_value('amis_b', 'nom', 'sanchez')
     ('sanchez', 'manuella', '29')
 
-Si je veux lister la table 'amis_a' par ordre alphabétique ascendant, par nom ou par age :
+  Si je veux lister la table 'amis_a' par ordre alphabétique ascendant, par nom ou par age :
 
     >>> a.sort_value('amis_a', 0, 'nom')
     ('dupont', 'maurice', '44')
@@ -281,12 +289,12 @@ Si je veux lister la table 'amis_a' par ordre alphabétique ascendant, par nom o
     ('tartenpion', 'didier', '33')
     ('dupont', 'maurice', '44')
 
-Si je souhaite connaitre la moyenne d'age de la liste 'amis_a' :
+  Si je souhaite connaitre la moyenne d'age de la liste 'amis_a' :
 
     >>> a.data_average('amis_a', 'age')
     32.5
 
-Si je souhaite modifier une valeur dans une entrée , supposons que je souhaite modifier le 'nom' de 'Phong' en 'Jet', et vérification du résultat :
+  Si je souhaite modifier une valeur dans une entrée , supposons que je souhaite modifier le 'nom' de 'Phong' en 'Jet', et vérification du résultat :
 
     >>> a.modification_values('amis_b', 'nom', 'jet', 'nom', 'phong')
     True
@@ -309,23 +317,100 @@ Si je souhaite modifier une valeur dans une entrée , supposons que je souhaite 
       | 
       |_ END OF DATAS !
 
-Si je souhaite supprimer une entrée de la liste 'amis_b' :
+  Si je souhaite supprimer une entrée de la liste 'amis_b' :
 
     >>> a.delete_entry('amis_b', 'nom', 'tartenpion')
     The value tartenpion from the column nom has been deleted !
     True
 
+  Voilà pour l'aperçu rapide des fonctions.
+
+------
+#### Présentation de la classe Survivaltool_gss et utilité.
+  Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
+
+  Ce script se sert également d'un fichier template en html nommé basic_page. Il contient deux entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+
+    sous Linux:
+        pip install jinja2
+    sous Windows:
+        python -m install jinja2
+
+  Pour voir le résultat avant/après : le fichier mode_emploi.txt contient le texte brute avec les différentes balises 'markdown' à ma sauce perso, le fichier basic_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
+
+    >>> convert = Survivaltool_gss()
+    >>> convert.file = "mode_emploi.txt"
+    >>> convert.generate()
+
+  Aussi 'simple' que ça...
+
+##### Classe principale, le point d'entrée pour l'utilisateur.
+  La classe principale **Survivaltool_gss()** permet de créer un objet Survivaltool_gss et de lui définir le fichier à convertir (.file), le type de feedback (.feedback), le nom du fichier de sortir (.out_file), le titre de la page (.project_title) et le template à utiliser (.use_template). 
+
+  La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'basic_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
+
+  Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
+
+  Il faut savoir aussi que la variable feedback est optionnel : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'basic_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
+
+  La variable *project_title* permet de personnaliser le titre de la page que votre navigateur va afficher dans l'onglet. Par défaut, ce sera 'survival_page', mais il suffit de spécifier une autre valeur lors de la définition de l'objet pour la changer.
+
+  Il faut également savoir que la variable *out_file* est aussi optionnelle : si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument, par défaut 'basic_gen.html'.
+
+  De façon simple, voilà comment poser les symboles dans votre fichier markdown ou texte:
+
+    ###### titre en taille h6 à gauche de la page
+    ##### titre en taille h5 à gauche de la page
+    #### titre en taille h4 à gauche de la page
+    ### titre en taille h3 à gauche de la page
+    ## titre en taille h2 à gauche de la page
+    # titre en taille h1 à gauche de la page
+    ------      6 tirets seuls sur une ligne permettent d'intégrer un séparateur
+    ***passage en gras et italique, doit être compris entre deux triple-splats***
+    **passage en gras, doit être compris entre deux double-splats**
+    *passage en italique, doit être compris entre deux single-splat*
+    + en début de ligne génère une liste numérotée
+    - en début de ligne génère une liste à puces
+    [+url]www.adresse_url.com[+url+]lien_vers_adresse[url+]  pour intégrer un lien vers un site
+    [+img]image_a_integrer.jpeg[img+]  pour intégrer une image
+    pour définir un paragraphe, laissez 2 espaces libres à son début
+    et si vous laissez 4 espaces vides en début de ligne, survivaltool_gss génère un exemple de code comme ces quelques lignes de syntaxes.
+
+  La fonction principale utilise cinq autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
+
+------
+#### Fonctions de la classe Survivaltool_gss.
+##### Fonction détectant les titres et les séparateurs.
+  La première fonction **per_lines(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut inserer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer avant le retour à la ligne. Elle est utilisée pour baliser les titres dans un document si elle trouve un sharp ou une suite de sharps au début d'une ligne et ne réagit qu'à cette condition.
+
+##### Fonction détectant les exemple de codes / programmes.
+  La seconde fonction **per_coding_example(sequence, number_of_spaces, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *number_of_spaces* précise le nombre d'espaces vides que la fonction doit trouver avant de réagir et déduire qu'il y a un exemple de code. Dans le script, j'ai posé quatres intervalles vident. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve une ligne qui débute par l'intervalle d'espaces libres spécifiés, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite d'un exemple de code.
+
+##### Fonction détectant les listes.
+  La troisième fonction **per_list(sequence, begins, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *begins* précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste.
+
+##### Fonction détectant la typographie.
+  La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.
+
+##### Note :
+  Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
+
+##### Fonction détectant les urls et images.
+  La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Petit rappel pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
+
+    [+url]adresse_url_du_lien[+url+]texte_lien[url+]
+    [+img]image_à_insérer[img+]
+
+  Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce script ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
 
 ------
 #### Mot de fin.
-Voilà dans les grandes lignes, la base de l'utilisation du module Ibex. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+  Voilà dans les grandes lignes, la base de l'utilisation du module Survivaltool et de ses classes Survivaltool et Survivaltool_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85
 
-Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
+  Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci également à vous si vous utilisez mes scripts et qu'ils vous aident à arriver à vos fins.
 
-Daniel.
-
-
-
+------
+  Daniel. Juillet 2020.
