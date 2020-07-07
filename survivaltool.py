@@ -2,9 +2,13 @@
 #-*- coding: Utf-8 -*-
 import re
 import os
+import sys
 import csv
 import sqlite3
 from jinja2 import *
+from tkinter import *
+from tkinter.filedialog import *
+from tkinter.messagebox import *
 
 ####################################################################################################
 ### survivaltool - GSS & SQLite3 manager
@@ -20,8 +24,8 @@ class Survivaltool_gss:
         ### definition of some variables ###
         self.file = None
         self.feedback = 0
-        self.out_file = "basic_gen.html"
-        self.use_template = "basic_page.html"
+        self.out_file = "auto_gen.html"
+        self.use_template = "survival_templates/root_page.html"
         ### definition of some values to include in the page ###
         self.project_title = "survival_page"
         self.project_header = "survival_header"
@@ -54,21 +58,19 @@ class Survivaltool_gss:
         print("searching for paragraphs")
         contain = self.per_lines(contain, "  ", "<p>\n", "</p>\n")
         print("searching for lists")
-        contain = self.per_list(contain, "+ ", "<ol>\n", "</ol>")
-        contain = self.per_list(contain, "- ", "<ul>\n", "</ul>")
+        contain = self.per_list(contain, "+ ", "<ol>\n", "</ol>\n")
+        contain = self.per_list(contain, "- ", "<ul>\n", "</ul>\n")
         print("searching for triple splat bold and italic quote")
         contain = self.per_emphasis(contain, "***", "<b><i>", "</i></b>")
         print("searching for double splat bold quote")
         contain = self.per_emphasis(contain, "**", "<b>", "</b>")
         print("searching for single splat italic quote")
         contain = self.per_emphasis(contain, "*", "<i>", "</i>")
-        print("searching for urls")
-        contain = self.per_links(contain, "[+url]", "<a href = '")
-        contain = self.per_links(contain, "[+url+]", "'>")
-        contain = self.per_links(contain, "[url+]", "</a> ")
-        print("searching for images")
-        contain = self.per_links(contain, "[+img]", "<figure><center><img src='")
-        contain = self.per_links(contain, "[img+]", "'></center></figure>")
+        print("searching for strikethrough quote")
+        contain = self.per_emphasis(contain, "~~", "<s>", "</s>")
+        print("searching for urls and pictures")
+        contain = self.per_images(contain)
+        contain = self.per_links(contain)
         print("indexing the document's titles")
         contain = self.indexer(contain)
         print("extracting the links to intern chapters")
@@ -103,6 +105,7 @@ class Survivaltool_gss:
     def per_lines(self, sequence, symbol_to_modify, replace_open_parse, replace_ending_parse):
         analyse = sequence.splitlines()
         mark_code = 0
+        mark_cite = 0
         new_output = ""
 
         for y in analyse:
@@ -239,25 +242,59 @@ class Survivaltool_gss:
         return new_output
 
     ### this function analyse lines per lines the whole markdown file ###
-    ### and parse url or images symbols ###
-    def per_links(self, sequence, symbol_to_modify, replace_parse):
-        mark_links = 0
+    ### and parse images ###
+    def per_images(self, sequence):
         mark_code = 0
 
-        analyse = sequence.split(" ")
+        expression_img = r"\!\[(?P<text>.+)\]\((?P<url>.+)\)"
+        
+        analyse = sequence.splitlines()
         new_output = ""
-                
+
         for z in analyse:
             if "<pre><code>" in z:
                 mark_code = 1
             elif "</code></pre>" in z:
                 mark_code = 0
 
-            if symbol_to_modify in z and mark_code == 0:
-                z = z.replace(symbol_to_modify, replace_parse)
+            extract_img = re.search(expression_img, z)
+            if extract_img is not None and mark_code == 0:
+                lnk = f"""<figure><center><img src='{extract_img.group('url')}' alt='{extract_img.group('text')}' /></center></figure>\n"""
+                to_replace = f"![{extract_img.group('text')}]({extract_img.group('url')})"
+                print(to_replace)
+                z = z.replace(to_replace, lnk)
                 new_output += z
             else:
                 new_output += z + " "
+            new_output += "\n"
+
+        return new_output
+
+    ### this function analyse lines per lines the whole markdown file ###
+    ### and parse url or images symbols ###
+    def per_links(self, sequence):
+        mark_code = 0
+
+        expression_url = r"\[(?P<text>.+)\]\((?P<url>.+)\)"
+        
+        analyse = sequence.splitlines()
+        new_output = ""
+
+        for z in analyse:
+            if "<pre><code>" in z:
+                mark_code = 1
+            elif "</code></pre>" in z:
+                mark_code = 0
+
+            extract_lnk = re.search(expression_url, z)
+            if extract_lnk is not None and mark_code == 0:
+                lnk = f"""<a href = '{extract_lnk.group("url")}'>{extract_lnk.group("text")}</a>"""
+                to_replace = f"[{extract_lnk.group('text')}]({extract_lnk.group('url')})"
+                z = z.replace(to_replace, lnk)
+                new_output += z
+            else:
+                new_output += z + " "
+            new_output += "\n"
 
         return new_output
 
@@ -286,8 +323,6 @@ class Survivaltool_gss:
             if extract is not None and mark_section == 0:
                 opening_symbol = f"<h{extract.group('number')}>"
                 z = x.split(opening_symbol)
-                #y = z[1].split(ending_symbol)
-                #new_open_symbol = opening_symbol.replace(">", f" div='#{y[0]}'>")
                 new_open_symbol = opening_symbol.replace(">", f" id='{counter}'>")
                 z[0] = new_open_symbol
                 new_output += "".join(z)
@@ -320,7 +355,106 @@ class Survivaltool_gss:
 
         return new_dict_chapter
 
+####################################################################################################
+### survivaltool_gss tkinter interface
+####################################################################################################
+class Survivaltool_gss_interface(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+        self.title("Survivaltool GSS interface for Python 3.x")
+        self.resizable(height = False, width = False)
+        self.use_font_title = ""
+        self.use_font_rests = ""
 
+        lbl_source = Label(self, text = "Source file  : ")
+        lbl_source.grid(row = 1, column = 1)
+        lbl_out_fl = Label(self, text = "Destination  : ")
+        lbl_out_fl.grid(row = 2, column = 1)
+        lbl_use_tp = Label(self, text = "Use template : ")
+        lbl_use_tp.grid(row = 3, column = 1)
+        lbl_title = Label(self, text = "Project title : ")
+        lbl_title.grid(row = 4, column = 1)
+        lbl_header = Label(self, text = "Project header : ")
+        lbl_header.grid(row = 5, column = 1)
+        lbl_footer = Label(self, text = "Project footer : ")
+        lbl_footer.grid(row = 6, column = 1)
+
+        self.source_entry = Entry(self, width = 20)
+        self.source_entry.grid(row = 1, column = 2)
+        self.out_file_entry = Entry(self, width = 20)
+        self.out_file_entry.grid(row = 2, column = 2)
+        self.out_file_entry.insert(1, "auto_gen.html")
+        self.use_tp_entry = Entry(self, width = 20)
+        self.use_tp_entry.grid(row = 3, column = 2)
+        self.use_tp_entry.insert(1, "survival_templates/root_page.html")
+        self.title_entry = Entry(self, width = 20)
+        self.title_entry.grid(row = 4, column = 2)
+        self.title_entry.insert(1, "Survivaltool Page")
+        self.header_entry = Entry(self, width = 20)
+        self.header_entry.grid(row = 5, column = 2)
+        self.header_entry.insert(1, "Generated by Survivaltool")
+        self.footer_entry = Entry(self, width = 20)
+        self.footer_entry.grid(row = 6, column = 2)
+        self.footer_entry.insert(1, "Program under license")
+
+        self.source_button = Button(self, text = "open", command = lambda x = "source" : self.open_file(x))
+        self.source_button.grid(row = 1, column = 3)
+        self.out_file_button = Button(self, text = "open", command = lambda x = "destination" : self.open_file(x))
+        self.out_file_button.grid(row = 2, column = 3)
+        self.use_tp_button = Button(self, text = "open", command = lambda x = "template" : self.open_file(x))
+        self.use_tp_button.grid(row = 3, column = 3)
+        self.title_button = Button(self, text = "clean", command = lambda x = "title" : self.cleaner(x))
+        self.title_button.grid(row = 4, column = 3)
+        self.header_button = Button(self, text = "clean", command = lambda x = "header" : self.cleaner(x))
+        self.header_button.grid(row = 5, column = 3)
+        self.footer_button = Button(self, text = "clean", command = lambda x = "footer" : self.cleaner(x))
+        self.footer_button.grid(row = 6, column = 3)
+
+        self.generation_button = Button(self, text = "Generate !", command = self.generating)
+        self.generation_button.grid(row = 20, column = 1, columnspan = 2)
+        self.byebye_button = Button(self, text = "Exit...", command = self.quit)
+        self.byebye_button.grid(row = 20, column = 2, columnspan = 2)
+        
+        self.mainloop()
+        try:
+            self.destroy()
+        except TclError:
+            sys.exit()
+
+    def open_file(self, selection):
+        source = askopenfilename(filetypes = [("markdown", ".md"), ("text", ".txt"), ("html", ".html")])
+        if selection == "source":
+            self.source_entry.delete(0, 10000)
+            self.source_entry.insert(0, source)
+        elif selection == "destination":
+            self.out_file_entry.delete(0, 10000)
+            self.out_file_entry.insert(0, source)
+        elif selection == "template":
+            self.use_tp_entry.delete(0, 10000)
+            self.use_tp_entry.insert(0, source)
+
+    def cleaner(self, selection):
+        if selection == "title":
+            self.title_entry.delete(0, 10000)
+        elif selection == "header":
+            self.header_entry.delete(0, 10000)
+        elif selection == "footer":
+            self.footer_entry.delete(0, 10000)
+
+    def generating(self):
+        srv = Survivaltool_gss()
+        srv.file = self.source_entry.get()
+        srv.feedback = 0
+        srv.out_file = self.out_file_entry.get()
+        srv.use_template = self.use_tp_entry.get()
+        srv.project_title = self.title_entry.get()
+        srv.project_header = self.header_entry.get()
+        srv.project_footer = self.footer_entry.get()
+        try:
+            srv.generate()
+            showinfo("okay !", "the job is done !")
+        except:
+            showwarning("no no no...", "cannot do the job, something is missing somewhere !")
         
 ####################################################################################################
 ### survivaltool - GSS & SQLite3 manager
@@ -1489,3 +1623,10 @@ class Survivaltool():
     def displaying_return(self, display_this):
         if self.displaying_line == True:
             print(display_this)
+
+####################################################################################################
+### finally, when running the program like an executable, return the gss_interface
+####################################################################################################
+if __name__ == "__main__":
+    runner = Survivaltool_gss_interface()
+    runner

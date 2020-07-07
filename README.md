@@ -13,7 +13,7 @@
 ------
 #### Présentation du module survivaltool et utilité.
   Le module survivaltool pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour la classe survivaltool_gss mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage. 
-Son appel depuis un script Python se fait simplement, en utilisant 'import':
+  Son appel depuis un script Python se fait simplement, en utilisant 'import':
 
     import survivaltool
 
@@ -329,14 +329,14 @@ Son appel depuis un script Python se fait simplement, en utilisant 'import':
 #### Présentation de la classe Survivaltool_gss et utilité.
   Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
 
-  Ce script se sert également d'un fichier template en html nommé basic_page. Il contient quatre entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+  Ce script se sert également d'un fichier template au choix en html. Il y en a deux de disponible dans le dossier /survival_templates. Ils contiennent chacun cinq entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) et le cinquième permet de remplir le header (page_header). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
 
     sous Linux:
         pip install jinja2
     sous Windows:
         python -m install jinja2
 
-  Pour voir le résultat avant/après : le fichier README.md contient le texte brute balisé en markdown, le fichier basic_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
+  Pour voir le résultat avant/après : le fichier README.md contient le texte brute balisé en markdown, le fichier auto_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
 
     >>> convert = Survivaltool_gss()
     >>> convert.file = "README.md"
@@ -344,18 +344,20 @@ Son appel depuis un script Python se fait simplement, en utilisant 'import':
 
   Aussi 'simple' que ça...
 
-##### Classe principale, le point d'entrée pour l'utilisateur.
-  La classe principale **Survivaltool_gss()** permet de créer un objet Survivaltool_gss et de lui définir le fichier à convertir (.file), le type de feedback (.feedback), le nom du fichier de sortir (.out_file), le titre de la page (.project_title) et le template à utiliser (.use_template). 
+  J'ai également intégré un petit interface graphique Tkinter qui s'affiche si vous lancez le programme directement. La classe qui le contient se nomme Survivaltool_gss_interface() et permet de renseigner les mêmes éléments que la classe Survivaltool_gss(). Simple, rapide, efficace, pas prise de tête... Pâté cornichons en clair !
 
-  La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'basic_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de listes, la présence de double splats afin de mettre certains passages en gras, et pour finir la présence de single splat pour mettre certains passages en italique.
+##### Classe principale, le point d'entrée pour l'utilisateur.
+  La classe principale **Survivaltool_gss()** permet de créer un objet Survivaltool_gss et de lui définir le fichier à convertir (.file), le type de feedback (.feedback), le nom du fichier de sortir (.out_file), le titre de la page (.project_title), le contenu du header (.project_header), le contenu du footer (.project_footer) et le template à utiliser (.use_template). 
+
+  La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'auto_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de paragraphes, la présence de listes, la présence de triple splats pour mettre certains passage en gras et italique, la présence de double splats afin de mettre certains passages en gras, la présence de single splat pour mettre certains passages en italique. la présence de passage barré, la présence d'images puis de liens hypertext,  et pour finir, fait une indexation des titres balisés dans le corps du document (body), et récupère une liste de ces derniers pour les ajouter comme liens internes dans une colonne dédiée à cet effet.
 
   Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -.
 
-  Il faut savoir aussi que la variable feedback est optionnel : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'basic_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans passer par un fichier html.
+  Il faut savoir aussi que la variable feedback est optionnel : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'auto_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans créer le moindre fichier html. Ceci peut être utile si vous utiliser un framework du genre flask ou cherrypy, sans devoir se soucier d'un contenu autre que des fichiers markdown ou texte.
 
-  La variable *project_title* permet de personnaliser le titre de la page que votre navigateur va afficher dans l'onglet. Par défaut, ce sera 'survival_page', mais il suffit de spécifier une autre valeur lors de la définition de l'objet pour la changer.
+  Les variables *project_title, project_header et project_footer* permettent de personnaliser le titre, le header et le footer de la page que votre navigateur va afficher dans l'onglet. Par défaut, ce sera dans l'ordre : 'survival_page', 'survival_header', 'survival_footer', mais il suffit de spécifier d'autre valeurs lors de la définition de l'objet pour les changer.
 
-  Il faut également savoir que la variable *out_file* est aussi optionnelle : si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument, par défaut 'basic_gen.html'.
+  Il faut également savoir que la variable *out_file* est aussi optionnelle : si feedback vaut 0, le retour sera enregistré dans le fichier dont le nom est passé dans cet argument, par défaut 'auto_gen.html'.
 
   De façon simple, voilà comment poser les symboles dans votre fichier markdown ou texte:
 
@@ -366,17 +368,18 @@ Son appel depuis un script Python se fait simplement, en utilisant 'import':
     ## titre en taille h2 à gauche de la page
     # titre en taille h1 à gauche de la page
     ------      6 tirets seuls sur une ligne permettent d'intégrer un séparateur
-    ***passage en gras et italique, doit être compris entre deux triple-splats***
-    **passage en gras, doit être compris entre deux double-splats**
-    *passage en italique, doit être compris entre deux single-splat*
+    *** passage en gras et italique, doit être compris entre deux triple-splats ***
+    ** passage en gras, doit être compris entre deux double-splats **
+    * passage en italique, doit être compris entre deux single-splat *
+    ~~ passage barré, doit être compris entre ces deux symboles ~~
     + en début de ligne génère une liste numérotée
     - en début de ligne génère une liste à puces
-    [+url]www.adresse_url.com[+url+]lien_vers_adresse[url+]  pour intégrer un lien vers un site
-    [+img]image_a_integrer.jpeg[img+]  pour intégrer une image
+    [lien vers un site](http://www.adresse_du_site.com)  pour intégrer un lien vers un site
+    ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image
     pour définir un paragraphe, laissez 2 espaces libres à son début
     et si vous laissez 4 espaces vides en début de ligne, survivaltool_gss génère un exemple de code comme ces quelques lignes de syntaxes.
 
-  La fonction principale utilise cinq autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
+  La fonction principale utilise huit autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
 
 ------
 #### Fonctions de la classe Survivaltool_gss.
@@ -396,13 +399,16 @@ Son appel depuis un script Python se fait simplement, en utilisant 'import':
   Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
   Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page.
 
-##### Fonction détectant les urls et images.
-  La cinquième fonction **per_links(sequence, symbol_to_modify, replace_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. L'argument *replace_parse* permet de définir la balise à intégrer à la place. Petit rappel pour intégrer un lien vers une page internet quelconque, ou simplement insérer une image, il vous faudra utiliser les balises suivantes comme ceci : 
+##### Fonctions détectant les urls et les images.
+  La cinquième fonction **per_links(sequence)** analyse le texte (suite de caractères) passé dans l'argument *sequence* et pose les liens hypertext.
+  La sixième fonction **per_images(sequence)** analyse le texte (suite de caractères) passé dans l'argument *sequence* et intègre les liens vers les images souhaitées.
+  Notez que les images insérées seront automatiquement centrées sur la page du navigateur.
 
-    [+url]adresse_url_du_lien[+url+]texte_lien[url+]
-    [+img]image_à_insérer[img+]
+##### Fonction d'indexation du document.
+  La septième fonction **indexer(sequence)** analyse le texte passé dans l'argument *sequence* et modifie toutes les balises de titres html *<h.>* en y intégrant un id suivi d'un numéro unique incrémenté de 1 à chaque titre. Ceci commence à 0 (premier titre trouvé) et fini au dernier titre trouvé.
 
-  Notez que les images insérées seront automatiquement centrées sur la page du navigateur. Cependant ce script ne gère pas encore la création de tableaux. Je planche dessus pour ajouter des nouvelles fonctionnalitées.
+##### Fonction de récupération des titres.
+  La huitième fonction **chapter(sequence)** analyse le texte passé dans l'argument *sequence* et récupère le contenu des balises de titres du document. Ceci est la seule fonction qui ne modifie pas le document final, elle ne s'occupe que de collecter les données relatives aux titres et leur numéro d'index afin de créer et retourner une liste de liens internes, qui sera intégré dans le rendu final (à condition bien sûr d'utiliser l'un des deux templates que j'ai mis à disposition, ou d'en créer un qui tient compte de ce paramètre).
 
 ------
 #### Mot de fin.
