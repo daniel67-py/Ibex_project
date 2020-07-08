@@ -9,12 +9,8 @@
             <meta charset="UTF-8">
             <title> Survivaltool v0.1 </title>
     <style type="text/css">
-        #column1 {float: left; width: 30%; table-layout: fixed; padding: 5px; text-align: justify; font-size: 12px; border: 2px solid black; 
-                  margin-right: 2px; margin-left: 2px; }
-        #column2 {float: right; width: 60%; padding: 5px; text-align: justify; }
-
         header {font-size: 35px; }
-        body   {margin-right: 50px; margin-left: 50px; text-align: justify; }
+        body   {margin-right: 250px; margin-left: 250px; text-align: justify; }
         footer {font-size: 12px; }
         foot   {font-size: 12px; }
         
@@ -36,115 +32,8 @@
         </i></center></h1>
     </header>
 
-    <div id="column1">
-        <p><center><b>Liens internes.</b></center></p>
-        
-            <a href='#0'> Survivaltool 0.1.001  -  GSS & SQLite3 manager</a><br> <br>
-        
-            <a href='#1'> Sommaire.</a><br> <br>
-        
-            <a href='#2'> Présentation du module survivaltool et utilité.</a><br> <br>
-        
-            <a href='#3'> Fonctions du module survivaltool.</a><br> <br>
-        
-            <a href='#4'> Survivaltool_new(database)</a><br> <br>
-        
-            <a href='#5'> Survivaltool(database)</a><br> <br>
-        
-            <a href='#6'> Survivaltool.new_table(table, columns)</a><br> <br>
-        
-            <a href='#7'> Survivaltool.new_increased_table(table, columns)</a><br> <br>
-        
-            <a href='#8'> Survivaltool.copy_table(source_table, destination_table)</a><br> <br>
-        
-            <a href='#9'> Survivaltool.copy_control_table(source_table, destination_table, columns)</a><br> <br>
-        
-            <a href='#10'> Survivaltool.redo_table(source_table, columns)</a><br> <br>
-        
-            <a href='#11'> Survivaltool.add_values(table, elements)</a><br> <br>
-        
-            <a href='#12'> Survivaltool.add_increased_values(table, elements)</a><br> <br>
-        
-            <a href='#13'> Survivaltool.modification_values(table, column_to_modify, new_value, reference_column, reference_value)</a><br> <br>
-        
-            <a href='#14'> Survivaltool.delete_table(table)</a><br> <br>
-        
-            <a href='#15'> Survivaltool.purge_table(table)</a><br> <br>
-        
-            <a href='#16'> Survivaltool.add_column(table, column)</a><br> <br>
-        
-            <a href='#17'> Survivaltool.delete_entry(table, column, value)</a><br> <br>
-        
-            <a href='#18'> Survivaltool.search_seems_like_value(table, column, value)</a><br> <br>
-        
-            <a href='#19'> Survivaltool.search_start_like_value(table, column, value)</a><br> <br>
-        
-            <a href='#20'> Survivaltool.search_end_like_value(table, column, value)</a><br> <br>
-        
-            <a href='#21'> Survivaltool.search_value(table, column, value)</a><br> <br>
-        
-            <a href='#22'> Survivaltool.between_value(table, column, interval_1, interval_2)</a><br> <br>
-        
-            <a href='#23'> Survivaltool.not_between_value(table, column, interval_1, interval_2)</a><br> <br>
-        
-            <a href='#24'> Survivaltool.sort_value(table, sens, column)</a><br> <br>
-        
-            <a href='#25'> Survivaltool.return_structure()</a><br> <br>
-        
-            <a href='#26'> Survivaltool.show_all()</a><br> <br>
-        
-            <a href='#27'> Survivaltool.show_structure()</a><br> <br>
-        
-            <a href='#28'> Survivaltool.column_sum(table, column)</a><br> <br>
-        
-            <a href='#29'> Survivaltool.column_total(table, column)</a><br> <br>
-        
-            <a href='#30'> Survivaltool.data_minimal(table, column)</a><br> <br>
-        
-            <a href='#31'> Survivaltool.data_maximal(table, column)</a><br> <br>
-        
-            <a href='#32'> Survivaltool.data_average(table, column)</a><br> <br>
-        
-            <a href='#33'> Survivaltool.data_crosscheck(table_1, table_2, column_t1, column_t2)</a><br> <br>
-        
-            <a href='#34'> Survivaltool.data_union(table_1, table_2)</a><br> <br>
-        
-            <a href='#35'> Survivaltool.edit_structure_txt(nom_fichier_sortie = "analyse_survival.txt")</a><br> <br>
-        
-            <a href='#36'> Survivaltool.edit_contains_csv(table, nom_fichier_sortie = "analyse_survival.csv")</a><br> <br>
-        
-            <a href='#37'> Exemple d'utilisation de Survivaltool.</a><br> <br>
-        
-            <a href='#38'> Présentation de la classe Survivaltool_gss et utilité.</a><br> <br>
-        
-            <a href='#39'> Classe principale, le point d'entrée pour l'utilisateur.</a><br> <br>
-        
-            <a href='#40'> Fonctions de la classe Survivaltool_gss.</a><br> <br>
-        
-            <a href='#41'> Fonction détectant les titres et les séparateurs.</a><br> <br>
-        
-            <a href='#42'> Fonction détectant les exemple de codes / programmes.</a><br> <br>
-        
-            <a href='#43'> Fonction détectant les listes.</a><br> <br>
-        
-            <a href='#44'> Fonction détectant la typographie.</a><br> <br>
-        
-            <a href='#45'> Notes.</a><br> <br>
-        
-            <a href='#46'> Fonctions détectant les urls et les images.</a><br> <br>
-        
-            <a href='#47'> Fonction d'indexation du document.</a><br> <br>
-        
-            <a href='#48'> Fonction de récupération des titres.</a><br> <br>
-        
-            <a href='#49'> Mot de fin.</a><br> <br>
-        
-    </div>
-
-    <div id="column2">
-
-        <body>
-            <h2 id='0'> Survivaltool 0.1.001  -  GSS & SQLite3 manager</h2>     
+    <body>
+        <h2 id='0'> Survivaltool 0.1.001  -  GSS & SQLite3 manager</h2>     
     
 <p>    
 Développé pour Python3 par Meyer Daniel, Juillet 2020 </p>    
@@ -875,21 +764,21 @@ Daniel. Juillet 2020.</p>
     
       
 
-        </body>
+    </body>
 
-        <footer>
-            <p><center><i>
-            Survivaltool - programme sous license - Juillet 2020
-            </i></center></p>
-        </footer>
+    <footer>
+        <p><center><i>
+        Survivaltool - programme sous license - Juillet 2020
+        </i></center></p>
+    </footer>
 
-        <foot>
-        <p><center> 
-root static page in html<br>
+    <foot>
+    <p><center> 
+simple static page in html<br>
 generated with Survivaltool_gss for Python 3.x  -  July 2020  - Daniel Meyer <br>
 to know more about this project, please follow this link :<br>
 <a href = "http://www.github.com/daniel67-py/Ibex_project">Daniel's Survivaltool Open Source Project</a><br>
-        </center></p>
-        </foot>
-    </div>
+    </center></p>
+    </foot>
+
 </html>

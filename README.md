@@ -13,9 +13,9 @@
 ------
 #### Présentation du module survivaltool et utilité.
   Le module survivaltool pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour la classe survivaltool_gss mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage. 
-  Son appel depuis un script Python se fait simplement, en utilisant 'import':
+  Son appel depuis un script Python se fait simplement, en utilisant 'from *x* import ...':
 
-    import survivaltool
+    >>> from survivaltool import *
 
   Il est possible également de l'utiliser en l'exécutant directement tel un programme.
 
@@ -35,7 +35,7 @@
   Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument *database* . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier disponible.
 
 ##### Survivaltool(database)
-  Cette fonction permet d'initier un objet survivaltool en faisant appel au fichier passé par l'argument *database* . Il signale à l'utilisateur si la connection à la base de données est opérationnel ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module :
+  Cette fonction permet d'initier un objet survivaltool en faisant appel au fichier passé par l'argument *database* . Il signale à l'utilisateur si la connection à la base de données est opérationnelle ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module :
 
     Survivaltool.debug_sqlite_instruction = True / False
 
@@ -327,16 +327,18 @@
 
 ------
 #### Présentation de la classe Survivaltool_gss et utilité.
-  Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module.
+  Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une page standard html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module. Pour l'intégrer dans vos programmes et scripts Python, il suffit de l'importer comme ceci:
 
-  Ce script se sert également d'un fichier template au choix en html. Il y en a deux de disponible dans le dossier /survival_templates. Ils contiennent chacun cinq entrées remplissables par Jinja. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) et le cinquième permet de remplir le header (page_header). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
+    >>> from survivaltool import *
+
+  Ce script se sert également de fichiers templates au choix en html. Il y en a trois de disponible dans le dossier /survival_templates. Ils contiennent chacun jusqu'à cinq entrées remplissables par Jinja selon le template. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) et le cinquième permet de remplir le header (page_header). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
 
     sous Linux:
         pip install jinja2
     sous Windows:
         python -m install jinja2
 
-  Pour voir le résultat avant/après : le fichier README.md contient le texte brute balisé en markdown, le fichier auto_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script chargé a été :
+  Pour voir le résultat avant/après : le fichier README.md contient le texte brute balisé en markdown, le fichier auto_gen.html est le résultat généré par mon script. La commande utilisée pour le générer sous Python, avec mon script a été :
 
     >>> convert = Survivaltool_gss()
     >>> convert.file = "README.md"
