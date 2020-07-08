@@ -56,10 +56,12 @@ class Survivaltool_gss:
         print("searching for code examples")
         contain = self.per_coding_example(contain, "    ", " <pre><code>\n    ", " </code></pre>\n")
         print("searching for paragraphs")
-        contain = self.per_lines(contain, "  ", "<p>\n", "</p>\n")
+        contain = self.per_lines(contain, "  ", "<p>\n", " </p>\n")
         print("searching for lists")
         contain = self.per_list(contain, "+ ", "<ol>\n", "</ol>\n")
         contain = self.per_list(contain, "- ", "<ul>\n", "</ul>\n")
+        contain = self.per_list_2nd_level(contain, "++ ", "<ol>\n", "</ol>\n")
+        contain = self.per_list_2nd_level(contain, "-- ", "<ul>\n", "</ul>\n")
         print("searching for triple splat bold and italic quote")
         contain = self.per_emphasis(contain, "***", "<b><i>", "</i></b>")
         print("searching for double splat bold quote")
@@ -68,9 +70,12 @@ class Survivaltool_gss:
         contain = self.per_emphasis(contain, "*", "<i>", "</i>")
         print("searching for strikethrough quote")
         contain = self.per_emphasis(contain, "~~", "<s>", "</s>")
-        print("searching for urls and pictures")
+        print("searching for pictures")
         contain = self.per_images(contain)
+        print("searching for urls")
         contain = self.per_links(contain)
+        print("searching for emails adresses")
+        contain = self.per_mails(contain)
         print("indexing the document's titles")
         contain = self.indexer(contain)
         print("extracting the links to intern chapters")
@@ -149,25 +154,51 @@ class Survivaltool_gss:
 
         return new_output
 
-    ### this function analyse lines per lines the whole markdonw file ###
-    ### and search if there is some unordered lists ###
+    ### this function analyse lines per lines the whole markdown file ###
+    ### and search if there is some unordered  or ordered lists ###
     def per_list(self, sequence, begins, opening_parse, closing_parse):
         mark_list = 0
 
         analyse = sequence.splitlines()
         new_output = ""
 
-        for w in analyse:
+        for w in analyse:                
             if w.startswith(begins) == True and mark_list == 0:
-                w = w.replace(begins, opening_parse + "\n <li> ")
-                new_output += w + " </li> "
+                w = w.replace(begins, opening_parse + "\n<li> ")
+                new_output += w + "</li> "
                 mark_list = 1
             elif w.startswith(begins) == True and mark_list == 1:
-                w = w.replace(begins, " <li> ")
-                new_output += w + " </li> "
+                w = w.replace(begins, "<li> ")
+                new_output += w + "</li> "
             elif mark_list == 1 and w == "":
                 mark_list = 0
                 w = w.replace("", closing_parse)
+                new_output += w
+            else:
+                new_output += w
+            new_output += " \n"
+
+        return new_output
+
+    ### this function analyse lines per lines the whole markdown file ###
+    ### and search lists 2nd sub_levels ###
+    def per_list_2nd_level(self, sequence, begins, opening_parse, closing_parse):
+        mark_list = 0
+
+        analyse = sequence.splitlines()
+        new_output = ""
+
+        for w in analyse:                
+            if w.startswith(begins) == True and mark_list == 0:
+                w = w.replace(begins, opening_parse + "\n<li> ")
+                new_output += w + "</li> "
+                mark_list = 1
+            elif w.startswith(begins) == True and mark_list == 1:
+                w = w.replace(begins, "<li> ")
+                new_output += w + "</li> "
+            elif w.startswith(begins) == False and mark_list == 1:
+                mark_list = 0
+                w = closing_parse + w
                 new_output += w
             else:
                 new_output += w
@@ -271,7 +302,7 @@ class Survivaltool_gss:
         return new_output
 
     ### this function analyse lines per lines the whole markdown file ###
-    ### and parse url or images symbols ###
+    ### and parse url ###
     def per_links(self, sequence):
         mark_code = 0
 
@@ -290,6 +321,34 @@ class Survivaltool_gss:
             if extract_lnk is not None and mark_code == 0:
                 lnk = f"""<a href = '{extract_lnk.group("url")}'>{extract_lnk.group("text")}</a>"""
                 to_replace = f"[{extract_lnk.group('text')}]({extract_lnk.group('url')})"
+                z = z.replace(to_replace, lnk)
+                new_output += z
+            else:
+                new_output += z + " "
+            new_output += "\n"
+
+        return new_output
+
+    ### this function analyse lines per lines the whole markdown file ###
+    ### and parse emails adresses ###
+    def per_mails(self, sequence):
+        mark_code = 0
+
+        expression_mail = r"\[(?P<mail_add>.+\@.+)\]"
+        
+        analyse = sequence.splitlines()
+        new_output = ""
+
+        for z in analyse:
+            if "<pre><code>" in z:
+                mark_code = 1
+            elif "</code></pre>" in z:
+                mark_code = 0
+
+            extract_mail = re.search(expression_mail, z)
+            if extract_mail is not None and mark_code == 0:
+                lnk = f"""<a href = "mailto:{extract_mail.group("mail_add")}">{extract_mail.group("mail_add")}</a>"""
+                to_replace = f"[{extract_mail.group('mail_add')}]"
                 z = z.replace(to_replace, lnk)
                 new_output += z
             else:

@@ -1,5 +1,7 @@
 ## Survivaltool 0.1.001  -  GSS & SQLite3 manager
-  Développé pour Python3 par Meyer Daniel, Juillet 2020 
+  Développé pour Python3 par Meyer Daniel, Juillet 2020
+  [voir mon dépôt Github](https://github.com/daniel67-py)
+  pour m'écrire : [meyer.daniel67@protonmail.com]
 
 ------
 #### Sommaire.
@@ -375,13 +377,16 @@
     * passage en italique, doit être compris entre deux single-splat *
     ~~ passage barré, doit être compris entre ces deux symboles ~~
     + en début de ligne génère une liste numérotée
+    ++ en début de ligne génère un sous-niveau de liste numérotée
     - en début de ligne génère une liste à puces
+    -- en début de ligne génère un sous-niveau de liste à puces
     [lien vers un site](http://www.adresse_du_site.com)  pour intégrer un lien vers un site
     ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image
+    [adresse.messagerie@email.com]  pour intégrer un lien vers un mail
     pour définir un paragraphe, laissez 2 espaces libres à son début
     et si vous laissez 4 espaces vides en début de ligne, survivaltool_gss génère un exemple de code comme ces quelques lignes de syntaxes.
 
-  La fonction principale utilise huit autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
+  La fonction principale utilise neuf autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
 
 ------
 #### Fonctions de la classe Survivaltool_gss.
@@ -401,16 +406,17 @@
   Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
   Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page.
 
-##### Fonctions détectant les urls et les images.
+##### Fonctions détectant les urls, les images et les emails.
   La cinquième fonction **per_links(sequence)** analyse le texte (suite de caractères) passé dans l'argument *sequence* et pose les liens hypertext.
   La sixième fonction **per_images(sequence)** analyse le texte (suite de caractères) passé dans l'argument *sequence* et intègre les liens vers les images souhaitées.
+  La septième fonction **per_mails(sequence)** analyse le texte (suite de caractères) passé dans l'argument *sequence* et intègre les liens vers les adresses emails.
   Notez que les images insérées seront automatiquement centrées sur la page du navigateur.
 
 ##### Fonction d'indexation du document.
-  La septième fonction **indexer(sequence)** analyse le texte passé dans l'argument *sequence* et modifie toutes les balises de titres html *<h.>* en y intégrant un id suivi d'un numéro unique incrémenté de 1 à chaque titre. Ceci commence à 0 (premier titre trouvé) et fini au dernier titre trouvé.
+  La huitième fonction **indexer(sequence)** analyse le texte passé dans l'argument *sequence* et modifie toutes les balises de titres html *<h.>* en y intégrant un id suivi d'un numéro unique incrémenté de 1 à chaque titre. Ceci commence à 0 (premier titre trouvé) et fini au dernier titre trouvé.
 
 ##### Fonction de récupération des titres.
-  La huitième fonction **chapter(sequence)** analyse le texte passé dans l'argument *sequence* et récupère le contenu des balises de titres du document. Ceci est la seule fonction qui ne modifie pas le document final, elle ne s'occupe que de collecter les données relatives aux titres et leur numéro d'index afin de créer et retourner une liste de liens internes, qui sera intégré dans le rendu final (à condition bien sûr d'utiliser l'un des deux templates que j'ai mis à disposition, ou d'en créer un qui tient compte de ce paramètre).
+  La neuvième fonction **chapter(sequence)** analyse le texte passé dans l'argument *sequence* et récupère le contenu des balises de titres du document. Ceci est la seule fonction qui ne modifie pas le document final, elle ne s'occupe que de collecter les données relatives aux titres et leur numéro d'index afin de créer et retourner une liste de liens internes, qui sera intégré dans le rendu final (à condition bien sûr d'utiliser l'un des deux templates que j'ai mis à disposition, ou d'en créer un qui tient compte de ce paramètre).
 
 ------
 #### Mot de fin.
