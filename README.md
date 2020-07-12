@@ -377,9 +377,9 @@
     * passage en italique, doit être compris entre deux single-splat *
     ~~ passage barré, doit être compris entre ces deux symboles ~~
     + en début de ligne génère une liste numérotée
-    ++ en début de ligne génère un sous-niveau de liste numérotée
+    ++ en début de ligne génère un sous-niveau de liste numérotée (la limite actuelle est à 15 niveaux)
     - en début de ligne génère une liste à puces
-    -- en début de ligne génère un sous-niveau de liste à puces
+    -- en début de ligne génère un sous-niveau de liste à puces (la limite actuelle est à 15 niveaux)
     [lien vers un site](http://www.adresse_du_site.com)  pour intégrer un lien vers un site
     ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image
     [adresse.messagerie@email.com]  pour intégrer un lien vers un mail
@@ -397,7 +397,7 @@
   La seconde fonction **per_coding_example(sequence, number_of_spaces, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *number_of_spaces* précise le nombre d'espaces vides que la fonction doit trouver avant de réagir et déduire qu'il y a un exemple de code. Dans le script, j'ai posé quatres intervalles vides. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve une ligne qui débute par l'intervalle d'espaces libres spécifiés, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite d'un exemple de code.
 
 ##### Fonction détectant les listes.
-  La troisième fonction **per_list(sequence, begins, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *begins* précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste.
+  La troisième fonction **per_list(sequence, begins, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *begins* précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste. Valknut permet de faire une arborescence allant jusqu'à 15 niveaux (voir les fichiers essai.md et essai.html pour se faire une idée). Cependant il vaut mieux utiliser qu'un seul type de puces pour les arborescences complexes à plusieurs niveaux, sous peine de générer une ou plusieurs erreurs.
 
 ##### Fonction détectant la typographie.
   La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.

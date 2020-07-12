@@ -58,10 +58,8 @@ class Valknut_gss:
         print("searching for paragraphs")
         contain = self.per_lines(contain, "  ", "<p>\n", " </p>\n")
         print("searching for lists")
-        contain = self.per_list(contain, "+ ", "<ol>\n", "</ol>\n")
-        contain = self.per_list(contain, "- ", "<ul>\n", "</ul>\n")
-        contain = self.per_list_2nd_level(contain, "++ ", "<ol>\n", "</ol>\n")
-        contain = self.per_list_2nd_level(contain, "-- ", "<ul>\n", "</ul>\n")
+        contain = self.per_list(contain, "+", "<ol>", "</ol>\n")
+        contain = self.per_list(contain, "-", "<ul>", "</ul>\n")
         print("searching for triple splat bold and italic quote")
         contain = self.per_emphasis(contain, "***", "<b><i>", "</i></b>")
         print("searching for double splat bold quote")
@@ -158,52 +156,70 @@ class Valknut_gss:
     ### and search if there is some unordered  or ordered lists ###
     def per_list(self, sequence, begins, opening_parse, closing_parse):
         mark_list = 0
+        old_mark_level = 0
+        new_mark_level = 0
 
         analyse = sequence.splitlines()
         new_output = ""
 
-        for w in analyse:                
-            if w.startswith(begins) == True and mark_list == 0:
-                w = w.replace(begins, opening_parse + "\n<li> ")
-                new_output += w + "</li> "
-                mark_list = 1
-            elif w.startswith(begins) == True and mark_list == 1:
-                w = w.replace(begins, "<li> ")
-                new_output += w + "</li> "
-            elif mark_list == 1 and w == "":
+        for w in analyse:
+            extract = w.split(" ")
+            try:
+                new_mark_level = extract[0].count(begins)
+            except:
+                new_mark_level = 0
+
+            diff_back = [
+                new_mark_level == old_mark_level - 1,
+                new_mark_level == old_mark_level - 2,
+                new_mark_level == old_mark_level - 3,
+                new_mark_level == old_mark_level - 4,
+                new_mark_level == old_mark_level - 5,
+                new_mark_level == old_mark_level - 6,
+                new_mark_level == old_mark_level - 7,
+                new_mark_level == old_mark_level - 8,
+                new_mark_level == old_mark_level - 9,
+                new_mark_level == old_mark_level - 10,
+                new_mark_level == old_mark_level - 11,
+                new_mark_level == old_mark_level - 12,
+                new_mark_level == old_mark_level - 13,
+                new_mark_level == old_mark_level - 14,
+                new_mark_level == old_mark_level - 15,
+                new_mark_level == old_mark_level - 16,
+                ]
+            
+            if new_mark_level == 0 and mark_list == 1:
                 mark_list = 0
-                w = w.replace("", closing_parse)
+                w = closing_parse * old_mark_level
                 new_output += w
+            
+            elif new_mark_level == old_mark_level + 1:
+                old_mark_level = new_mark_level
+                if w.startswith(begins) == True and mark_list == 0:
+                    w = w.replace(begins * new_mark_level, opening_parse + "<li>")
+                    new_output += w 
+                    mark_list = 1
+                elif w.startswith(begins) == True and mark_list == 1:
+                    w = w.replace(begins * new_mark_level, opening_parse + "<li>")
+                    new_output += w 
+                    
+            elif any(diff_back) == True:
+                old_mark_level = old_mark_level - new_mark_level
+                if w.startswith(begins) == True and mark_list == 1:
+                    w = w.replace(begins * new_mark_level, "</li>\n" * old_mark_level + closing_parse * old_mark_level + "<li>")
+                    new_output += w 
+                old_mark_level = new_mark_level
+                
+            elif new_mark_level == old_mark_level and new_mark_level > 0 and mark_list == 1:
+                if w.startswith(begins) == True:
+                    w = w.replace(begins * new_mark_level, "</li><li>")
+                    new_output += w 
+                
             else:
                 new_output += w
-            new_output += " \n"
-
-        return new_output
-
-    ### this function analyse lines per lines the whole markdown file ###
-    ### and search lists 2nd sub_levels ###
-    def per_list_2nd_level(self, sequence, begins, opening_parse, closing_parse):
-        mark_list = 0
-
-        analyse = sequence.splitlines()
-        new_output = ""
-
-        for w in analyse:                
-            if w.startswith(begins) == True and mark_list == 0:
-                w = w.replace(begins, opening_parse + "\n<li> ")
-                new_output += w + "</li> "
-                mark_list = 1
-            elif w.startswith(begins) == True and mark_list == 1:
-                w = w.replace(begins, "<li> ")
-                new_output += w + "</li> "
-            elif w.startswith(begins) == False and mark_list == 1:
-                mark_list = 0
-                w = closing_parse + w
-                new_output += w
-            else:
-                new_output += w
-            new_output += " \n"
-
+                
+            new_output += "\n"
+            
         return new_output
 
     ### this function analyse lines per lines the whole markdown file ###
@@ -501,7 +517,7 @@ class Valknut_gss_interface(Tk):
             self.footer_entry.delete(0, 10000)
 
     def generating(self):
-        srv = Survivaltool_gss()
+        srv = Valknut_gss()
         srv.file = self.source_entry.get()
         srv.feedback = 0
         srv.out_file = self.out_file_entry.get()
