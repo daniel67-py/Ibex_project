@@ -353,7 +353,7 @@
 ##### Classe principale, le point d'entrée pour l'utilisateur.
   La classe principale **Valknut_gss()** permet de créer un objet Valknut_gss et de lui définir le fichier à convertir (.file), le type de feedback (.feedback), le nom du fichier de sortir (.out_file), le titre de la page (.project_title), le contenu du header (.project_header), le contenu du footer (.project_footer) et le template à utiliser (.use_template). 
 
-  La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'auto_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de paragraphes, la présence de listes, la présence de triple splats pour mettre certains passage en gras et italique, la présence de double splats afin de mettre certains passages en gras, la présence de single splat pour mettre certains passages en italique. la présence de passage barré, la présence d'images puis de liens hypertext,  et pour finir, fait une indexation des titres balisés dans le corps du document (body), et récupère une liste de ces derniers pour les ajouter comme liens internes dans une colonne dédiée à cet effet (variable page_summary).
+  La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'auto_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de paragraphes, la présence de listes, la présence de triple splats pour mettre certains passage en gras et italique, la présence de double splats afin de mettre certains passages en gras, la présence de single splat pour mettre certains passages en italique. la présence de passage barré, la présence d'images puis de liens hypertext, et pour finir, fait une indexation des titres balisés dans le corps du document (body), et récupère une liste de ces derniers pour les ajouter comme liens internes dans une colonne dédiée à cet effet (variable page_summary).
 
   Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -. Valknut gère actuellement les listes standards avec un seul niveau inférieur de listes.
 
@@ -371,11 +371,12 @@
     ### titre en taille h3 à gauche de la page
     ## titre en taille h2 à gauche de la page
     # titre en taille h1 à gauche de la page
-    ------      6 tirets seuls sur une ligne permettent d'intégrer un séparateur
+    ------ 6 tirets seuls sur une ligne permettent d'intégrer un séparateur
     *** passage en gras et italique, doit être compris entre deux triple-splats ***
     ** passage en gras, doit être compris entre deux double-splats **
     * passage en italique, doit être compris entre deux single-splat *
-    ~~ passage barré, doit être compris entre ces deux symboles ~~
+    ~~ passage barré, doit être compris entre deux symboles d'approximation ~~
+    __ passage souligné, doit être compris entre deux double-underscore __
     + en début de ligne génère une liste numérotée
     ++ en début de ligne génère un sous-niveau de liste numérotée (la limite actuelle est à 15 niveaux)
     - en début de ligne génère une liste à puces
@@ -392,6 +393,7 @@
 #### Fonctions de la classe Valknut_gss.
 ##### Fonction détectant les titres et les séparateurs.
   La première fonction **per_lines(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut inserer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer avant le retour à la ligne. Elle est utilisée pour baliser les titres dans un document si elle trouve un sharp ou une suite de sharps au début d'une ligne et ne réagit qu'à cette condition.
+  Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page. 
 
 ##### Fonction détectant les exemple de codes / programmes.
   La seconde fonction **per_coding_example(sequence, number_of_spaces, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *number_of_spaces* précise le nombre d'espaces vides que la fonction doit trouver avant de réagir et déduire qu'il y a un exemple de code. Dans le script, j'ai posé quatres intervalles vides. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve une ligne qui débute par l'intervalle d'espaces libres spécifiés, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite d'un exemple de code.
@@ -400,11 +402,10 @@
   La troisième fonction **per_list(sequence, begins, opening_parse, closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *begins* précise le symbole à trouver au début d'une ligne et qui va générer une liste à puces ou une liste numérotée. Les arguments *opening_parse* et *closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve un début de liste, et quelle balise de fermeture il faut insérer quand la fonction va trouver une ligne vide à la suite de la liste. Valknut permet de faire une arborescence allant jusqu'à 15 niveaux (voir les fichiers essai.md et essai.html pour se faire une idée). Cependant il vaut mieux utiliser qu'un seul type de puces pour les arborescences complexes à plusieurs niveaux, sous peine de générer une ou plusieurs erreurs.
 
 ##### Fonction détectant la typographie.
-  La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat.
+  La quatrième fonction **per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)** analyse le texte (suite de caractères) passé dans l'argument *sequence*. L'argument *symbol_to_modify* précise le caractère ou la suite de caractères qu'il faut changer. Les arguments *replace_open_parse* et *replace_closing_parse* sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold), italique (italic), barrés (strikethrough) ou soulignés (underline) grâce aux divers caractères clés.
 
 ##### Notes concernant les listes et la typographie.
   Concernant **per_lines** et **per_emphasis** : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur. 
-  Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page.
 
 ##### Fonctions détectant les urls, les images et les emails.
   La cinquième fonction **per_links(sequence)** analyse le texte (suite de caractères) passé dans l'argument *sequence* et pose les liens hypertext.

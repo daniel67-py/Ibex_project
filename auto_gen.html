@@ -32,7 +32,7 @@
 
     <header id="home">
         <h1><center><i> 
-        Utilisation de Valknut version 0.1 pour Python 3.x
+        Valknut version 0.1 pour Python 3.x
         </i></center></h1>
     </header>
 
@@ -746,8 +746,7 @@ La classe principale <b>Valknut_gss()</b> permet de créer un objet Valknut_gss 
    
    
 <p>   
-La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'auto_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de paragraphes, la présence de listes, la présence de triple splats pour mettre certains passage en gras et italique, la présence de double splats afin de mettre certains passages en gras, la présence de single splat pour mettre certains passages en italique. la présence de passage barré, la présence d'images puis de liens hypertext,<p>   
-et pour finir, fait une indexation des titres balisés dans le corps du document (body), et récupère une liste de ces derniers pour les ajouter comme liens internes dans une colonne dédiée à cet effet (variable page_summary). </p>   
+La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'auto_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de paragraphes, la présence de listes, la présence de triple splats pour mettre certains passage en gras et italique, la présence de double splats afin de mettre certains passages en gras, la présence de single splat pour mettre certains passages en italique. la présence de passage barré, la présence d'images puis de liens hypertext, et pour finir, fait une indexation des titres balisés dans le corps du document (body), et récupère une liste de ces derniers pour les ajouter comme liens internes dans une colonne dédiée à cet effet (variable page_summary). </p>   
    
    
 <p>   
@@ -777,11 +776,12 @@ De façon simple, voilà comment poser les symboles dans votre fichier markdown 
     ### titre en taille h3 à gauche de la page   
     ## titre en taille h2 à gauche de la page   
     # titre en taille h1 à gauche de la page   
-    ------      6 tirets seuls sur une ligne permettent d'intégrer un séparateur   
+    ------ 6 tirets seuls sur une ligne permettent d'intégrer un séparateur   
     *** passage en gras et italique, doit être compris entre deux triple-splats ***   
     ** passage en gras, doit être compris entre deux double-splats **   
     * passage en italique, doit être compris entre deux single-splat *   
-    ~~ passage barré, doit être compris entre ces deux symboles ~~   
+    ~~ passage barré, doit être compris entre deux symboles d'approximation ~~   
+    __ passage souligné, doit être compris entre deux double-underscore __   
     + en début de ligne génère une liste numérotée   
     ++ en début de ligne génère un sous-niveau de liste numérotée (la limite actuelle est à 15 niveaux)   
     - en début de ligne génère une liste à puces   
@@ -806,6 +806,9 @@ La fonction principale utilise neuf autres fonctions afin de créer le balisage 
 <p>   
 La première fonction <b>per_lines(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. Les arguments <i>replace_open_parse</i> et <i>replace_closing_parse</i> sont utilisés pour préciser quelle balise d'ouverture il faut inserer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer avant le retour à la ligne. Elle est utilisée pour baliser les titres dans un document si elle trouve un sharp ou une suite de sharps au début d'une ligne et ne réagit qu'à cette condition. </p>   
    
+<p>   
+Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page.  </p>   
+   
    
 <h5 id='42'> Fonction détectant les exemple de codes / programmes.</h5>    
    
@@ -822,16 +825,13 @@ La troisième fonction <b>per_list(sequence, begins, opening_parse, closing_pars
 <h5 id='44'> Fonction détectant la typographie.</h5>    
    
 <p>   
-La quatrième fonction <b>per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. Les arguments <i>replace_open_parse</i> et <i>replace_closing_parse</i> sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold) ou italique (italic) grâce aux double-splats ou single-splat. </p>   
+La quatrième fonction <b>per_emphasis(sequence, symbol_to_modify, replace_open_parse, replace_closing_parse)</b> analyse le texte (suite de caractères) passé dans l'argument <i>sequence</i>. L'argument <i>symbol_to_modify</i> précise le caractère ou la suite de caractères qu'il faut changer. Les arguments <i>replace_open_parse</i> et <i>replace_closing_parse</i> sont utilisés pour préciser quelle balise d'ouverture il faut insérer au moment où la fonction trouve la première occurence du/des caractère(s), et quelle balise de fermeture il faut insérer à l'occurence suivante du/des caractère(s). Elle est utilisée pour baliser les passages en gras (bold), italique (italic), barrés (strikethrough) ou soulignés (underline) grâce aux divers caractères clés. </p>   
    
    
 <h5 id='45'> Notes concernant les listes et la typographie.</h5>    
    
 <p>   
 Concernant <b>per_lines</b> et <b>per_emphasis</b> : j'ai opté pour un fonctionnement de ce genre simplement pour pouvoir les utiliser séparemment, si j'ai besoin de rechercher/remplacer des séquences dans une suite de caractères ou un texte qui n'ont rien à voir avec le balisage markdown, dans un projet futur.  </p>   
-   
-<p>   
-Il faut savoir aussi que le programme fait une indexation automatique des titres du document, et récupère ces derniers pour générer automatiquement des liens internes qui seront placés par défaut dans une colonne à gauche de la page. </p>   
    
    
 <h5 id='46'> Fonctions détectant les urls, les images et les emails.</h5>    
@@ -886,13 +886,13 @@ Merci de respecter le travail fourni ici, et l'origine de celui-ci. Merci égale
 <p>   
 Daniel. Juillet 2020. </p>   
    
-       
+        
 
         </body>
 
         <footer>
             <p><center><i>
-            Programme sous license - Juillet 2020
+            programme sous license - juillet 2020
             </i></center></p>
         </footer>
 

@@ -68,6 +68,8 @@ class Valknut_gss:
         contain = self.per_emphasis(contain, "*", "<i>", "</i>")
         print("searching for strikethrough quote")
         contain = self.per_emphasis(contain, "~~", "<s>", "</s>")
+        print("searching for underlines")
+        contain = self.per_emphasis(contain, "__", "<u>", "</u>")
         print("searching for pictures")
         contain = self.per_images(contain)
         print("searching for urls")
