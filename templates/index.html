@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <!--[if lt IE 9]>
+	    <script
+	    src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+	    </script>
+	    <![endif]-->
+            <meta charset="UTF-8">
+            <title> {{ page_title }} </title>
+    <style type="text/css">
+        header {font-size: 35px; }
+        body   {margin-right: 250px; margin-left: 250px; text-align: justify; }
+        footer {font-size: 12px; }
+        foot   {font-size: 12px; }
+        
+        h1  {font-size: 35px; }
+        h2  {font-size: 30px; }
+        h3  {font-size: 25px; }
+        h4  {font-size: 20px; }
+        h5  {font-size: 15px; }
+        h6  {font-size: 12px; }
+        p   {font-size: 12px; }
+        li  {font-size: 12px; }
+        pre {overflow-x: auto; background: #FFA500; border: 2px solid black; }
+    </style>
+    </head>
+
+    <header id="home">
+        <h1><center><i> 
+        {{ page_header }}
+        </i></center></h1>
+    </header>
+
+    <body>
+        {{ page_contains }}
+
+        <ol>
+        {% for x in page_index %}
+            <li><a href="{{ x }}">{{ x }}</a></li>
+        {% endfor %}
+        </ol>
+    </body>
+
+    <footer>
+        <p><center><i>
+        {{ page_footer }}
+        </i></center></p>
+    </footer>
+
+    <foot>
+    <p><center> 
+main index static page in html<br>
+generated with Valknut_gss for Python 3.x  -  July 2020  - Daniel Meyer <br>
+to know more about this project, please follow this link :<br>
+<a href = "http://www.github.com/daniel67-py/Ibex_project">Daniel's Valknut Open Source Project</a><br>
+    </center></p>
+    </foot>
+
+</html>
