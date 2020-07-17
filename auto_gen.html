@@ -8,26 +8,25 @@
 	    <![endif]-->
             <meta charset="UTF-8">
             <title> Valknut 0.1 </title>
-    <style type="text/css">
-        #column1 {float: left; width: 30%; table-layout: fixed; padding: 5px; text-align: justify; font-size: 12px; border: 2px solid black; 
-                  margin-right: 2px; margin-left: 2px; }
-        #column2 {float: right; width: 60%; padding: 5px; text-align: justify; }
+            <style type="text/css">
+                #column1 {float: left; width: 30%; table-layout: fixed; padding: 5px; text-align: justify; font-size: 12px; border: 2px solid black; margin-right: 2px; margin-left: 2px; }
+                #column2 {float: right; width: 60%; padding: 5px; text-align: justify; }
 
-        header {font-size: 35px; }
-        body   {margin-right: 50px; margin-left: 50px; text-align: justify; }
-        footer {font-size: 12px; }
-        foot   {font-size: 12px; }
+                header {font-size: 35px; }
+                body   {margin-right: 50px; margin-left: 50px; text-align: justify; }
+                footer {font-size: 12px; }
+                foot   {font-size: 12px; }
         
-        h1  {font-size: 35px; }
-        h2  {font-size: 30px; }
-        h3  {font-size: 25px; }
-        h4  {font-size: 20px; }
-        h5  {font-size: 15px; }
-        h6  {font-size: 12px; }
-        p   {font-size: 12px; }
-        li  {font-size: 12px; }
-        pre {overflow-x: auto; background: #FFA500; border: 2px solid black; }
-    </style>
+                h1  {font-size: 35px; }
+                h2  {font-size: 30px; }
+                h3  {font-size: 25px; }
+                h4  {font-size: 20px; }
+                h5  {font-size: 15px; }
+                h6  {font-size: 12px; }
+                p   {font-size: 12px; }
+                li  {font-size: 12px; }
+                pre {overflow-x: auto; background: #FFA500; border: 2px solid black; }
+            </style>
     </head>
 
     <header id="home">
@@ -39,17 +38,17 @@
     <div id="column1">
         <p><center><b>Liens internes.</b></center></p>
         
-            <a href='#0'> Valknut 0.1.001  -  GSS & SQLite3 manager</a><br> <br>
+            <a href='#0'> Valknut 0.1.001  - WSGI Local Server, GSS & SQLite3 manager</a><br> <br>
         
             <a href='#1'> Sommaire.</a><br> <br>
         
-            <a href='#2'> Présentation du module Valknut et utilité.</a><br> <br>
+            <a href='#2'> Présentation de la classe Valknut_sqlite et utilité.</a><br> <br>
         
-            <a href='#3'> Fonctions du module Valknut.</a><br> <br>
+            <a href='#3'> Fonctions de la classe Valknut_sqlite.</a><br> <br>
         
-            <a href='#4'> Valknut_new(database)</a><br> <br>
+            <a href='#4'> Valknut_sqlite_New(database)</a><br> <br>
         
-            <a href='#5'> Valknut(database)</a><br> <br>
+            <a href='#5'> Valknut_sqlite(database)</a><br> <br>
         
             <a href='#6'> .new_table(table, columns)</a><br> <br>
         
@@ -144,7 +143,7 @@
     <div id="column2">
 
         <body>
-            <h2 id='0'> Valknut 0.1.001  -  GSS & SQLite3 manager</h2>    
+            <h2 id='0'> Valknut 0.1.001  - WSGI Local Server, GSS & SQLite3 manager</h2>    
    
 <p>   
 Développé pour Python3 par Meyer Daniel, Juillet 2020 </p>   
@@ -160,9 +159,9 @@ pour m'écrire : <a href = "mailto:meyer.daniel67@protonmail.com">meyer.daniel67
     
 <h4 id='1'> Sommaire.</h4>    
    
-<ol><li> Présentation du module Valknut et utilité.   
-</li><li> Fonctions du module Valknut.   
-</li><li> Exemple d'utilisation de Valknut.   
+<ol><li> Présentation de la classe Valknut_sqlite et utilité.   
+</li><li> Fonctions de la classe Valknut_sqlite.   
+</li><li> Exemple d'utilisation de Valknut_sqlite.   
 </li><li> Présentation de la classe Valknut_gss et utilité.   
 </li><li> Fonction principale et syntaxes d'utilisation.   
 </li><li> Fonctions de la classe Valknut_gss   
@@ -170,10 +169,10 @@ pour m'écrire : <a href = "mailto:meyer.daniel67@protonmail.com">meyer.daniel67
    
    
     
-<h4 id='2'> Présentation du module Valknut et utilité.</h4>    
+<h4 id='2'> Présentation de la classe Valknut_sqlite et utilité.</h4>    
    
 <p>   
-Le module Valknut pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour la classe Valknut_gss mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage.  </p>   
+Le module Valknut pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour les classe Valknut_gss et Valknut_Server mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage.  </p>   
    
 <p>   
 Son appel depuis un script Python se fait simplement, en utilisant 'from <i>x</i> import ...': </p>   
@@ -199,24 +198,24 @@ Au cas où vous n'avez pas encore Jinja2 intégré dans votre Python, installez 
  </code></pre>   
    
 <p>   
-Il est ensuite possible de créer un objet Valknut et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL. Par exemple: mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL. Cependant, Valknut contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine. </p>   
+Il est ensuite possible de créer un objet Valknut_sqlite et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL. Par exemple: la classe de mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL. Cependant, Valknut contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine. </p>   
    
    
 <hr />   
     
-<h4 id='3'> Fonctions du module Valknut.</h4>    
+<h4 id='3'> Fonctions de la classe Valknut_sqlite.</h4>    
    
    
-<h5 id='4'> Valknut_new(database)</h5>    
+<h5 id='4'> Valknut_sqlite_New(database)</h5>    
    
 <p>   
 Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument <i>database</i> . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier disponible. </p>   
    
    
-<h5 id='5'> Valknut(database)</h5>    
+<h5 id='5'> Valknut_sqlite(database)</h5>    
    
 <p>   
-Cette fonction permet d'initier un objet Valknut en faisant appel au fichier passé par l'argument <i>database</i> . Il signale à l'utilisateur si la connection à la base de données est opérationnelle ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module : </p>   
+Cette fonction permet d'initier un objet Valknut_sqlite en faisant appel au fichier passé par l'argument <i>database</i> . Il signale à l'utilisateur si la connection à la base de données est opérationnelle ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module : </p>   
    
    
  <pre><code>   
@@ -478,7 +477,7 @@ Création d'une nouvelle base de données : </p>
    
    
  <pre><code>   
-    >>> a = Valknut_new('exemple.db')   
+    >>> a = Valknut_sqlite_New('exemple.db')   
     ### Valknut - SQLite3 manager ###   
     ...verification if access path to file is ok... True   
     ...verification if path is a valid file... True   
@@ -490,7 +489,7 @@ Accès à ma nouvelle base de données : </p>
    
    
  <pre><code>   
-    >>> a = Valknut('exemple.db')   
+    >>> a = Valknut_sqlite('exemple.db')   
     ### Valknut - SQLite3 manager ###   
     ...verification if access path to file is ok... True   
     ...verification if path is a valid file... True   
@@ -703,7 +702,7 @@ Voilà pour l'aperçu rapide des fonctions. </p>
 <h4 id='38'> Présentation de la classe Valknut_gss et utilité.</h4>    
    
 <p>   
-Voilà ici un script basique de mon convertisseur basé sur le markdown en Python. Il est assez simple d'utilisation et me permet de générer une ou plusieurs pages standards html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module. Pour l'intégrer dans vos programmes et scripts Python, il suffit de l'importer comme ceci: </p>   
+Voilà ici un script basique de mon convertisseur basé sur le markdown, en Python. Il est assez simple d'utilisation et me permet de générer une ou plusieurs pages standards html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module. Pour l'intégrer dans vos programmes et scripts Python, il suffit de l'importer comme ceci: </p>   
    
    
  <pre><code>   
@@ -711,7 +710,10 @@ Voilà ici un script basique de mon convertisseur basé sur le markdown en Pytho
  </code></pre>   
    
 <p>   
-Ce script se sert également de fichiers templates au choix en html. Il y en a trois de disponible dans le dossier /templates. Ils contiennent chacun jusqu'à cinq entrées remplissables par Jinja selon le template. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) selon le modèle, et le cinquième permet de remplir le header (page_header). J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante : </p>   
+Ce script se sert également de fichiers templates au choix en html. Il y en a trois de disponible dans le dossier /templates. Ils contiennent chacun jusqu'à cinq entrées remplissables par Jinja selon le template. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) selon le modèle, et le cinquième permet de remplir le header (page_header). Il y a également une quatrième template nommé 'index.html' qui est utilisé par la classe Valknut_Server et qui permet à cette dernière de générer la page de la racine du server. Elle contient une entrée spécifique (page_index) qui retourne par défaut une liste des fichiers markdowns disponibles dans le dossier /container. Pour plus d'info, voir la documentation de la classe Valknut_Server. </p>   
+   
+<p>   
+J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante : </p>   
    
    
  <pre><code>   
@@ -784,8 +786,10 @@ De façon simple, voilà comment poser les symboles dans votre fichier markdown 
     __ passage souligné, doit être compris entre deux double-underscore __   
     + en début de ligne génère une liste numérotée   
     ++ en début de ligne génère un sous-niveau de liste numérotée (la limite actuelle est à 15 niveaux)   
+    +++ etc...   
     - en début de ligne génère une liste à puces   
     -- en début de ligne génère un sous-niveau de liste à puces (la limite actuelle est à 15 niveaux)   
+    --- etc...   
     [lien vers un site](http://www.adresse_du_site.com)  pour intégrer un lien vers un site   
     ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image   
     [adresse.messagerie@email.com]  pour intégrer un lien vers un mail   
@@ -892,7 +896,7 @@ Daniel. Juillet 2020. </p>
 
         <footer>
             <p><center><i>
-            programme sous license - juillet 2020
+            programme sous licence - juillet 2020 - Daniel Meyer
             </i></center></p>
         </footer>
 
