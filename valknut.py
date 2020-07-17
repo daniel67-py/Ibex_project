@@ -46,43 +46,43 @@ class Valknut_gss:
         with open(self.file, 'r') as source:
             contain = source.read()
         ### analysing the document ###
-        print("searching for h6 to h1 titles")
+        #print("searching for h6 to h1 titles")
         contain = self.per_lines(contain, "######", "<h6>", "</h6> \n")
         contain = self.per_lines(contain, "#####", "<h5>", "</h5> \n")
         contain = self.per_lines(contain, "####", "<h4>", "</h4> \n")
         contain = self.per_lines(contain, "###", "<h3>", "</h3> \n")
         contain = self.per_lines(contain, "##", "<h2>", "</h2> \n")
         contain = self.per_lines(contain, "#", "<h1>", "</h1> \n")
-        print("searching for separators")
+        #print("searching for separators")
         contain = self.per_lines(contain, "------", "<hr />", "\n ")
-        print("searching for code examples")
+        #print("searching for code examples")
         contain = self.per_coding_example(contain, "    ", " <pre><code>\n    ", " </code></pre>\n")
-        print("searching for paragraphs")
+        #print("searching for paragraphs")
         contain = self.per_lines(contain, "  ", "<p>\n", " </p>\n")
-        print("searching for lists")
+        #print("searching for lists")
         contain = self.per_list(contain, "+", "<ol>", "</ol>\n")
         contain = self.per_list(contain, "-", "<ul>", "</ul>\n")
-        print("searching for triple splat bold and italic quote")
+        #print("searching for triple splat bold and italic quote")
         contain = self.per_emphasis(contain, "***", "<b><i>", "</i></b>")
-        print("searching for double splat bold quote")
+        #print("searching for double splat bold quote")
         contain = self.per_emphasis(contain, "**", "<b>", "</b>")
-        print("searching for single splat italic quote")
+        #print("searching for single splat italic quote")
         contain = self.per_emphasis(contain, "*", "<i>", "</i>")
-        print("searching for strikethrough quote")
+        #print("searching for strikethrough quote")
         contain = self.per_emphasis(contain, "~~", "<s>", "</s>")
-        print("searching for underlines")
+        #print("searching for underlines")
         contain = self.per_emphasis(contain, "__", "<u>", "</u>")
-        print("searching for pictures")
+        #print("searching for pictures")
         contain = self.per_images(contain)
-        print("searching for urls")
+        #print("searching for urls")
         contain = self.per_links(contain)
-        print("searching for emails adresses")
+        #print("searching for emails adresses")
         contain = self.per_mails(contain)
-        print("indexing the document's titles")
+        #print("indexing the document's titles")
         contain = self.indexer(contain)
-        print("extracting the links to intern chapters")
+        #print("extracting the links to intern chapters")
         doc_chapter = self.chapter(contain)
-        print("saving the output result into .html")
+        #print("saving the output result into .html")
         ### and there comes the output, if feedback = 0, it gives a html ###
         ### other case, it return directly the result ###
         if self.feedback == 0:         
@@ -451,23 +451,44 @@ class Valknut_Server():
         self.port = port
         self.environ = ''
         self.contain = []
+        self.deserve = []
 
-    ### this is the main application of the server ###
+    ### transmission function is here to fill the deserve variable ###
+    def transmission(self, **from_gss):
+        self.deserve.append({
+            "path": from_gss.get('path'),
+            "contains": from_gss.get('contains'),
+            })
+        self.contain.append(from_gss.get('path'))
+
+    ### container_check is here to get the filenames into the container folder ###
+    def container_check(self):
+        ### formating for the filenames, adding '/' in front of them ###
+        adding = os.listdir('container')
+        for x in range(0, len(adding)):
+            adding[x] = "/" + adding[x]
+        
+        self.contain += adding
+                                  
+    ### this is the application of the server ###
+    ### it deserve the files of the container folder ###
+    ### and deserve the pages defined by the user in his program ###
     def app(self, environ, start_response):
-        
-        ### take the 'environ' variables ###
+        ### first, take the 'environ' variables ###
         self.environ = environ
-        
-        ### check the present files in the container folder ###
-        self.contain = os.listdir('container')
-        
-        ### a little bit of formating for the filenames, adding / in front of them ###
-        for x in range(0, len(self.contain)):
-            self.contain[x] = "/" + self.contain[x]
-            
-        ### so, if you want a 'debuging' environment ###
+
+        ### then, if you want a 'debuging' environment ###
         if self.debuging == True:
             self.debug_environment()
+               
+        ### if the request is defined by user in his program ###
+        for x in range(0, len(self.deserve)):
+            if environ['PATH_INFO'] == self.deserve[x]["path"]:
+                status = '200 OK'
+                headers = [('Content-type', 'text/plain; charset=utf-8')]
+                start_response(status, headers)
+                ret = [self.deserve[x]["contains"].encode("utf-8")]
+                return ret
             
         ### if the request is the root of the server ###
         if environ['PATH_INFO'] == '/':
@@ -481,7 +502,6 @@ class Valknut_Server():
             main_page.project_header = "Valknut Root Index Page"
             main_page.project_footer = "Valknut is under licence - July 2020 - Daniel Meyer"
             main_page.project_index = self.contain
-            print(main_page.project_index)
             main_page.feedback = 1
             gss_ret = main_page.generate()
             ret = [gss_ret.encode("utf-8")]
@@ -504,7 +524,7 @@ class Valknut_Server():
             ret = [gss_ret.encode("utf-8")]
             return ret
         
-        ### in case of mistake, return a short message ###
+        ### in case of mistake, return an error page ###
         else:
             status = '200 OK'
             headers = [('Content-type', 'text/plain; charset=utf-8')]
@@ -537,6 +557,10 @@ class Valknut_Server():
 
     ### the server function, is just a simple make_server from wsgiref.simple_server module ###
     def serve_now(self):
+        ### first of all, fill the contain variables with the path to the files ###
+        ### in the container folder ###
+        self.container_check()
+        ### and then, start the server ###
         with make_server('', self.port, self.app) as httpd:
             print("".zfill(100))
             print("0" + f"Valknut is serving on port {self.port}...".center(98) + "0")
@@ -547,7 +571,7 @@ class Valknut_Server():
                 print("0" + "Debug_environment is desactivated.".center(98) + "0")
             print("".zfill(100))
 
-            ### handling the server ###
+            ### handling closure for the server ###
             try:
                 httpd.serve_forever()
             except KeyboardInterrupt:
