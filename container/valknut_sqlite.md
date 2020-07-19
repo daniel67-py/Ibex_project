@@ -14,7 +14,7 @@
   Le module Valknut pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour les classe Valknut_gss et Valknut_Server mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage. 
   Son appel depuis un script Python se fait simplement, en utilisant 'from *x* import ...':
 
-    >>> from valknut import *
+    >>> from valknut_sqlite import *
 
   Il est possible également de l'utiliser en l'exécutant directement tel un programme.
 
@@ -326,7 +326,9 @@
 
 ------
 #### Mot de fin.
-  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut et Valknut_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut_sqlite, Valknut_gss et Valknut_Server. Des modifications vont suivre pour améliorer son fonctionnement. Je tiens à préciser que j'ai monté ce projet en partant de zéro, juste par passion d'essayer de comprendre comment tout ceci peut fonctionner, par challenge personnel, et par envie de reconversion professionnelle. Je précise également que je suis auto-didacte en programmation et que je n'ai aucun cursus scolaire lié à cette activité (à la base je suis technicien usineur/tourneur-fraiseur, niveau bac, travaillant en usine depuis presque vingt ans). 
+
+  Je pose ici mes modules en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85

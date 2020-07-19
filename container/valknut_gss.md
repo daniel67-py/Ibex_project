@@ -13,7 +13,7 @@
 #### Présentation de la classe Valknut_gss et utilité.
   Voilà ici un script basique de mon convertisseur basé sur le markdown, en Python. Il est assez simple d'utilisation et me permet de générer une ou plusieurs pages standards html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module. Pour l'intégrer dans vos programmes et scripts Python, il suffit de l'importer comme ceci:
 
-    >>> from valknut import *
+    >>> from valknut_gss import *
 
   Ce script se sert également de fichiers templates au choix en html. Il y en a trois de disponible dans le dossier /templates. Ils contiennent chacun jusqu'à cinq entrées remplissables par Jinja selon le template. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) selon le modèle, et le cinquième permet de remplir le header (page_header). Il y a également une quatrième template nommé 'index.html' qui est utilisé par la classe Valknut_Server et qui permet à cette dernière de générer la page de la racine du server. Elle contient une entrée spécifique (page_index) qui retourne par défaut une liste des fichiers markdowns disponibles dans le dossier /container. Pour plus d'info, voir la documentation de la classe Valknut_Server.
   J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
@@ -105,9 +105,18 @@
 ##### Fonction de récupération des titres.
   La neuvième fonction **chapter(sequence)** analyse le texte passé dans l'argument *sequence* et récupère le contenu des balises de titres du document. Ceci est la seule fonction qui ne modifie pas le document final, elle ne s'occupe que de collecter les données relatives aux titres et leur numéro d'index afin de créer et retourner une liste de liens internes, qui sera intégrée dans le rendu final (à condition bien sûr d'utiliser l'un des deux templates que j'ai mis à disposition, ou d'en créer un qui tient compte de ce paramètre).
 
+#### Classe spéciale Valknut_gss_interface.
+  Une classe un peu spéciale se trouve intégrée dans le module Valknut_gss. Cette dernière permet d'afficher une petite fenêtre graphique utilisant Tkinter et permettant de générer des fichiers html en lui spécifiant le fichier markdown source, et permet également de renseigner le texte du header, du footer, le titre de la page, le template à utiliser, et le nom du fichier de sortie dans lequel enregistrer le résultat. Son appel se fait assez basiquement, en créant un objet dans un shell Python :
+
+    >>> i = Valknut_gss_interface()
+
+  Ceci permet de manipuler les fichiers html et markdown plus facilement, mais de façon unitaire cependant.
+
 ------
 #### Mot de fin.
-  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut et Valknut_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut_sqlite, Valknut_gss et Valknut_Server. Des modifications vont suivre pour améliorer son fonctionnement. Je tiens à préciser que j'ai monté ce projet en partant de zéro, juste par passion d'essayer de comprendre comment tout ceci peut fonctionner, par challenge personnel, et par envie de reconversion professionnelle. Je précise également que je suis auto-didacte en programmation et que je n'ai aucun cursus scolaire lié à cette activité (à la base je suis technicien usineur/tourneur-fraiseur, niveau bac, travaillant en usine depuis presque vingt ans). 
+
+  Je pose ici mes modules en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85

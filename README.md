@@ -11,13 +11,16 @@
 + Présentation de la classe Valknut_gss et utilité.
 + Fonction principale et syntaxes d'utilisation.
 + Fonctions de la classe Valknut_gss
++ Présentation de la classe Valknut_Server et utilité.
++ Fonctions de la classe Valknut_Server.
++ Exemple d'utilisation de Valknut_Server.
 
 ------
 #### Présentation de la classe Valknut_sqlite et utilité.
   Le module Valknut pour Python 3 est un framework permettant d'utiliser une base de données de type SQLite3 facilement en économisant des lignes de codes et donc de gagner du temps en intégrant plus facilement ce type de bases dans vos projets et programmes en Python. Il utilise le moteur de template Jinja2 pour les classe Valknut_gss et Valknut_Server mais pour le reste, il est autonome et n'utilise que des librairies intégrées nativement dans le langage. 
   Son appel depuis un script Python se fait simplement, en utilisant 'from *x* import ...':
 
-    >>> from valknut import *
+    >>> from valknut_sqlite import *
 
   Il est possible également de l'utiliser en l'exécutant directement tel un programme.
 
@@ -331,7 +334,7 @@
 #### Présentation de la classe Valknut_gss et utilité.
   Voilà ici un script basique de mon convertisseur basé sur le markdown, en Python. Il est assez simple d'utilisation et me permet de générer une ou plusieurs pages standards html sans trop de fioritures très rapidement. Je l'ai créé pour mon utilisation personnel, et il ne respecte pas totalement les règles du markdown. Certaines sont identiques, d'autres sont propres à ce module. Pour l'intégrer dans vos programmes et scripts Python, il suffit de l'importer comme ceci:
 
-    >>> from valknut import *
+    >>> from valknut_gss import *
 
   Ce script se sert également de fichiers templates au choix en html. Il y en a trois de disponible dans le dossier /templates. Ils contiennent chacun jusqu'à cinq entrées remplissables par Jinja selon le template. La première est le titre de la page (page_title), la seconde son contenu (page_contains), le troisième est le footer de la page (page_footer), la quatrième remplie automatiquement le sommaire de la colonne à gauche de la page type (page_summary) selon le modèle, et le cinquième permet de remplir le header (page_header). Il y a également une quatrième template nommé 'index.html' qui est utilisé par la classe Valknut_Server et qui permet à cette dernière de générer la page de la racine du server. Elle contient une entrée spécifique (page_index) qui retourne par défaut une liste des fichiers markdowns disponibles dans le dossier /container. Pour plus d'info, voir la documentation de la classe Valknut_Server.
   J'ai décidé d'intégrer la dernière version du moteur de templates Jinja2 afin de me simplifier la tache en générant des fichiers statiques tout en utilisant des modèles déjà définis. Il est possible de rajouter des marqueurs Jinja2 directement dans votre fichier markdown, si vous bossez strictement dans un environnement Python et que vous souhaitez créer des pages web dynamiques. Si il n'est pas encore intégré à votre Python, installez le de la manière suivante :
@@ -423,9 +426,79 @@
 ##### Fonction de récupération des titres.
   La neuvième fonction **chapter(sequence)** analyse le texte passé dans l'argument *sequence* et récupère le contenu des balises de titres du document. Ceci est la seule fonction qui ne modifie pas le document final, elle ne s'occupe que de collecter les données relatives aux titres et leur numéro d'index afin de créer et retourner une liste de liens internes, qui sera intégrée dans le rendu final (à condition bien sûr d'utiliser l'un des deux templates que j'ai mis à disposition, ou d'en créer un qui tient compte de ce paramètre).
 
+#### Classe spéciale Valknut_gss_interface.
+  Une classe un peu spéciale se trouve intégrée dans le module Valknut_gss. Cette dernière permet d'afficher une petite fenêtre graphique utilisant Tkinter et permettant de générer des fichiers html en lui spécifiant le fichier markdown source, et permet également de renseigner le texte du header, du footer, le titre de la page, le template à utiliser, et le nom du fichier de sortie dans lequel enregistrer le résultat. Son appel se fait assez basiquement, en créant un objet dans un shell Python :
+
+    >>> i = Valknut_gss_interface()
+
+  Ceci permet de manipuler les fichiers html et markdown plus facilement, mais de façon unitaire cependant.
+
+------
+
+#### Présentation de la classe Valknut_Server et utilité.
+  Valknut intègre un module qui permet de créer un serveur WSGI (Web Service Gateway Interface) et ainsi de générer un petit serveur en réseau local. Ne pas l'utiliser comme serveur de production car il est vraiment très basique et permet surtout de vérifier le rendu d'un projet utilisant Valknut. Pour l'importer :
+
+    >>> from valknut_server import *
+
+  Il utilise la bibliothèque wsgiref intégrée dans Python 3 nativement, et utilise le module Valknut_gss pour afficher ses propres pages. De ce fait, Jinja2 se trouve chargé également car utilisé dans le module Valknut_gss. 
+
+#### Fonctions de la classe Valknut_Server().
+  Par défaut, son mode de débogage est désactivé et le port d'émission est le 8008. Pour l'utiliser, il suffit de créer un objet.
+
+    >>> s = Valknut_Server()
+
+  Pour utiliser le mode de débogage ou non, il suffit de spécifier à cet objet True pour l'activer, False pour de désactiver :
+
+    >>> s.debuging = True ( ou False )
+
+  Il est possible également de changer le port de communication, comme ceci :
+
+    >>> s.port = 7777 ( ou n'importe quel nombre entier compris entre 1024 et 65535 )
+
+  Pour lancer le serveur, il suffit de taper la commande suivante :
+
+    >>> s.serve_now()
+
+  Et le programme se lance... Pour l'arrêter, il suffira d'appuyer sur la combinaison de touches Ctrl+C dans le shell Python le concernant. De base, il mettra automatiquement en ligne les fichiers markdown se trouvant dans le dossier /container et affichera la liste des documents consultables si vous tapez dans la bar d'url de votre navigateur : localhost:8008/ .
+  Si tout se passe bien, un message apparaîtra à cette page, et une liste si votre dossier contient quelquechose. De base, la documentation de Valknut se trouve dedans.
+  Il est possible également de lui définir des pages manuellements grâce à la fonction .transmission . Elle s'utilise de cette manière:
+
+    >>> s.transmission(path = "/salut", contains = "Hello world et salut à tous !")
+
+  Ce qui aura pour effet de créer un embranchement sur localhost:8008/salut qui retournera le message passé ici dans l'argument *contains*. L'argument *path* définissant quant à lui le chemin de l'embranchement.
+
+#### Exemple d'utilisation de la classe Valknut_Server().
+  Voici un petit exemple rapide pour donner une idée de ce qu'il est possible de faire. Je vais créer un petit serveur. Il suffit de lancer le shell Python et de lui donner quelques instructions :
+
+    >>> from valknut_server import *
+    >>> s = Valknut_Server()
+    >>> s.transmission(path = "/salut", contains = "Salut à tous !")
+    >>> s.transmission(path = "/hello", contains = "Hello world !")
+    >>> s.serve_now()
+
+  Ces quelques instructions vont générer un serveur. Une fois lancée, allez dans votre navigateur et tapez dans la bar d'url : 
+
+    localhost:8008/salut
+
+  Le message propre à cette page apparaît.
+  Ensuite, allez à l'url suivante :
+
+    localhost:8008/hello
+
+  Le message propre à cette page apparaît également.
+  Si vous tapez un mauvais url, Valknut va afficher une petite page d'erreur disant qu'il ne connait pas ce chemin. Et si vous tapez simplement :
+
+    localhost:8008/
+
+  Une page de base va apparaître faisant la liste des documents disponibles dans le dossier 'container'.
+  
+  Et voilà.
+
 ------
 #### Mot de fin.
-  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut et Valknut_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
+  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut_sqlite, Valknut_gss et Valknut_Server. Des modifications vont suivre pour améliorer son fonctionnement. Je tiens à préciser que j'ai monté ce projet en partant de zéro, juste par passion d'essayer de comprendre comment tout ceci peut fonctionner, par challenge personnel, et par envie de reconversion professionnelle. Je précise également que je suis auto-didacte en programmation et que je n'ai aucun cursus scolaire lié à cette activité (à la base je suis technicien usineur/tourneur-fraiseur, niveau bac, travaillant en usine depuis presque vingt ans). 
+
+  Je pose ici mes modules en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
     email : meyer.daniel67@protonmail.com
     telegram : @Daniel_85

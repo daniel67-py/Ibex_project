@@ -136,7 +136,15 @@
         
             <a href='#48'> Fonction de récupération des titres.</a><br> <br>
         
-            <a href='#49'> Mot de fin.</a><br> <br>
+            <a href='#49'> Classe spéciale Valknut_gss_interface.</a><br> <br>
+        
+            <a href='#50'> Présentation de la classe Valknut_Server et utilité.</a><br> <br>
+        
+            <a href='#51'> Fonctions de la classe Valknut_Server().</a><br> <br>
+        
+            <a href='#52'> Exemple d'utilisation de la classe Valknut_Server().</a><br> <br>
+        
+            <a href='#53'> Mot de fin.</a><br> <br>
         
     </div>
 
@@ -165,6 +173,9 @@ pour m'écrire : <a href = "mailto:meyer.daniel67@protonmail.com">meyer.daniel67
 </li><li> Présentation de la classe Valknut_gss et utilité.   
 </li><li> Fonction principale et syntaxes d'utilisation.   
 </li><li> Fonctions de la classe Valknut_gss   
+</li><li> Présentation de la classe Valknut_Server et utilité.   
+</li><li> Fonctions de la classe Valknut_Server.   
+</li><li> Exemple d'utilisation de Valknut_Server.   
 </ol>   
    
    
@@ -179,7 +190,7 @@ Son appel depuis un script Python se fait simplement, en utilisant 'from <i>x</i
    
    
  <pre><code>   
-    >>> from valknut import *   
+    >>> from valknut_sqlite import *   
  </code></pre>   
    
 <p>   
@@ -706,7 +717,7 @@ Voilà ici un script basique de mon convertisseur basé sur le markdown, en Pyth
    
    
  <pre><code>   
-    >>> from valknut import *   
+    >>> from valknut_gss import *   
  </code></pre>   
    
 <p>   
@@ -868,12 +879,153 @@ Notez que l'id de la balise header est automatiquement 'home' si vous utilisez l
 La neuvième fonction <b>chapter(sequence)</b> analyse le texte passé dans l'argument <i>sequence</i> et récupère le contenu des balises de titres du document. Ceci est la seule fonction qui ne modifie pas le document final, elle ne s'occupe que de collecter les données relatives aux titres et leur numéro d'index afin de créer et retourner une liste de liens internes, qui sera intégrée dans le rendu final (à condition bien sûr d'utiliser l'un des deux templates que j'ai mis à disposition, ou d'en créer un qui tient compte de ce paramètre). </p>   
    
    
-<hr />   
-    
-<h4 id='49'> Mot de fin.</h4>    
+<h4 id='49'> Classe spéciale Valknut_gss_interface.</h4>    
    
 <p>   
-Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut et Valknut_gss. Des modifications vont suivre pour améliorer son fonctionnement. Je les posent ici en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram. </p>   
+Une classe un peu spéciale se trouve intégrée dans le module Valknut_gss. Cette dernière permet d'afficher une petite fenêtre graphique utilisant Tkinter et permettant de générer des fichiers html en lui spécifiant le fichier markdown source, et permet également de renseigner le texte du header, du footer, le titre de la page, le template à utiliser, et le nom du fichier de sortie dans lequel enregistrer le résultat. Son appel se fait assez basiquement, en créant un objet dans un shell Python : </p>   
+   
+   
+ <pre><code>   
+    >>> i = Valknut_gss_interface()   
+ </code></pre>   
+   
+<p>   
+Ceci permet de manipuler les fichiers html et markdown plus facilement, mais de façon unitaire cependant. </p>   
+   
+   
+<hr />   
+    
+   
+<h4 id='50'> Présentation de la classe Valknut_Server et utilité.</h4>    
+   
+<p>   
+Valknut intègre un module qui permet de créer un serveur WSGI (Web Service Gateway Interface) et ainsi de générer un petit serveur en réseau local. Ne pas l'utiliser comme serveur de production car il est vraiment très basique et permet surtout de vérifier le rendu d'un projet utilisant Valknut. Pour l'importer : </p>   
+   
+   
+ <pre><code>   
+    >>> from valknut_server import *   
+ </code></pre>   
+   
+<p>   
+Il utilise la bibliothèque wsgiref intégrée dans Python 3 nativement, et utilise le module Valknut_gss pour afficher ses propres pages. De ce fait, Jinja2 se trouve chargé également car utilisé dans le module Valknut_gss.  </p>   
+   
+   
+<h4 id='51'> Fonctions de la classe Valknut_Server().</h4>    
+   
+<p>   
+Par défaut, son mode de débogage est désactivé et le port d'émission est le 8008. Pour l'utiliser, il suffit de créer un objet. </p>   
+   
+   
+ <pre><code>   
+    >>> s = Valknut_Server()   
+ </code></pre>   
+   
+<p>   
+Pour utiliser le mode de débogage ou non, il suffit de spécifier à cet objet True pour l'activer, False pour de désactiver : </p>   
+   
+   
+ <pre><code>   
+    >>> s.debuging = True ( ou False )   
+ </code></pre>   
+   
+<p>   
+Il est possible également de changer le port de communication, comme ceci : </p>   
+   
+   
+ <pre><code>   
+    >>> s.port = 7777 ( ou n'importe quel nombre entier compris entre 1024 et 65535 )   
+ </code></pre>   
+   
+<p>   
+Pour lancer le serveur, il suffit de taper la commande suivante : </p>   
+   
+   
+ <pre><code>   
+    >>> s.serve_now()   
+ </code></pre>   
+   
+<p>   
+Et le programme se lance... Pour l'arrêter, il suffira d'appuyer sur la combinaison de touches Ctrl+C dans le shell Python le concernant. De base, il mettra automatiquement en ligne les fichiers markdown se trouvant dans le dossier /container et affichera la liste des documents consultables si vous tapez dans la bar d'url de votre navigateur : localhost:8008/ . </p>   
+   
+<p>   
+Si tout se passe bien, un message apparaîtra à cette page, et une liste si votre dossier contient quelquechose. De base, la documentation de Valknut se trouve dedans. </p>   
+   
+<p>   
+Il est possible également de lui définir des pages manuellements grâce à la fonction .transmission . Elle s'utilise de cette manière: </p>   
+   
+   
+ <pre><code>   
+    >>> s.transmission(path = "/salut", contains = "Hello world et salut à tous !")   
+ </code></pre>   
+   
+<p>   
+Ce qui aura pour effet de créer un embranchement sur localhost:8008/salut qui retournera le message passé ici dans l'argument <i>contains</i>. L'argument <i>path</i> définissant quant à lui le chemin de l'embranchement. </p>   
+   
+   
+<h4 id='52'> Exemple d'utilisation de la classe Valknut_Server().</h4>    
+   
+<p>   
+Voici un petit exemple rapide pour donner une idée de ce qu'il est possible de faire. Je vais créer un petit serveur. Il suffit de lancer le shell Python et de lui donner quelques instructions : </p>   
+   
+   
+ <pre><code>   
+    >>> from valknut_server import *   
+    >>> s = Valknut_Server()   
+    >>> s.transmission(path = "/salut", contains = "Salut à tous !")   
+    >>> s.transmission(path = "/hello", contains = "Hello world !")   
+    >>> s.serve_now()   
+ </code></pre>   
+   
+<p>   
+Ces quelques instructions vont générer un serveur. Une fois lancée, allez dans votre navigateur et tapez dans la bar d'url :  </p>   
+   
+   
+ <pre><code>   
+    localhost:8008/salut   
+ </code></pre>   
+   
+<p>   
+Le message propre à cette page apparaît. </p>   
+   
+<p>   
+Ensuite, allez à l'url suivante : </p>   
+   
+   
+ <pre><code>   
+    localhost:8008/hello   
+ </code></pre>   
+   
+<p>   
+Le message propre à cette page apparaît également. </p>   
+   
+<p>   
+Si vous tapez un mauvais url, Valknut va afficher une petite page d'erreur disant qu'il ne connait pas ce chemin. Et si vous tapez simplement : </p>   
+   
+   
+ <pre><code>   
+    localhost:8008/   
+ </code></pre>   
+   
+<p>   
+Une page de base va apparaître faisant la liste des documents disponibles dans le dossier 'container'. </p>   
+   
+<p>   
+ </p>   
+   
+<p>   
+Et voilà. </p>   
+   
+   
+<hr />   
+    
+<h4 id='53'> Mot de fin.</h4>    
+   
+<p>   
+Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut_sqlite, Valknut_gss et Valknut_Server. Des modifications vont suivre pour améliorer son fonctionnement. Je tiens à préciser que j'ai monté ce projet en partant de zéro, juste par passion d'essayer de comprendre comment tout ceci peut fonctionner, par challenge personnel, et par envie de reconversion professionnelle. Je précise également que je suis auto-didacte en programmation et que je n'ai aucun cursus scolaire lié à cette activité (à la base je suis technicien usineur/tourneur-fraiseur, niveau bac, travaillant en usine depuis presque vingt ans).  </p>   
+   
+   
+<p>   
+Je pose ici mes modules en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram. </p>   
    
    
  <pre><code>   
@@ -896,7 +1048,7 @@ Daniel. Juillet 2020. </p>
 
         <footer>
             <p><center><i>
-            programme sous licence - juillet 2020 - Daniel Meyer
+            programme sous licence - Juillet 2020
             </i></center></p>
         </footer>
 
