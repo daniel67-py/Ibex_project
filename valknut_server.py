@@ -16,7 +16,7 @@ from valknut_gss import *
 ####################################################################################################
 ### Valknut - Micro Server, GSS & SQLite3 manager
 ### developped by Meyer Daniel for Python 3, July 2020
-### this is version 0.1.001
+### this is version 0.1.0
 ####################################################################################################
 
 ####################################################################################################
@@ -86,7 +86,7 @@ class Valknut_Server():
             return ret
         
         ### if the request is some of the formated filenames ###
-        elif environ['PATH_INFO'] in self.contain:
+        elif environ['PATH_INFO'] in self.contain and environ['REQUEST_METHOD'] == "GET":
             status = '200 OK'
             headers = [('Content-type', 'text/html; charset=utf-8')]
             start_response(status, headers)

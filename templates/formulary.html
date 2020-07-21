@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+        <head>
+            <title>Script CGI</title>
+        </head>
+
+{% macro input(name, value = '', type = 'text', size = 20) -%}
+  <input type = "{{ type }}" name = "{{ name }}" value = "{{ value }}" size = "{{ size }}">
+{%- endmacro %}
+
+        <body>
+            <form action="/rep" method="post">
+                <p>{{ input('name') }}</p>
+                <p>{{ input('fname') }}</p>
+                <input type="submit" name="send" value="Envoyer information au serveur">
+            </form> 
+        </body>
+        </html>

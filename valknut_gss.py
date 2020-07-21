@@ -14,7 +14,7 @@ from wsgiref.simple_server import make_server
 ####################################################################################################
 ### Valknut - Micro Server, GSS & SQLite3 manager
 ### developped by Meyer Daniel for Python 3, July 2020
-### this is version 0.1.001
+### this is version 0.1.0
 ####################################################################################################
 
 ####################################################################################################
@@ -108,7 +108,15 @@ class Valknut_gss:
                                        )
             return output_file
         ### tell the user that the job is done ###
-        print("job done !")            
+        print("job done !")
+
+    def direct(self, template):
+        with open(template, 'r') as model:
+            page = model.read()
+            
+        templ = Template(page)
+        output_file = templ.render()
+        return output_file
 
     ####################################################    
     ### here begins the real analyse and parsing job ###
