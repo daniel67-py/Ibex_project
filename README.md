@@ -159,11 +159,17 @@
 ##### .data_union(table_1, table_2)
   Permet d'afficher l'intégralité de deux tables distinctes, sans répéter les doublons. Les arguments *table_1* et *table_2* permettent de définir les deux tables à comparer. Cette fonction réagit avec la variable *displaying_line* . Si cette dernière vaut True, l'affichage se fera via une fonction intégrée 'print', si elle vaut False, la fonction retournera le résultat sous forme d'itérable via une fonction intégrée 'return'.
 
-##### .edit_structure_txt(nom_fichier_sortie = "analyse_survival.txt")
+##### .edit_structure_txt(nom_fichier_sortie = "analyse_valknut.txt")
   Permet d'écrire la structure d'une base de données dans un fichier texte. Par défaut, le fichier se nommera 'analyse_valknut.txt'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
 
-##### .edit_contains_csv(table, nom_fichier_sortie = "analyse_survival.csv")
+##### .edit_contains_csv(table, nom_fichier_sortie = "analyse_valknut.csv")
   Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_valknut.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
+
+##### .clear_screen()
+  Permet de nettoyer l'écran du terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'clear', sous Windows, va appelez la fonction DOS 'cls'. Sous tout autre système, Python va générer une centaine de retour à la ligne via la fonction 'print'.
+
+##### .waiter()
+  Permet de créer une pause dans le terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'read', sous Windows, va appeler la fonction DOS 'pause'. Sous tout autre système, Python va reprendre le relai et créer une pause avec une fonction 'input' attendant une validation avec la touche Entrée.
 
 ------
 #### Exemple d'utilisation de Valknut.

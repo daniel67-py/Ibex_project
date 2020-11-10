@@ -1199,6 +1199,32 @@ class Valknut_sqlite():
             return mark
 
     ################################################################################################
+    ### function using system to clear screen
+    ################################################################################################
+    def clear_screen(self):
+        local_comp = sys.platform
+        if local_comp == "linux":
+            os.system("clear")
+        elif local_comp == "win32":
+            os.system("cls")
+        else:
+            print("\n" * 100)
+
+    ################################################################################################
+    ### function using system to make a break until user use Enter
+    ################################################################################################
+    def waiter(self):
+        local_comp = sys.platform
+        if local_comp == "linux":
+            print("Press Enter to continue...")
+            os.system("read")
+        elif local_comp == "win32":
+            os.system("pause")
+        else:
+            print("Press Enter to continue...")
+            input("")
+            
+    ################################################################################################
     ### debugging function : will display the SQL instructions while running
     ################################################################################################
     def debug_sqlite(self, instruction):
