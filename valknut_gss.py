@@ -14,7 +14,7 @@ from wsgiref.simple_server import make_server
 ####################################################################################################
 ### Valknut - Micro Server, GSS & SQLite3 manager
 ### developped by Meyer Daniel for Python 3, July 2020
-### this is version 0.1.0
+### this is version 0.1.001
 ####################################################################################################
 
 ####################################################################################################
@@ -46,6 +46,8 @@ class Valknut_gss:
         with open(self.file, 'r') as source:
             contain = source.read()
         ### analysing the document ###
+        #print("searching for code examples")
+        contain = self.per_coding_example(contain, "    ", " <pre><code>\n    ", " </code></pre>\n")
         #print("searching for h6 to h1 titles")
         contain = self.per_lines(contain, "######", "<h6>", "</h6> \n")
         contain = self.per_lines(contain, "#####", "<h5>", "</h5> \n")
@@ -55,8 +57,6 @@ class Valknut_gss:
         contain = self.per_lines(contain, "#", "<h1>", "</h1> \n")
         #print("searching for separators")
         contain = self.per_lines(contain, "------", "<hr />", "\n ")
-        #print("searching for code examples")
-        contain = self.per_coding_example(contain, "    ", " <pre><code>\n    ", " </code></pre>\n")
         #print("searching for paragraphs")
         contain = self.per_lines(contain, "  ", "<p>\n", " </p>\n")
         #print("searching for lists")
@@ -110,6 +110,7 @@ class Valknut_gss:
         ### tell the user that the job is done ###
         print("job done !")
 
+    ### this function returns directly a template without processing ###
     def direct(self, template):
         with open(template, 'r') as model:
             page = model.read()
@@ -139,6 +140,10 @@ class Valknut_gss:
             if y.startswith(symbol_to_modify) == True and mark_code == 0:
                 y = y.replace(symbol_to_modify, replace_open_parse)
                 y += replace_ending_parse
+                new_output += y
+            elif y.endswith(symbol_to_modify) == True and mark_code == 0:
+                y = y.replace(symbol_to_modify, replace_ending_parse)
+                y = replace_open_parse + y
                 new_output += y
             else:
                 new_output += y

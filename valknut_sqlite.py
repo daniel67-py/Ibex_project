@@ -203,6 +203,39 @@ class Valknut_sqlite():
             return mark
 
     ################################################################################################
+    ### creating a new table with specific columns
+    ################################################################################################
+    def new_increased_table(self, table, *columns):
+        """permit to create a new table with specific columns"""
+        mark = None
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to database ###
+            connexion = sqlite3.connect(self.database)
+            c = connexion.cursor()
+            ### concatenation of the SQL instruction ###
+            cols = ('id',) + columns
+            instruction = (f"CREATE TABLE {table} {str(cols)}")
+            self.debug_sqlite(instruction)
+            ### execution of the instruction ###
+            try:
+                c.execute(instruction)
+                mark = True
+                print("New table create")
+            except:
+                print("Impossible to add a new table to database")
+                mark = False
+            ### commiting and closing ###
+            connexion.commit()
+            connexion.close()
+            ### return result of the function ###
+            return mark
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return mark
+
+    ################################################################################################
     ### copy a table to a new one
     ################################################################################################
     def copy_table(self, source_table, destination_table):

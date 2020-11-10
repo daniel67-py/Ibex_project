@@ -391,7 +391,7 @@
     ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image
     [adresse.messagerie@email.com]  pour intégrer un lien vers un mail
     pour définir un paragraphe, laissez 2 espaces libres à son début
-    et si vous laissez 4 espaces vides en début de ligne, survivaltool_gss génère un exemple de code comme ces quelques lignes de syntaxes.
+    et si vous laissez 4 espaces vides en début de ligne, Valknut_gss génère un exemple de code comme ces quelques lignes de syntaxes.
 
   La fonction principale utilise neuf autres fonctions afin de créer le balisage dans le texte. Ceci me permet de pouvoir adapter ce petit programme facilement si je souhaite m'en servir pour chercher d'autres suites de caractères et leur attribuer des valeurs différentes.
 
@@ -496,7 +496,7 @@
 
 ------
 #### Mot de fin.
-  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut_sqlite, Valknut_gss et Valknut_Server. Des modifications vont suivre pour améliorer son fonctionnement. Je tiens à préciser que j'ai monté ce projet en partant de zéro, juste par passion d'essayer de comprendre comment tout ceci peut fonctionner, par challenge personnel, et par envie de reconversion professionnelle. Je précise également que je suis auto-didacte en programmation et que je n'ai aucun cursus scolaire lié à cette activité (à la base je suis technicien usineur/tourneur-fraiseur, niveau bac, travaillant en usine depuis presque vingt ans). 
+  Voilà dans les grandes lignes, la base de l'utilisation du module Valknut et de ses classes Valknut_sqlite, Valknut_gss et Valknut_Server. Des modifications vont suivre pour améliorer son fonctionnement. Je tiens à préciser que j'ai monté ce projet en partant de zéro, juste par passion d'essayer de comprendre comment tout ceci peut fonctionner, par challenge personnel. Je suis auto-didacte en programmation et je n'ai aucun cursus scolaire ou académique lié à cette activité (à la base je suis usineur/tourneur-fraiseur travaillant en usine depuis presque vingts ans), donc toutes remarques constructives et feedbacks sont le bienvenue. 
 
   Je pose ici mes modules en opensource pour tous. Pour toutes suggestions ou idées, envoyer moi un mail à l'adresse ci-dessous. Je peux également vous faire un programme opensource en Python intégralement pour exploiter une base de données SQLite3 avec interface Tkinter, il suffit pour cela de me contacter via le mail ici présent, ou par Telegram.
 
