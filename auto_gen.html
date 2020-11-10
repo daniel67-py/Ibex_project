@@ -779,11 +779,11 @@ La fonction .generate() lance la convertion du fichier. Par défaut, un fichier 
    
    
 <p>   
-Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -. Valknut gère actuellement les listes standards avec un seul niveau inférieur de listes. </p>   
+Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -. Valknut gère actuellement les listes jusqu'à 16 niveaux inférieurs. </p>   
    
    
 <p>   
-Il faut savoir aussi que la variable feedback est optionnel : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'auto_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans créer le moindre fichier html. Ceci peut être utile si vous utiliser un framework du genre flask ou cherrypy, sans devoir se soucier d'un contenu autre que des fichiers markdown ou texte. </p>   
+Il faut savoir aussi que la variable feedback est optionnelle : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'auto_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans créer le moindre fichier html. Ceci peut être utile si vous utiliser un framework du genre flask ou cherrypy, sans devoir se soucier d'un contenu autre que des fichiers markdown ou texte. </p>   
    
    
 <p>   
