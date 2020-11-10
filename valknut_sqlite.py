@@ -203,10 +203,10 @@ class Valknut_sqlite():
             return mark
 
     ################################################################################################
-    ### creating a new table with specific columns
+    ### creating a new increased table with specific columns
     ################################################################################################
     def new_increased_table(self, table, *columns):
-        """permit to create a new table with specific columns"""
+        """permit to create a new increased table with specific columns"""
         mark = None
         ### if database is a valid file ###
         if self.database != None:
