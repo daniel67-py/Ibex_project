@@ -14,6 +14,7 @@ from wsgiref.simple_server import make_server
 ####################################################################################################
 ### Valknut - Micro Server, GSS & SQLite3 manager
 ### developped by Meyer Daniel for Python 3, July 2020
+### last update : November 2020
 ### this is version 0.1.0
 ####################################################################################################
 
@@ -144,11 +145,20 @@ class Valknut_sqlite():
             ### connection to database ###
             connexion = sqlite3.connect(self.database)
             c = connexion.cursor()
-            ### counting the number of entry in the table ###
-            instruction_1 = f"""SELECT COUNT(*) FROM {table}"""
-            c.execute(instruction_1)
-            nb_id = c.fetchone()
-            nb_id = str(nb_id[0])
+            ### concatenation of instruction, searching the maximal value of id column ###
+            instruction = f"""SELECT MAX (id) FROM {table}"""
+            self.debug_sqlite(instruction)
+            nb_id = 0
+            ### execution of the instruction ###
+            try:
+                c.execute(instruction)
+                out = c.fetchone()
+                nb_id = out[0] + 1
+            except:
+                print("no maximal values yet, will start with 1")
+                nb_id = 1
+                mark = False
+            ### values concatenation in 'elements' adding the id number ###
             elements = (nb_id, ) + elements
             ### concatenation of the SQL instruction ###
             instruction_2 = (f"""INSERT INTO {table} VALUES {str(elements)}""")
@@ -465,7 +475,7 @@ class Valknut_sqlite():
             connexion = sqlite3.connect(self.database)
             c = connexion.cursor()
             ### concatenation of the SQL instruction ###
-            instruction = (f"DELETE FROM {table} WHERE {column} = '{value}'")
+            instruction = (f"DELETE FROM {table} WHERE {column} = {value}")
             self.debug_sqlite(instruction)
             ### execution of the instruction ###
             try:

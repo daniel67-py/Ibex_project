@@ -213,10 +213,13 @@ Au cas où vous n'avez pas encore Jinja2 intégré dans votre Python, installez 
  </code></pre>   
    
 <p>   
-Il est ensuite possible de créer un objet Valknut_sqlite et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL. Par exemple: la classe de mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL. Cependant, Valknut contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine. </p>   
+Il est ensuite possible de créer un objet Valknut_sqlite et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL, mais ceci n'est pas un problème car Valknut palie ce manque. Exemple:  </p>   
+   
+<ul><li> la classe de mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL. Cependant, Valknut contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine.   
+</li><li> il est possible de gérer une table à incrémentation automatique grâce aux deux fonctions .new_increased_table et .add_increased_values, malgré que SQLite sous Python n'accepte pas à ce jour ni la création d'une table, ni le rajout d'une entrée de ce genre. Mon module contourne le problème en créant une colonne supplémentaire 'id' lors de la définition de la table, et recherche la valeur maximal de la colonne 'id' en y rajoutant 1 pour toute insertion supplémentaire.   
+</ul>   
    
    
-<hr />   
     
 <h4 id='3'> Fonctions de la classe Valknut_sqlite.</h4>    
    
