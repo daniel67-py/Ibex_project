@@ -167,6 +167,12 @@
 ##### .edit_contains_csv(table, nom_fichier_sortie = "analyse_valknut.csv")
   Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_valknut.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
 
+##### .return_date_fr()  /  .return_date_en()
+  Ces deux fonctions permettent de retourner la date du jour au format francophone, soit jour/mois/année (dd/mm/aaaa), ou au format anglo-saxon, soit mois/jour/année (mm/dd/yyyy). Le retour obtenu est une suite de caractères (str).
+
+##### .return_time_fr()  /  .return_time_en()
+  Ces deux fonctions permettent de retourner l'heure au format francophone, soit sur 24 heures, soit au format anglo-saxon, sur 12 heures. Dans le second cas, sera rajouté aussi si l'heure est antemeridiem (am) ou postmeridiem (pm). Le retour obtenu est une suite de caractères (str).
+
 ##### .clear_screen()
   Permet de nettoyer l'écran du terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'clear', sous Windows, va appelez la fonction DOS 'cls'. Sous tout autre système, Python va générer une centaine de retour à la ligne via la fonction 'print'.
 
@@ -367,7 +373,7 @@
 
   La fonction .generate() lance la convertion du fichier. Par défaut, un fichier nommé 'auto_gen.html' va apparaitre dans le même répertoire que ce script. Cette fonction analyse dans l'ordre : la présence de titres en commençant du type h6 vers le type h1, la présence de séparateurs, la présence d'exemples de codes, la présence de paragraphes, la présence de listes, la présence de triple splats pour mettre certains passage en gras et italique, la présence de double splats afin de mettre certains passages en gras, la présence de single splat pour mettre certains passages en italique. la présence de passage barré, la présence d'images puis de liens hypertext, et pour finir, fait une indexation des titres balisés dans le corps du document (body), et récupère une liste de ces derniers pour les ajouter comme liens internes dans une colonne dédiée à cet effet (variable page_summary).
 
-  Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -. Valknut gère actuellement les listes jusqu'à 16 niveaux inférieurs.
+  Concernant les listes, et sachant que j'utilise toujours un modèle de document très basique quand j'écris un contenu, si elles sont insérées grâce à des signes +, elles seront numérotées, et seront à puces si utilisation du signe -. Valknut gère actuellement les listes jusqu'à 15 niveaux inférieurs.
 
   Il faut savoir aussi que la variable feedback est optionnelle : si elle n'est pas spécifiée, elle vaudra 0, et donc le retour se fera dans le fichier 'auto_gen.html'. Si par contre elle est différente de 0, le retour se fera via une fonction intégrée 'return' sous la forme d'une suite de caractères. Ceci peut être intéressant si vous souhaitez transmettre (retourner) directement au CGI un fichier markdown, sans créer le moindre fichier html. Ceci peut être utile si vous utiliser un framework du genre flask ou cherrypy, sans devoir se soucier d'un contenu autre que des fichiers markdown ou texte.
 
@@ -467,7 +473,7 @@
 
     >>> s.serve_now()
 
-  Et le programme se lance... Pour l'arrêter, il suffira d'appuyer sur la combinaison de touches Ctrl+C dans le shell Python le concernant. De base, il mettra automatiquement en ligne les fichiers markdown se trouvant dans le dossier /container et affichera la liste des documents consultables si vous tapez dans la bar d'url de votre navigateur : localhost:8008/ .
+  Et le programme se lance... Pour l'arrêter, il suffira d'appuyer sur la combinaison de touches Ctrl+C dans le shell Python le concernant. De base, il mettra automatiquement en ligne les fichiers markdown se trouvant dans le dossier /container et affichera la liste des documents consultables si vous tapez dans la barre d'url de votre navigateur : localhost:8008/ .
   Si tout se passe bien, un message apparaîtra à cette page, et une liste si votre dossier contient quelquechose. De base, la documentation de Valknut se trouve dedans.
   Il est possible également de lui définir des pages manuellements grâce à la fonction .transmission . Elle s'utilise de cette manière:
 
@@ -484,7 +490,7 @@
     >>> s.transmission(path = "/hello", contains = "Hello world !")
     >>> s.serve_now()
 
-  Ces quelques instructions vont générer un serveur. Une fois lancée, allez dans votre navigateur et tapez dans la bar d'url : 
+  Ces quelques instructions vont générer un serveur. Une fois lancée, allez dans votre navigateur et tapez dans la barre d'url : 
 
     localhost:8008/salut
 

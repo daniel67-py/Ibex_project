@@ -10,6 +10,7 @@ from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 from wsgiref.simple_server import make_server
+from datetime import *
 
 ####################################################################################################
 ### Valknut - Micro Server, GSS & SQLite3 manager
@@ -1233,6 +1234,38 @@ class Valknut_sqlite():
         else:
             print("Press Enter to continue...")
             input("")
+
+    ################################################################################################
+    ### function returning the date in french format
+    ################################################################################################
+    def return_date_fr(self):
+        instant = datetime.now()
+        instant = instant.strftime("%d/%m/%Y")
+        return instant
+
+    ################################################################################################
+    ### function returning the time in french format
+    ################################################################################################
+    def return_time_fr(self):
+        instant = datetime.now()
+        instant = instant.strftime("%H:%M:%S")
+        return instant
+
+    ################################################################################################
+    ### function returning the date in english / american format
+    ################################################################################################
+    def return_date_en(self):
+        instant = datetime.now()
+        instant = instant.strftime("%m-%d-%Y")
+        return instant
+
+    ################################################################################################
+    ### function returning the time in english / american format
+    ################################################################################################
+    def return_time_en(self):
+        instant = datetime.now()
+        instant = instant.strftime("%I:%M:%S -%p")
+        return instant
             
     ################################################################################################
     ### debugging function : will display the SQL instructions while running
