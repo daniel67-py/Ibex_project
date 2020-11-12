@@ -159,6 +159,18 @@
 ##### .edit_contains_csv(table, nom_fichier_sortie = "analyse_survival.csv")
   Permet d'écrire le contenu d'une table dans un fichier spreadsheet (type excel). Par défaut, le fichier se nommera 'analyse_valknut.csv'. Il est possible cependant de changer le nom du fichier de sortie lors de l'appel de la fonction via l'argument *nom_fichier_sortie* .
 
+##### .return_date_fr()  /  .return_date_en()
+  Ces deux fonctions permettent de retourner la date du jour au format francophone, soit jour/mois/année (dd/mm/aaaa), ou au format anglo-saxon, soit mois/jour/année (mm/dd/yyyy). Le retour obtenu est une suite de caractères (str).
+
+##### .return_time_fr()  /  .return_time_en()
+  Ces deux fonctions permettent de retourner l'heure au format francophone, soit sur 24 heures, soit au format anglo-saxon, sur 12 heures. Dans le second cas, sera rajouté aussi si l'heure est antemeridiem (am) ou postmeridiem (pm). Le retour obtenu est une suite de caractères (str).
+
+##### .clear_screen()
+  Permet de nettoyer l'écran du terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'clear', sous Windows, va appelez la fonction DOS 'cls'. Sous tout autre système, Python va générer une centaine de retour à la ligne via la fonction 'print'.
+
+##### .waiter()
+  Permet de créer une pause dans le terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'read', sous Windows, va appeler la fonction DOS 'pause'. Sous tout autre système, Python va reprendre le relai et créer une pause avec une fonction 'input' attendant une validation avec la touche Entrée.
+
 ------
 #### Exemple d'utilisation de Valknut.
   Après ces quelques lignes de descriptions des fonctionnalités du module, voici un exemple d'utilisation rapide pour la prise en main. Je vais créer une nouvelle base de données que je vais nommer 'exemple.db', et y intégrer deux tables contenant une listes d'amis. Je lance ici le module directement sans l'importer, tel un script, dans l'interpreteur Python.

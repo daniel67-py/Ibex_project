@@ -51,7 +51,7 @@
     >>> s.transmission(path = "/hello", contains = "Hello world !")
     >>> s.serve_now()
 
-  Ces quelques instructions vont générer un serveur. Une fois lancée, allez dans votre navigateur et tapez dans la bar d'url : 
+  Ces quelques instructions vont générer un serveur. Une fois lancée, allez dans votre navigateur et tapez dans la barre d'url : 
 
     localhost:8008/salut
 
