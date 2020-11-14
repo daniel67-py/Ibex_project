@@ -533,6 +533,80 @@ class Valknut_sqlite():
             return mark
 
     ################################################################################################
+    ### searching an entry in a specific table between 2 values in 2 columns
+    ################################################################################################
+    def search_between_2cols(self, table, column1, column2, value):
+        """permit to search an entry in a specific table"""
+        mark = None
+                
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to the database ###
+            connexion = sqlite3.connect(self.database)
+            c = connexion.cursor()
+            ### concatenation of the instruction ###
+            if type(value) == str:
+                value = "'" + value + "'"
+            instruction = (f"SELECT * FROM {table} WHERE {column1} <= {value} AND {column2} >= {value}")
+            self.debug_sqlite(instruction)
+            ### execution of the instruction ###
+            try:
+                mark = []
+                for x in c.execute(instruction):
+                    self.displaying_return(x)
+                    mark.append(x)
+            except:
+                print("One or many specified values are not good")
+                mark = False
+            ### closing ###
+            connexion.close()
+            ### return result of the function ###
+            if self.displaying_line == False:
+                return mark
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return mark
+
+    ################################################################################################
+    ### searching an entry in a specific table between 2 values in 2 columns with condition
+    ################################################################################################
+    def search_between_2cols_condition(self, table, column1, column2, value, condition_column, condition_value):
+        """permit to search an entry in a specific table"""
+        mark = None
+                
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to the database ###
+            connexion = sqlite3.connect(self.database)
+            c = connexion.cursor()
+            ### concatenation of the instruction ###
+            if type(value) == str:
+                value = "'" + value + "'"
+            if type(condition_value) == str:
+                condition_value = "'" + condition_value + "'"
+            instruction = (f"SELECT * FROM {table} WHERE ({column1} <= {value} AND {column2} >= {value}) AND ({condition_column} = {condition_value})")
+            self.debug_sqlite(instruction)
+            ### execution of the instruction ###
+            try:
+                mark = []
+                for x in c.execute(instruction):
+                    self.displaying_return(x) 
+                    mark.append(x)
+            except:
+                print("One or many specified values are not good")
+                mark = False
+            ### closing ###
+            connexion.close()
+            ### return result of the function ###
+            if self.displaying_line == False:
+                return mark
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return mark
+        
+    ################################################################################################
     ### searching an entry who starts with what's specified 
     ################################################################################################
     def search_start_like_value(self, table, column, value):
