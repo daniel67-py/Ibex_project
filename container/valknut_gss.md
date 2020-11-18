@@ -66,6 +66,7 @@
     - en début de ligne génère une liste à puces
     -- en début de ligne génère un sous-niveau de liste à puces (la limite actuelle est à 15 niveaux)
     --- etc...
+    NOTE : en fin de liste, laissez 2 lignes vides pour que Valknut détecte la fin de la liste.
     [lien vers un site](http://www.adresse_du_site.com)  pour intégrer un lien vers un site
     ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image
     [adresse.messagerie@email.com]  pour intégrer un lien vers un mail

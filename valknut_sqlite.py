@@ -184,7 +184,7 @@ class Valknut_sqlite():
     ################################################################################################
     ### creating a new table with specific columns
     ################################################################################################
-    def new_table(self, table, *columns):
+    def new_table(self, table, sequence):
         """permit to create a new table with specific columns"""
         mark = None
         ### if database is a valid file ###
@@ -193,7 +193,7 @@ class Valknut_sqlite():
             connexion = sqlite3.connect(self.database)
             c = connexion.cursor()
             ### concatenation of the SQL instruction ###
-            instruction = (f"CREATE TABLE {table} {str(columns)}")
+            instruction = (f"CREATE TABLE {table} ({sequence})")
             self.debug_sqlite(instruction)
             ### execution of the instruction ###
             try:
@@ -216,7 +216,7 @@ class Valknut_sqlite():
     ################################################################################################
     ### creating a new increased table with specific columns
     ################################################################################################
-    def new_increased_table(self, table, *columns):
+    def new_increased_table(self, table, sequence):
         """permit to create a new increased table with specific columns"""
         mark = None
         ### if database is a valid file ###
@@ -225,8 +225,7 @@ class Valknut_sqlite():
             connexion = sqlite3.connect(self.database)
             c = connexion.cursor()
             ### concatenation of the SQL instruction ###
-            cols = ('id',) + columns
-            instruction = (f"CREATE TABLE {table} {str(cols)}")
+            instruction = (f"CREATE TABLE {table} (id INTEGER PRIMARY KEY AUTOINCREMENT, {sequence})")
             self.debug_sqlite(instruction)
             ### execution of the instruction ###
             try:

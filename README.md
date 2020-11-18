@@ -31,9 +31,8 @@
     pour Windows :
         python -m pip install jinja2
 
-  Il est ensuite possible de créer un objet Valknut_sqlite et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL, mais ceci n'est pas un problème car Valknut palie ce manque. Exemple: 
-- la classe de mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 avec une simple requête SQL. Cependant, Valknut contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine.
-- il est possible de gérer une table à incrémentation automatique grâce aux deux fonctions .new_increased_table et .add_increased_values, malgré que SQLite sous Python n'accepte pas à ce jour ni la création d'une table, ni le rajout d'une entrée de ce genre. Mon module contourne le problème en créant une colonne supplémentaire 'id' lors de la définition de la table, et recherche la valeur maximal de la colonne 'id' en y rajoutant 1 pour toute insertion supplémentaire.
+  Il est ensuite possible de créer un objet Valknut_sqlite et ainsi de manipuler la base de données en faisant appel aux fonctions intégrées du module dans sa classe. J'en profite pour préciser que sur une base de données SQLite3 sous Python, certaines fonctionnalités ne sont pas disponible comme sur une table PostGreSQL ou MySQL, mais ceci n'est pas un problème car Valknut palie ce manque. Exemple: 
+- la classe de mon module embarque une fonction permettant d'ajouter une colonne dans une table déjà existante tout en se servant d'une requête SQLite, mais aucune fonction permettant de supprimer une colonne. Simplement car une telle opération est impossible à faire sur une table SQLite3 sous Python, avec une simple requête SQL. Cependant, Valknut contourne le problème en copiant une table existante dans une nouvelle table, tout en sélectionnant les colonnes voulues, et supprime la table d'origine.
 
 ------
 #### Fonctions de la classe Valknut_sqlite.
@@ -52,19 +51,33 @@
 
   True si vous souhaitez que Valknut affiche (print) les résultats des fonctions de recherches, False si vous souhaitez qu'il les retournent (return).
 
-##### .new_table(table, columns)
-  Permet de créer une nouvelle table sans incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *columns* est un argument multiple permettant de définir les noms des colonnes. Syntaxe d'exemple:
+##### .new_table(table, sequence)
+  Permet de créer une nouvelle table sans incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *sequence* est un argument permettant de définir les noms des colonnes. Syntaxe d'exemple:
 
-    .new_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
+    .new_table('amis', 'nom text, prenom text, adresse text, code_postal integer, ville text, telephone numeric')
 
-  Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : nom, prenom, adresse, code postal, ville, telephone.
+  Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : nom, prenom, adresse, code postal, ville, telephone. Chacunes de ces colonnes va s'assurer de recevoir une variable du type spécifié lors de la création lors de chaque insertion, ou retourner une erreur si ceci n'est pas respecté.
+  Petit rappel concernant les types de variables sqlite :
+- text : pour signifier qu'une colonne contiendra du texte.
+- numeric : pour signifier qu'une colonne contiendra une suite numérique.
+- integer : pour signifier qu'une colonne contiendra un nombre entier (sans virgule).
+- real : pour signifier qu'une colonne contiendra un nombre réel (à virgule).
+- blob : pour signifier qu'une colonne peut contenir une suite de caractères vide.
 
-##### .new_increased_table(table, columns)
-  Permet de créer une nouvelle table avec une incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *columns* est un argument multiple permettant de définir les noms des colonnes. En plus sera rajouté une colonne 'id' qui s'auto-incrémentera de 1 pour chaque nouvelle entrée ajoutée. Syntaxe d'exemple:
 
-    .new_increased_table('amis', 'nom', 'prenom', 'adresse', 'code_postal', 'ville', 'telephone')
+##### .new_increased_table(table, sequence)
+  Permet de créer une nouvelle table avec une incrémentation automatique dans la base de données. L'argument *table* permet de passer le nom voulu pour la table. L'argument *sequence* est un argument permettant de définir les noms des colonnes. En plus sera rajouté une colonne 'id' qui s'auto-incrémentera de 1 pour chaque nouvelle entrée ajoutée. Syntaxe d'exemple:
 
-  Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : id, nom, prenom, adresse, code postal, ville, telephone.
+    .new_increased_table('amis', 'nom text, prenom text, adresse text, code_postal integer, ville text, telephone numeric')
+
+  Ceci va générer une table 'amis' contenant les colonnes qui suivent dans l'ordre : id, nom, prenom, adresse, code postal, ville, telephone. Cette fonction faisant appelle à une colonne 'id INTEGER PRIMARY KEY AUTOINCREMENT', une seconde table nommée 'sqlite_sequence' va se créer et va contenir le nom de la table créée, ainsi que le nombre d'incrémentation que cette dernière a déjà reçue.
+  Petit rappel concernant les types de variables sqlite :
+- text : pour signifier qu'une colonne contiendra du texte.
+- numeric : pour signifier qu'une colonne contiendra une suite numérique.
+- integer : pour signifier qu'une colonne contiendra un nombre entier (sans virgule).
+- real : pour signifier qu'une colonne contiendra un nombre réel (à virgule).
+- blob : pour signifier qu'une colonne peut contenir une suite de caractères vide.
+
 
 ##### .copy_table(source_table, destination_table)
   Permet de copier une table existante vers une nouvelle table de destination. L'argument *source_table* permet de passer le nom de la table à copier, l'argument *destination_table* permet de donner le nom de la table à créer et à remplir avec la table 'source'.
@@ -407,6 +420,7 @@
     - en début de ligne génère une liste à puces
     -- en début de ligne génère un sous-niveau de liste à puces (la limite actuelle est à 15 niveaux)
     --- etc...
+    NOTE : en fin de liste, laissez 2 lignes vides pour que Valknut détecte la fin de la liste.
     [lien vers un site](http://www.adresse_du_site.com)  pour intégrer un lien vers un site
     ![image à insérer](chemin_vers_image.jpeg)  pour intégrer une image
     [adresse.messagerie@email.com]  pour intégrer un lien vers un mail
