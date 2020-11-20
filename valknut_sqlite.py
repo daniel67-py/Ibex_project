@@ -862,7 +862,7 @@ class Valknut_sqlite():
     ################################################################################################
     ### display the integrality of the database
     ################################################################################################
-    def show_all(self):
+    def show_all(self, column_width = 15):
         """display the integrality of the database"""
         ### if database is a valid file ###
         if self.database != None:
@@ -878,7 +878,7 @@ class Valknut_sqlite():
             ### display the contains ###
             print("\n...OK... The database contains :")
             print(self.database)
-            print("  |")
+            print(" |")
             ### concatenation of the first instruction ###
             instruction_1 = """SELECT name FROM sqlite_master WHERE type = 'table' """
             self.debug_sqlite(instruction_1)
@@ -891,11 +891,15 @@ class Valknut_sqlite():
                 ### analyse column's name of each tables with d ###
                 d.execute(instruction_2)
                 ### display the tree ###
-                print("  + -",x[0])
+                print(" + -",x[0])
                 try:
-                    print("  |       \ _ _ _ _ _", d.fetchone().keys())
+                    ligne = d.fetchone().keys()
+                    print(" |  ", end = '')
+                    for u in ligne:
+                        print(u.center(column_width - 1), "|", end = '')
+                    print("\n | ", (("-" * column_width) + "+") * len(ligne))
                 except:
-                    print("  | ")
+                    print(" | ")
                 ### concatenation of the third instruction ###
                 instruction_3 = f"SELECT * FROM {x[0]}"
                 self.debug_sqlite(instruction_3)
@@ -904,13 +908,13 @@ class Valknut_sqlite():
                     ligne = ""
                     ### concatenation of datas in one line ###
                     for z in range(0, len(y)):
-                        ligne = ligne + str(y[z]) + " - "
+                        ligne = ligne + str(y[z]).center(column_width) + "|"
                     ### display the data ###
-                    print("  |\t\t\t", ligne)
+                    print(" | ", ligne)
             ### closing ###
             connexion.close()
             ### and final line of the tree display ###
-            print("  | \n  |_ END OF DATAS !\n")
+            print(" | \n  |_ END OF DATAS !\n")
         ### if database is not valid ###
         else:
             print("Action not allowed because no database is defined.")

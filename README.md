@@ -1,5 +1,6 @@
 ## Valknut 0.1.001  - WSGI Local Server, GSS & SQLite3 manager
   Développé pour Python3 par Meyer Daniel, Juillet 2020
+  Dernière mise à jour : Novembre 2020
   [voir mon dépôt Github](https://github.com/daniel67-py)
   pour m'écrire : [meyer.daniel67@protonmail.com]
 
@@ -38,7 +39,7 @@
 #### Fonctions de la classe Valknut_sqlite.
 
 ##### Valknut_sqlite_New(database)
-  Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument *database* . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier disponible.
+  Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument *database* . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier est disponible.
 
 ##### Valknut_sqlite(database)
   Cette fonction permet d'initier un objet Valknut_sqlite en faisant appel au fichier passé par l'argument *database* . Il signale à l'utilisateur si la connection à la base de données est opérationnelle ou non. Elle contient aussi deux variables qui influencent les retours que va donner le module :
@@ -153,8 +154,8 @@
 ##### .return_structure()
   Permet de retourner via une fonction intégrée 'return' la structure de la base de données, sous forme de variable de type 'dictionnaire'.
 
-##### .show_all()
-  Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence.
+##### .show_all(column_width = 15)
+  Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence et tableau. L'argument *column_width* permet d'ajuster la largeur des colonnes, par défaut cette valeur est de 15 caractères.
 
 ##### .show_structure()
   Permet d'afficher la structure de la base de données sous forme d'arborescence. Cette fonction se contente de donner le nom des tables et des colonnes.
@@ -220,10 +221,10 @@
 
   Je créé deux tables, la première se nommera 'amis_a', la seconde 'amis_b', contenant chacune les :
 
-    >>> a.new_table('amis_a', 'nom', 'prenom', 'age')
+    >>> a.new_table('amis_a', 'nom text, prenom text, age integer')
     New table create
     True
-    >>> a.new_table('amis_b', 'nom', 'prenom', 'age')
+    >>> a.new_table('amis_b', 'nom text, prenom text, age integer')
     New table create
     True
 
@@ -249,23 +250,26 @@
   Regardons le contenu de notre base de données :
 
     >>> a.show_all()
+    
     ...OK... The database contains :
     exemple.db
-      |
-      + - amis_a
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']
-      |		            	 dupont - maurice - 44 - 
-      |		            	 durant - jean-jacques - 32 - 
-      |	            		 tartenpion - didier - 33 - 
-      |		            	 jeunot - alain - 21 - 
-      + - amis_b
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']
-      |			             phong - lee - 34 - 
-      |	            		 sanchez - manuella - 29 - 
-      |		            	 durant - jean-jacques - 32 - 
-      |		            	 tartenpion - didier - 33 - 
-      | 
-      |_ END OF DATAS !
+     |
+     + - amis_a
+     |       nom       |    prenom     |     age       |
+     |  ---------------+---------------+---------------+
+     |       dupont    |    maurice    |       44      |
+     |       durant    |  jean-jacques |       32      |
+     |     tartenpion  |     didier    |       33      |
+     |       jeunot    |     alain     |       21      |
+     + - amis_b
+     |       nom       |    prenom     |     age       |
+     |  ---------------+---------------+---------------+
+     |       phong     |      lee      |       34      |
+     |      sanchez    |    manuella   |       29      |
+     |       durant    |  jean-jacques |       32      |
+     |     tartenpion  |     didier    |       33      |
+     | 
+     |_ END OF DATAS !
 
   Ou plus simplement, si je veux connaitre la structure :
 
@@ -339,21 +343,23 @@
     >>> a.show_all()
     ...OK... The database contains :
     exemple.db
-      |
-      + - amis_a
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']
-      |			             dupont - maurice - 44 - 
-      |		            	 durant - jean-jacques - 32 - 
-      |		            	 tartenpion - didier - 33 - 
-      |		            	 jeunot - alain - 21 - 
-      + - amis_b
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']
-      |			             jet - lee - 34 - 
-      |	            		 sanchez - manuella - 29 - 
-      |		            	 durant - jean-jacques - 32 - 
-      |		               	 tartenpion - didier - 33 - 
-      | 
-      |_ END OF DATAS !
+     |
+     + - amis_a
+     |       nom       |    prenom     |     age       |
+     |  ---------------+---------------+---------------+
+     |       dupont    |    maurice    |       44      |
+     |       durant    |  jean-jacques |       32      |
+     |     tartenpion  |     didier    |       33      |
+     |       jeunot    |     alain     |       21      |
+     + - amis_b
+     |       nom       |    prenom     |     age       |
+     |  ---------------+---------------+---------------+
+     |        jet      |      lee      |       34      |
+     |      sanchez    |    manuella   |       29      |
+     |       durant    |  jean-jacques |       32      |
+     |     tartenpion  |     didier    |       33      |
+     | 
+     |_ END OF DATAS !
 
   Si je souhaite supprimer une entrée de la liste 'amis_b' :
 
