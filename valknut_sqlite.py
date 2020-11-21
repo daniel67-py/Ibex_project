@@ -892,12 +892,14 @@ class Valknut_sqlite():
                 d.execute(instruction_2)
                 ### display the tree ###
                 print(" + -",x[0])
+                repet = 0
                 try:
                     ligne = d.fetchone().keys()
+                    repet = len(ligne)
                     print(" |  ", end = '')
                     for u in ligne:
                         print(u.center(column_width - 1), "|", end = '')
-                    print("\n | ", (("-" * column_width) + "+") * len(ligne))
+                    print("\n | ", (("-" * column_width) + "+") * repet)
                 except:
                     print(" | ")
                 ### concatenation of the third instruction ###
@@ -911,10 +913,12 @@ class Valknut_sqlite():
                         ligne = ligne + str(y[z]).center(column_width) + "|"
                     ### display the data ###
                     print(" | ", ligne)
+                print(" | ", (("-" * column_width) + "+") * repet)
             ### closing ###
             connexion.close()
             ### and final line of the tree display ###
-            print(" | \n  |_ END OF DATAS !\n")
+            print(" | ")
+            print(" |_ END OF DATAS !\n")
         ### if database is not valid ###
         else:
             print("Action not allowed because no database is defined.")
@@ -963,7 +967,8 @@ class Valknut_sqlite():
                     ligne = ligne + str(y[z]).center(column_width) + "|"
                 ### display the data ###
                 print(" | ", ligne)
-        ### closing ###
+            print(" | ", (("-" * column_width) + "+") * len(columns.split(',')))
+            ### closing ###
             connexion.close()
             ### and final line of the tree display ###
             print(" | ")
