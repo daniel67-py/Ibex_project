@@ -94,7 +94,7 @@
         
             <a href='#27'> .return_structure()</a><br> <br>
         
-            <a href='#28'> .show_all()</a><br> <br>
+            <a href='#28'> .show_all(column_width = 15)</a><br> <br>
         
             <a href='#29'> .show_structure()</a><br> <br>
         
@@ -169,6 +169,9 @@
 Développé pour Python3 par Meyer Daniel, Juillet 2020 </p>   
    
 <p>   
+Dernière mise à jour : Novembre 2020 </p>   
+   
+<p>   
 <a href = 'https://github.com/daniel67-py'>voir mon dépôt Github</a> </p>  
    
 <p>   
@@ -234,7 +237,7 @@ Il est ensuite possible de créer un objet Valknut_sqlite et ainsi de manipuler 
 <h5 id='4'> Valknut_sqlite_New(database)</h5>    
    
 <p>   
-Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument <i>database</i> . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier disponible. </p>   
+Cette fonction permet d'initier une nouvelle base de données en créant un nouveau fichier dont le nom est passé par l'argument <i>database</i> . Une fois la base créée, la fonction va retourner un message signalant à l'utilisateur que le fichier est disponible. </p>   
    
    
 <h5 id='5'> Valknut_sqlite(database)</h5>    
@@ -455,10 +458,10 @@ Permet d'afficher les entrées d'une table dans par ordre alphabétique ou numé
 Permet de retourner via une fonction intégrée 'return' la structure de la base de données, sous forme de variable de type 'dictionnaire'. </p>   
    
    
-<h5 id='28'> .show_all()</h5>    
+<h5 id='28'> .show_all(column_width = 15)</h5>    
    
 <p>   
-Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence. </p>   
+Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence et tableau. L'argument <i>column_width</i> permet d'ajuster la largeur des colonnes, par défaut cette valeur est de 15 caractères. </p>   
    
    
 <h5 id='29'> .show_structure()</h5>    
@@ -542,7 +545,7 @@ Permet de nettoyer l'écran du terminal exécutant le programme. Sous Linux, va 
 <h5 id='42'> .waiter()</h5>    
    
 <p>   
-Permet de créer une pause dans le terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'read', sous Windows, va appeler la fonction DOS 'pause'. Sous tout autre système, Python va reprendre le relai et créer une pause avec une fonction 'input' attendant une validation avec la touche Entrée. </p>   
+Permet de créer une pause dans le terminal exécutant le programme. Une simple fonction 'input' permet de valider le message. </p>   
    
    
 <hr />   
@@ -582,10 +585,10 @@ Je créé deux tables, la première se nommera 'amis_a', la seconde 'amis_b', co
    
    
  <pre><code>   
-    >>> a.new_table('amis_a', 'nom', 'prenom', 'age')   
+    >>> a.new_table('amis_a', 'nom text, prenom text, age integer')   
     New table create   
     True   
-    >>> a.new_table('amis_b', 'nom', 'prenom', 'age')   
+    >>> a.new_table('amis_b', 'nom text, prenom text, age integer')   
     New table create   
     True   
  </code></pre>   
@@ -619,23 +622,26 @@ Regardons le contenu de notre base de données : </p>
    
  <pre><code>   
     >>> a.show_all()   
+       
     ...OK... The database contains :   
     exemple.db   
-      |   
-      + - amis_a   
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']   
-      |		            	 dupont - maurice - 44 -    
-      |		            	 durant - jean-jacques - 32 -    
-      |	            		 tartenpion - didier - 33 -    
-      |		            	 jeunot - alain - 21 -    
-      + - amis_b   
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']   
-      |			             phong - lee - 34 -    
-      |	            		 sanchez - manuella - 29 -    
-      |		            	 durant - jean-jacques - 32 -    
-      |		            	 tartenpion - didier - 33 -    
-      |    
-      |_ END OF DATAS !   
+     |   
+     + - amis_a   
+     |       nom       |    prenom     |     age       |   
+     |  ---------------+---------------+---------------+   
+     |       dupont    |    maurice    |       44      |   
+     |       durant    |  jean-jacques |       32      |   
+     |     tartenpion  |     didier    |       33      |   
+     |       jeunot    |     alain     |       21      |   
+     + - amis_b   
+     |       nom       |    prenom     |     age       |   
+     |  ---------------+---------------+---------------+   
+     |       phong     |      lee      |       34      |   
+     |      sanchez    |    manuella   |       29      |   
+     |       durant    |  jean-jacques |       32      |   
+     |     tartenpion  |     didier    |       33      |   
+     |    
+     |_ END OF DATAS !   
  </code></pre>   
    
 <p>   
@@ -747,21 +753,23 @@ Si je souhaite modifier une valeur dans une entrée , supposons que je souhaite 
     >>> a.show_all()   
     ...OK... The database contains :   
     exemple.db   
-      |   
-      + - amis_a   
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']   
-      |			             dupont - maurice - 44 -    
-      |		            	 durant - jean-jacques - 32 -    
-      |		            	 tartenpion - didier - 33 -    
-      |		            	 jeunot - alain - 21 -    
-      + - amis_b   
-      |       \ _ _ _ _ _ ['nom', 'prenom', 'age']   
-      |			             jet - lee - 34 -    
-      |	            		 sanchez - manuella - 29 -    
-      |		            	 durant - jean-jacques - 32 -    
-      |		               	 tartenpion - didier - 33 -    
-      |    
-      |_ END OF DATAS !   
+     |   
+     + - amis_a   
+     |       nom       |    prenom     |     age       |   
+     |  ---------------+---------------+---------------+   
+     |       dupont    |    maurice    |       44      |   
+     |       durant    |  jean-jacques |       32      |   
+     |     tartenpion  |     didier    |       33      |   
+     |       jeunot    |     alain     |       21      |   
+     + - amis_b   
+     |       nom       |    prenom     |     age       |   
+     |  ---------------+---------------+---------------+   
+     |        jet      |      lee      |       34      |   
+     |      sanchez    |    manuella   |       29      |   
+     |       durant    |  jean-jacques |       32      |   
+     |     tartenpion  |     didier    |       33      |   
+     |    
+     |_ END OF DATAS !   
  </code></pre>   
    
 <p>   

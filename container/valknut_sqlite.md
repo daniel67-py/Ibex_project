@@ -190,7 +190,7 @@
   Permet de nettoyer l'écran du terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'clear', sous Windows, va appelez la fonction DOS 'cls'. Sous tout autre système, Python va générer une centaine de retour à la ligne via la fonction 'print'.
 
 ##### .waiter()
-  Permet de créer une pause dans le terminal exécutant le programme. Sous Linux, va appeler la fonction $bash 'read', sous Windows, va appeler la fonction DOS 'pause'. Sous tout autre système, Python va reprendre le relai et créer une pause avec une fonction 'input' attendant une validation avec la touche Entrée.
+  Permet de créer une pause dans le terminal exécutant le programme. Une simple fonction 'input' permet de valider le message.
 
 ------
 #### Exemple d'utilisation de Valknut.

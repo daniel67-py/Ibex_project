@@ -1302,16 +1302,8 @@ class Valknut_sqlite():
     ### function using system to make a break until user use Enter
     ################################################################################################
     def waiter(self):
-        local_comp = sys.platform
-        if local_comp == "linux":
-            print("Press Enter to continue...")
-            os.system("read")
-        elif local_comp == "win32":
-            os.system("pause")
-        else:
-            print("Press Enter to continue...")
-            input("")
-
+        input("Appuyez sur ENTREE pour continuer / Press ENTER to continue ...")
+        
     ################################################################################################
     ### function returning the date in french format
     ################################################################################################
