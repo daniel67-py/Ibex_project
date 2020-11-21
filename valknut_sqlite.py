@@ -919,7 +919,60 @@ class Valknut_sqlite():
         else:
             print("Action not allowed because no database is defined.")
             return None
-            
+
+    ################################################################################################
+    ### display specified columns of a specific table 
+    ################################################################################################
+    def show_specific(self, table, columns, column_width = 15):
+        """display specified columns of a specific table"""
+        ### if database is a valid file ###
+        if self.database != None:
+            ### connection to database ###
+            ### d : analyse column's name ###
+            connexion = sqlite3.connect(self.database)
+            connexion.row_factory = sqlite3.Row
+            d = connexion.cursor()
+            ### another cursor to analyse the table's entry ###
+            connexion2 = sqlite3.connect(self.database)
+            e = connexion2.cursor()
+            ### display the contains ###
+            print(f"\n...OK... The table {table} contains :")
+            print(" | ")
+            ### concatenation of the first instruction ###
+            instruction_2 = f"SELECT {columns} FROM {table}"
+            self.debug_sqlite(instruction_2)
+            ### analyse column's name of each tables with d ###
+            d.execute(instruction_2)
+            ### display the tree ###
+            try:
+                ligne = d.fetchone().keys()
+                print(" |  ", end = '')
+                for u in ligne:
+                    print(u.center(column_width - 1), "|", end = '')
+                print("\n | ", (("-" * column_width) + "+") * len(ligne))
+            except:
+                print(" | ")
+            ### concatenation of the second instruction ###
+            instruction_3 = f"SELECT {columns} FROM {table}"
+            self.debug_sqlite(instruction_3)
+            ### analyse of the table contains with e ###
+            for y in e.execute(instruction_3):
+                ligne = ""
+                ### concatenation of datas in one line ###
+                for z in range(0, len(y)):
+                    ligne = ligne + str(y[z]).center(column_width) + "|"
+                ### display the data ###
+                print(" | ", ligne)
+        ### closing ###
+            connexion.close()
+            ### and final line of the tree display ###
+            print(" | ")
+            print(" |_ END OF DATAS !\n")
+        ### if database is not valid ###
+        else:
+            print("Action not allowed because no database is defined.")
+            return None
+        
     ################################################################################################
     ### display the structure of the database
     ################################################################################################

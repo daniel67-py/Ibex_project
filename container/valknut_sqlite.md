@@ -150,6 +150,16 @@
 ##### .show_all(column_width = 15)
   Permet d'afficher le contenu de la base de données, table par table, en affichant également le nom des colonnes, le tout sous forme d'arborescence et tableau. L'argument *column_width* permet d'ajuster la largeur des colonnes, par défaut cette valeur est de 15 caractères.
 
+##### .show_specific(table, columns, column_width = 15)
+  Permet d'afficher le contenu d'une table spécifique, et des colonnes spécifiques de cette table. L'argument *table* permet de définir le nom de la table, l'argument *columns* permet de définir les colonnes à retourner, l'argument *column_width* permet d'ajuster la largeur des colonnes, par défaut cette valeur est de 15 caractères.
+  Supposons une table 't1' contenant les colonnes 'col_a', 'col_b' et 'col_c', et que nous voulons voir uniquement le contenu des colonnes col_a et col_c, ceci donne :
+
+    .show_specific('t1', 'col_a, col_c')
+
+  Supposons que nous voulons voir l'intégralité de la table avec toutes ses colonnes :
+
+    .show_specific('t1', '*')
+
 ##### .show_structure()
   Permet d'afficher la structure de la base de données sous forme d'arborescence. Cette fonction se contente de donner le nom des tables et des colonnes.
 
